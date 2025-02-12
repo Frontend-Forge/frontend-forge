@@ -68,7 +68,7 @@ const SidebarContent = () => {
           </CollapsibleTrigger>
           <CollapsibleContent className="space-y-1 px-3 py-1">
             <Link
-              href="/practice/all"
+              href="/questions"
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-white/10"
             >
               <Library className="h-4 w-4" />

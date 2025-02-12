@@ -1,8 +1,8 @@
-type LogoName = "html" | "css" | "js" | "react";
-
 interface LogoProps {
   logos?: LogoName[];
 }
+
+type LogoName = "html" | "css" | "js" | "react";
 
 const logoSvgs: Record<LogoName, string> = {
   html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

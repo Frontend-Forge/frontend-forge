@@ -1,3 +1,4 @@
+/* eslint-disable turbo/no-undeclared-env-vars */
 "use client";
 
 import Link from "next/link";
@@ -32,8 +33,10 @@ export default function RootLayout({
 
   const { code, setTestCases } = useCode();
 
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL as string;
+
   async function handleSubmit() {
-    const req = await fetch("http://localhost:3000/api/test", {
+    const req = await fetch(`${backendUrl}/api/test`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
