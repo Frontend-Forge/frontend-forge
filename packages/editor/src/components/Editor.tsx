@@ -163,11 +163,27 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
       <!DOCTYPE html>
       <html>
         <head>
+          <meta charset="utf-8">
+          <meta http-equiv="Content-Security-Policy" 
+            content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; 
+                    connect-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
           <style>${cssContent}</style>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.5/babel.min.js"></script>
           <script>
+            // Set up CORS proxy function
+            window.fetchWithProxy = (url, options = {}) => {
+              const proxyUrl = 'https://api.allorigins.win/raw?url=';
+              return fetch(proxyUrl + encodeURIComponent(url), options)
+                .then(response => response)
+                .catch(error => {
+                  console.error('Proxy fetch error:', error);
+                  // Fallback to direct fetch if proxy fails
+                  return fetch(url, options);
+                });
+            };
+  
             // Console override for logging
             const originalConsole = window.console;
             window.console = {
@@ -229,8 +245,24 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
       <!DOCTYPE html>
       <html>
         <head>
+          <meta charset="utf-8">
+          <meta http-equiv="Content-Security-Policy" 
+            content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; 
+                    connect-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
           <style>${cssContent}</style>
           <script>
+            // Set up CORS proxy function
+            window.fetchWithProxy = (url, options = {}) => {
+              const proxyUrl = 'https://api.allorigins.win/raw?url=';
+              return fetch(proxyUrl + encodeURIComponent(url), options)
+                .then(response => response)
+                .catch(error => {
+                  console.error('Proxy fetch error:', error);
+                  // Fallback to direct fetch if proxy fails
+                  return fetch(url, options);
+                });
+            };
+  
             // Console override for logging
             const originalConsole = window.console;
             window.console = {
@@ -259,7 +291,7 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
                 originalConsole.warn(...args);
               }
             };
-
+  
             window.onerror = (message, source, lineno, colno) => {
               window.parent.postMessage({
                 type: 'console',
@@ -435,7 +467,8 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
             <iframe
               ref={iframeRef}
               className="w-full h-full border-none"
-              sandbox="allow-scripts allow-same-origin"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups allow-modals"
+              allow="cross-origin-isolated"
             />
           </div>
 
