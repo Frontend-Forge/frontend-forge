@@ -1,0 +1,13 @@
+{
+  "extends": "@workspace/typescript-config/react-library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@workspace/editor/*": ["./src/*"]
+    },
+    "jsx": "react-jsx", // ✅ Fixes the JSX error
+    "jsxImportSource": "react" // ✅ Needed if using "react-jsx"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
