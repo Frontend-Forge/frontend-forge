@@ -11,15 +11,7 @@ import {
   FolderOpen,
   Globe,
   Lightbulb,
-  Paperclip,
   FileText,
-  FileCode,
-  FileType,
-  Flame,
-  Clock,
-  CheckCircle,
-  Linkedin,
-  FlameIcon,
 } from "lucide-react";
 import {
   Select,
@@ -30,6 +22,7 @@ import {
 } from "@workspace/ui/components/select";
 import SplitComponent from "react-split";
 import TechLogoComponent from "./TechLogo.js";
+import CompanyLogo from "./Companies.js";
 
 const Split = SplitComponent as unknown as React.ComponentType<{
   className?: string;
@@ -401,7 +394,7 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
           snapOffset={30}
         >
           {/* Left Panel */}
-          <div className="flex flex-col flex-wrap border-r gap-4 border-gray-800">
+          <div className="flex flex-col border-r gap-4 overflow-x-hidden overflow-y-auto scrollbar-hide border-gray-800">
             <div className="flex flex-row gap-3">
               <button className="flex gap-1 mt-4 ml-8 flex-row items-center justify-center">
                 <FileText className="h-4 w-4" />
@@ -488,6 +481,10 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
                 experience of the application and implement them (you get bonus
                 credit for doing that during interviews).
               </p>
+            </div>
+            <div className="w-[90%] mb-2 flex flex-col  ml-8 gap-y-2">
+              <p className="font-bold text-2xl">Companies</p>
+              <CompanyLogo />
             </div>
           </div>
 
