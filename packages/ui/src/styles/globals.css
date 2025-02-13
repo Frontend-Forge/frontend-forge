@@ -67,8 +67,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -76,4 +74,18 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.gutter {
+  background-color: #2d2d2d;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.gutter:hover {
+  background-color: #404040;
+}
+
+.gutter.gutter-horizontal {
+  cursor: col-resize;
 }
