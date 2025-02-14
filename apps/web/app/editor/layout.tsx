@@ -4,7 +4,21 @@ import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
 import type React from "react"; // Import React
 import Image from "next/image";
-import { Check, FileWarning, InfoIcon, PlayIcon } from "lucide-react";
+import { Check, InfoIcon, PlayIcon } from "lucide-react";
+
+import { Geist, Geist_Mono } from "next/font/google";
+
+import "@workspace/ui/globals.css";
+
+const fontSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const fontMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 export default function RootLayout({
   children,
@@ -13,7 +27,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className=" bg-[#1a1a1a] text-neutral-200">
+      <body
+        className={` ${fontSans.variable} ${fontMono.variable} font-sans antialiased  bg-[#1a1a1a] text-neutral-200`}
+      >
         <div className="flex min-h-screen flex-col">
           <header className="sticky top-0 text-white z-50 w-full border-b border-neutral-800 bg-[#1a1a1a]">
             <div className="flex h-14 items-center px-4">

@@ -388,7 +388,7 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
             </div>
 
             <div className="ml-8 flex flex-row items-center gap-6">
-              <p className="text-2xl font-bold">Tabs</p>
+              <p className="text-2xl font-bold">{questionDetails.name}</p>
               <div className="text-green-500 px-3 border-green-800 border-[2px] h-[22px] rounded-full -py-[10px] text-[12px]   flex justify-center items-center bg-green-900/30">
                 Completed
               </div>
