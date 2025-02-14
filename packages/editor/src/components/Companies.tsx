@@ -184,7 +184,7 @@ export default function CompanyLogo() {
   return (
     <div className="flex gap-4 items-center">
       {companies.map((company) => (
-        <div key={company.name} className="flex w-8 h-8 flex-col items-center">
+        <div key={company.name} className="flex w-6 h-6 flex-col items-center">
           {company.logo}
         </div>
       ))}

@@ -27,9 +27,5 @@ const files: File[] = [
 ];
 
 export default function Page() {
-  return (
-    <div className="h-screen">
-      <Editor initialFiles={files} />
-    </div>
-  );
+  return <div className="h-screen">Hello</div>;
 }

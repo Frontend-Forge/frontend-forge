@@ -56,12 +56,64 @@ interface EnvironmentFiles {
   react: File[];
 }
 
+const SolutionVanillaFiles: File[] = [
+  {
+    name: "index.html",
+    language: "html",
+    content: "Solution",
+  },
+  { name: "style.css", language: "css", content: ".solution {}" },
+  {
+    name: "index.js",
+    language: "javascript",
+    content: `console.log("solution")`,
+  },
+];
+
+const SolutionReactFiles: File[] = [
+  {
+    name: "public/index.html",
+    language: "html",
+    content: `<!DOCTYPE html>
+<html>
+<head>
+  <title>React App</title>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>`,
+  },
+  {
+    name: "src/App.js",
+    language: "javascript",
+    content: `function App() {
+  return (
+    <div>
+      <h1>Solution from React!</h1>
+    </div>
+  );
+}`,
+  },
+  {
+    name: "src/index.js",
+    language: "javascript",
+    content: `const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);`,
+  },
+  { name: "src/style.css", language: "css", content: ".solution {}" },
+];
+
 const defaultVanillaFiles: File[] = [
   {
     name: "index.html",
     language: "html",
     content:
-      '<!DOCTYPE html>\n<html>\n<head>\n  <title>Vanilla JS App</title>\n</head>\n<body>\n  <div id="app"></div>\n</body>\n</html>',
+      '<!DOCTYPE html>\n<html>\n<head>\n  <title>Vanilla JS App</title>\n</head>\n<body>\n  <div id="app">Hello</div>\n</body>\n</html>',
   },
   { name: "style.css", language: "css", content: "" },
   { name: "index.js", language: "javascript", content: "" },
@@ -106,10 +158,11 @@ root.render(
 ];
 
 const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
+  const [showSolution, setShowSolution] = useState<boolean>(false);
   const [environment, setEnvironment] = useState<Environment>("vanilla");
   const [environmentFiles, setEnvironmentFiles] = useState<EnvironmentFiles>({
-    vanilla: initialFiles || defaultVanillaFiles,
-    react: defaultReactFiles,
+    vanilla: showSolution ? SolutionVanillaFiles : defaultVanillaFiles,
+    react: showSolution ? SolutionReactFiles : defaultReactFiles,
   });
   const [fileContents, setFileContents] = useState<Record<string, string>>({});
   const [activeFile, setActiveFile] = useState<File | null>(null);
@@ -122,6 +175,13 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
   const getCurrentFiles = () => environmentFiles[environment];
 
   useEffect(() => {
+    setEnvironmentFiles({
+      vanilla: showSolution ? SolutionVanillaFiles : defaultVanillaFiles,
+      react: showSolution ? SolutionReactFiles : defaultReactFiles,
+    });
+  }, [showSolution]);
+
+  useEffect(() => {
     const currentFiles = getCurrentFiles();
     const initialContents = currentFiles.reduce(
       (acc, file) => ({ ...acc, [file.name]: file.content }),
@@ -129,7 +189,7 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
     );
     setFileContents(initialContents);
     currentFiles[0] && setActiveFile(currentFiles[0]);
-  }, [environment]);
+  }, [environment, environmentFiles]);
 
   const handleEnvironmentChange = (value: Environment) => {
     // Save current file contents before switching
@@ -166,6 +226,10 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
       }));
     }
   };
+
+  function handleSolution() {
+    setShowSolution((prev) => !prev);
+  }
 
   const generateReactIframeContent = () => {
     const htmlContent = fileContents["public/index.html"] || "";
@@ -384,7 +448,7 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen bg-[#1e1e1e] text-gray-300">
+    <div className="flex flex-col fixed top-14 bottom-14 bg-[#1e1e1e] text-gray-300">
       <div className="flex flex-1 min-h-0">
         <Split
           className="flex w-full"
@@ -400,9 +464,18 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
                 <FileText className="h-4 w-4" />
                 <p className="text-[15px]">Description</p>
               </button>
-              <button className="flex gap-1 mt-4 flex-row items-center justify-center">
-                <Lightbulb className="h-4 w-4" />
-                <p className="text-[15px]">Solution</p>
+              <button
+                onClick={handleSolution}
+                className="flex gap-2 mt-4 py-2 px-3 flex-row items-center justify-center rounded-lg transition-all duration-200 hover:bg-[#2d2d30] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              >
+                <Lightbulb
+                  className={`h-4 w-4 ${showSolution ? "text-yellow-400" : "text-gray-400"}`}
+                />
+                <p
+                  className={`text-[15px] font-medium ${showSolution ? "text-yellow-400" : "text-gray-300"}`}
+                >
+                  {showSolution ? "Hide Solution" : "Show Solution"}
+                </p>
               </button>
             </div>
 
@@ -594,7 +667,7 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
             {/* Console */}
             {showTerminal && (
               <div className="h-[30%] bg-[#1e1e1e] border-t border-gray-800">
-                <div className="flex justify-between items-center px-4 py-2 border-b border-gray-800">
+                <div className="flex justify-between items-center px-4 border-b border-gray-800">
                   <span className="text-sm text-gray-300">Console</span>
                   <div className="flex gap-2">
                     <button
