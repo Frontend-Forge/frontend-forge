@@ -31,18 +31,17 @@ const logoSvgs: Record<LogoName, string> = {
   </svg>`,
 };
 
-export default function TechLogoComponent({
-  logos = ["html", "css", "js", "react"],
-}: LogoProps) {
+export default function TechLogoComponent({ logos }: LogoProps) {
   return (
     <div className="flex flex-wrap gap-2 ml-5">
-      {logos.map((logoName, i) => (
-        <div
-          className="w-[20px] h-[20px]"
-          dangerouslySetInnerHTML={{ __html: logoSvgs[logoName] }}
-          key={i}
-        />
-      ))}
+      {logos &&
+        logos.map((logoName, i) => (
+          <div
+            className="w-[20px] h-[20px]"
+            dangerouslySetInnerHTML={{ __html: logoSvgs[logoName] }}
+            key={i}
+          />
+        ))}
     </div>
   );
 }

@@ -179,11 +179,24 @@ const companies = [
     ),
   },
 ];
+type AllowedCompanies =
+  | "Google"
+  | "Facebook"
+  | "Twitter"
+  | "Apple"
+  | "Microsoft";
 
-export default function CompanyLogo() {
+type Companies = {
+  companiesArray: AllowedCompanies[];
+};
+export default function CompanyLogo({ companiesArray }: Companies) {
+  const logos = companies.filter((comp) =>
+    companiesArray.includes(comp.name as AllowedCompanies)
+  );
+
   return (
     <div className="flex gap-4 items-center">
-      {companies.map((company) => (
+      {logos.map((company) => (
         <div key={company.name} className="flex w-6 h-6 flex-col items-center">
           {company.logo}
         </div>

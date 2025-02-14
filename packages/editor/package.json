@@ -30,6 +30,7 @@
   },
   "exports": {
     "./components/*": "./src/components/*.tsx",
-    "./hooks/*": "./src/hooks/*.ts"
+    "./hooks/*": "./src/hooks/*.ts",
+    "./data/*": "./src/data/*.ts"
   }
 }

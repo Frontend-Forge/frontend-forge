@@ -23,6 +23,7 @@ import {
 import SplitComponent from "react-split";
 import TechLogoComponent from "./TechLogo.js";
 import CompanyLogo from "./Companies.js";
+import { Question } from "@workspace/editor/data/questions.js";
 
 const Split = SplitComponent as unknown as React.ComponentType<{
   className?: string;
@@ -40,7 +41,7 @@ interface File {
 }
 
 interface EditorProps {
-  initialFiles?: File[];
+  question: Question;
 }
 
 interface ConsoleLog {
@@ -56,113 +57,20 @@ interface EnvironmentFiles {
   react: File[];
 }
 
-const SolutionVanillaFiles: File[] = [
-  {
-    name: "index.html",
-    language: "html",
-    content: "Solution",
-  },
-  { name: "style.css", language: "css", content: ".solution {}" },
-  {
-    name: "index.js",
-    language: "javascript",
-    content: `console.log("solution")`,
-  },
-];
+const Editor: React.FC<EditorProps> = ({ question }) => {
+  const {
+    initialVanillaFiles,
+    initialReactFiles,
+    solutionReactFiles,
+    solutionVanillaFiles,
+    questionDetails,
+  } = question;
 
-const SolutionReactFiles: File[] = [
-  {
-    name: "public/index.html",
-    language: "html",
-    content: `<!DOCTYPE html>
-<html>
-<head>
-  <title>React App</title>
-</head>
-<body>
-  <div id="root"></div>
-</body>
-</html>`,
-  },
-  {
-    name: "src/App.js",
-    language: "javascript",
-    content: `function App() {
-  return (
-    <div>
-      <h1>Solution from React!</h1>
-    </div>
-  );
-}`,
-  },
-  {
-    name: "src/index.js",
-    language: "javascript",
-    content: `const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);`,
-  },
-  { name: "src/style.css", language: "css", content: ".solution {}" },
-];
-
-const defaultVanillaFiles: File[] = [
-  {
-    name: "index.html",
-    language: "html",
-    content:
-      '<!DOCTYPE html>\n<html>\n<head>\n  <title>Vanilla JS App</title>\n</head>\n<body>\n  <div id="app">Hello</div>\n</body>\n</html>',
-  },
-  { name: "style.css", language: "css", content: "" },
-  { name: "index.js", language: "javascript", content: "" },
-];
-
-const defaultReactFiles: File[] = [
-  {
-    name: "public/index.html",
-    language: "html",
-    content: `<!DOCTYPE html>
-<html>
-<head>
-  <title>React App</title>
-</head>
-<body>
-  <div id="root"></div>
-</body>
-</html>`,
-  },
-  {
-    name: "src/App.js",
-    language: "javascript",
-    content: `function App() {
-  return (
-    <div>
-      <h1>Hello from React!</h1>
-    </div>
-  );
-}`,
-  },
-  {
-    name: "src/index.js",
-    language: "javascript",
-    content: `const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);`,
-  },
-  { name: "src/style.css", language: "css", content: "" },
-];
-
-const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
   const [showSolution, setShowSolution] = useState<boolean>(false);
   const [environment, setEnvironment] = useState<Environment>("vanilla");
   const [environmentFiles, setEnvironmentFiles] = useState<EnvironmentFiles>({
-    vanilla: showSolution ? SolutionVanillaFiles : defaultVanillaFiles,
-    react: showSolution ? SolutionReactFiles : defaultReactFiles,
+    vanilla: showSolution ? solutionVanillaFiles : initialVanillaFiles,
+    react: showSolution ? solutionReactFiles : initialReactFiles,
   });
   const [fileContents, setFileContents] = useState<Record<string, string>>({});
   const [activeFile, setActiveFile] = useState<File | null>(null);
@@ -176,8 +84,8 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
 
   useEffect(() => {
     setEnvironmentFiles({
-      vanilla: showSolution ? SolutionVanillaFiles : defaultVanillaFiles,
-      react: showSolution ? SolutionReactFiles : defaultReactFiles,
+      vanilla: showSolution ? solutionVanillaFiles : initialVanillaFiles,
+      react: showSolution ? solutionReactFiles : initialReactFiles,
     });
   }, [showSolution]);
 
@@ -489,75 +397,63 @@ const Editor: React.FC<EditorProps> = ({ initialFiles }) => {
             <div className="flex items-center ml-8 gap-4 text-white rounded-2xl w-full max-w-md">
               <div className="flex flex-row flex-1 items-center">
                 <img
-                  src="https://media.licdn.com/dms/image/v2/D5603AQFB72zuIqxYrQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1684230919345?e=1744848000&v=beta&t=k1XZNF3EGY4g8MbqRfgp6bGPxWYQdH5_9cRp73CWgu0"
+                  src={questionDetails.questionaerInfo.profilePic}
                   alt="Profile"
                   className="w-12 h-12 rounded-full"
                 />
                 <div className="flex flex-col ml-4 ">
-                  <h2 className="text-[18px] font-semibold">Yangshun Tay</h2>
+                  <h2 className="text-[18px] font-semibold">
+                    {questionDetails.questionaerInfo.name}
+                  </h2>
                   <p className="text-[12px] text-gray-400">
-                    Ex-Meta Staff Engineer
+                    {questionDetails.questionaerInfo.additionalInfo}
                   </p>
                 </div>
 
-                <TechLogoComponent />
+                <TechLogoComponent logos={questionDetails.techStack} />
               </div>
             </div>
 
             <div className="flex flex-row items-center ml-8 gap-1">
               <div className="flex flex-row items-center gap-1">
                 🔥
-                <p className="text-sm text-gray-300">Medium</p>
+                <p className="text-sm text-gray-300">
+                  {questionDetails.difficulty}
+                </p>
               </div>
               <p className="ml-1">|</p>
               <div className="flex flex-row items-center gap-1">
                 ⏱️
-                <p className="text-sm text-gray-300">15:00 mins</p>
+                <p className="text-sm text-gray-300">
+                  {questionDetails.time}:00 mins
+                </p>
               </div>
             </div>
 
             <p className="text-sm w-[90%] text-gray-300 ml-8">
-              Build a tabs component that displays one panel of content at a
-              time depending on the active tab element. Some HTML is provided
-              for you as example contents.
+              {questionDetails.questionDescription}
             </p>
 
             <div className="w-[90%] flex flex-col  ml-8 gap-y-2">
               <p className="font-bold text-2xl">Requirements</p>
-              <p className="text-sm text-gray-300">
-                &bull; Clicking on a tab makes it the active tab. Add a visual
-                indication (e.g. using blue text color) for the active tab to
-                differentiate it from the non-active tabs.
-              </p>
-              <p className="text-sm text-gray-300">
-                {" "}
-                &bull; At all times, only one panel's contents should be
-                displayed — the one corresponding to the active tab's.
-              </p>
+
+              {questionDetails.requirements.map((req, i) => (
+                <p key={i} className="text-sm text-gray-300">
+                  &bull; {req}
+                </p>
+              ))}
             </div>
             <div className="w-[90%] flex flex-col  ml-8 gap-y-2">
               <p className="font-bold text-2xl">Notes</p>
-              <p className="text-sm text-gray-300">
-                &bull; The focus of this question is on functionality, not the
-                styling. There's no need to write any custom CSS except for
-                highlighting the active tab.
-              </p>
-              <p className="text-sm text-gray-300">
-                {" "}
-                &bull; The focus of this question is on functionality, not the
-                styling. There's no need to write any custom CSS except for
-                highlighting the active tab.
-              </p>
-              <p className="text-sm text-gray-300">
-                {" "}
-                &bull; You may want to think about ways to improve the user
-                experience of the application and implement them (you get bonus
-                credit for doing that during interviews).
-              </p>
+              {questionDetails.notes.map((req, i) => (
+                <p key={i} className="text-sm text-gray-300">
+                  &bull; {req}
+                </p>
+              ))}
             </div>
             <div className="w-[90%] mb-2 flex flex-col  ml-8 gap-y-2">
               <p className="font-bold text-2xl">Companies</p>
-              <CompanyLogo />
+              <CompanyLogo companiesArray={questionDetails.companies} />
             </div>
           </div>
 
