@@ -28,10 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` ${fontSans.variable} ${fontMono.variable} font-sans antialiased  bg-[#1a1a1a] text-neutral-200`}
+        className={` ${fontSans.variable} ${fontMono.variable} font-sans antialiased  bg-white text-balck`}
       >
         <div className="flex min-h-screen flex-col">
-          <header className="sticky top-0 text-white z-50 w-full border-b border-neutral-800 bg-[#1a1a1a]">
+          <header className="sticky top-0 text-black z-50 w-full border-b border-neutral-300 bg-white">
             <div className="flex h-14 items-center px-4">
               <Link href="/" className="flex items-center space-x-2">
                 <Image
@@ -41,21 +41,21 @@ export default function RootLayout({
                   height={30}
                   className="rounded-md"
                 />
-                <div className="font-bold text-white">Frontend Forge</div>
+                <div className="font-bold text-black">Frontend Forge</div>
               </Link>
 
               <nav className="flex items-center space-x-6 mx-6">
-                <button className="text-sm font-medium transition-colors hover:text-yellow-200">
+                <button className="text-sm font-medium transition-colors hover:text-yellow-500">
                   Interviews
                 </button>
                 <Link
                   href="/dashboard"
-                  className="text-sm font-medium transition-colors hover:text-yellow-200"
+                  className="text-sm font-medium transition-colors hover:text-yellow-500"
                 >
                   Dashboard
                 </Link>
                 <div className="relative">
-                  <button className="text-sm font-medium transition-colors hover:text-yellow-200">
+                  <button className="text-sm font-medium transition-colors hover:text-yellow-500">
                     Prepare
                   </button>
                 </div>
@@ -64,7 +64,7 @@ export default function RootLayout({
               <div className="flex flex-1 items-center justify-end space-x-4">
                 <Link
                   href="/pricing"
-                  className="text-sm font-medium transition-colors hover:text-yellow-200"
+                  className="text-sm font-medium transition-colors hover:text-yellow-500"
                 >
                   Pricing
                 </Link>
@@ -80,9 +80,9 @@ export default function RootLayout({
 
           <main className="flex-1">{children}</main>
 
-          <footer className="border-t w-full h-14 border-neutral-800 bg-[#1a1a1a]">
+          <footer className="border-t w-full h-14 border-neutral-300 bg-white text-black">
             <div className="flex flex-row items-center justify-between h-full w-full">
-              <div className="flex flex-row ml-8 gap-[6px] text-gray-300 cursor-pointer duration-300 transition-all hover:text-white items-center">
+              <div className="flex flex-row ml-8 gap-[6px] text-black cursor-pointer duration-300 transition-all hover:text-gray-900 items-center">
                 <InfoIcon className="h-3 w-3" />
                 <p className=" text-[12px] mt-[1px]">Report an Issue</p>
               </div>

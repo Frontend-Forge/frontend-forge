@@ -60,14 +60,32 @@ export const question: Question = {
       content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <form>
-      <input type="text" />
-    </form>
-    <!-- You can ignore this file, it is only used by GFE to
-      intercept the form submission event. -->
-    <script src="src/index.js"></script>
+    <div>
+      <h1>Todo List</h1>
+      <div>
+        <input type="text" placeholder="Add your task" />
+        <div>
+          <button>Submit</button>
+        </div>
+      </div>
+      <ul>
+        <li>
+          <span>Walk the dog</span>
+          <button>Delete</button>
+        </li>
+        <li>
+          <span>Water the plants</span>
+          <button>Delete</button>
+        </li>
+        <li>
+          <span>Wash the dishes</span>
+          <button>Delete</button>
+        </li>
+      </ul>
+    </div>
   </body>
 </html>
+
 
 
 `,
@@ -78,50 +96,14 @@ export const question: Question = {
       content: `body {
   font-family: sans-serif;
 }
+
 `,
     },
     {
       name: "index.js",
       language: "javascript",
-      content: `(() => {
-  const SUBMIT_URL =
-    'https://www.greatfrontend.com/api/questions/contact-form';
+      content: `// Write your JavaScript here.
 
-  const $form = document.querySelector('form');
-  $form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    if ($form.action !== SUBMIT_URL) {
-      alert('Incorrect form action value');
-      return;
-    }
-
-    if ($form.method.toLowerCase() !== 'post') {
-      alert('Incorrect form method value');
-      return;
-    }
-
-    try {
-      const formData = new FormData($form);
-      const response = await fetch(SUBMIT_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          email: formData.get('email'),
-          message: formData.get('message'),
-        }),
-      });
-
-      const text = await response.text();
-      alert(text);
-    } catch (_) {
-      alert('Error submitting form!');
-    }
-  });
-})();
 `,
     },
   ],
@@ -145,53 +127,31 @@ export const question: Question = {
       content: `
 function App() {
   return (
-    <form
-      // Ignore the onSubmit prop, it's used by GFE to
-      // intercept the form submit event to check your solution.
-      onSubmit={submitForm}>
-      <input type="text" />
-    </form>
+    <div>
+      <h1>Todo List</h1>
+      <div>
+        <input type="text" placeholder="Add your task" />
+        <div>
+          <button>Submit</button>
+        </div>
+      </div>
+      <ul>
+        <li>
+          <span>Walk the dog</span>
+          <button>Delete</button>
+        </li>
+        <li>
+          <span>Water the plants</span>
+          <button>Delete</button>
+        </li>
+        <li>
+          <span>Wash the dishes</span>
+          <button>Delete</button>
+        </li>
+      </ul>
+    </div>
   );
 }
-
-const SUBMIT_URL =
-  'https://www.greatfrontend.com/api/questions/contact-form';
-
-async function submitForm(event) {
-  event.preventDefault();
-  const form = event.target;
-
-  try {
-    if (form.action !== SUBMIT_URL) {
-      alert('Incorrect form action value');
-      return;
-    }
-
-    if (form.method.toLowerCase() !== 'post') {
-      alert('Incorrect form method value');
-      return;
-    }
-
-    const formData = new FormData(form);
-    const response = await fetch(SUBMIT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: formData.get('name'),
-        email: formData.get('email'),
-        message: formData.get('message'),
-      }),
-    });
-
-    const text = await response.text();
-    alert(text);
-  } catch (_) {
-    alert('Error submitting form!');
-  }
-}
-
 
 `,
     },
@@ -227,29 +187,36 @@ async function submitForm(event) {
       content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <form
-      action="https://www.greatfrontend.com/api/questions/contact-form"
-      method="post">
+    <div>
+      <h1>Todo List</h1>
       <div>
-        <label for="name-input">Name</label>
-        <input id="name-input" name="name" type="text" />
+        <input
+          aria-label="Add new task"
+          type="text"
+          placeholder="Add your task" />
+        <div>
+          <button id="submit">Submit</button>
+        </div>
       </div>
-      <div>
-        <label for="email-input">Email</label>
-        <input id="email-input" name="email" type="email" />
-      </div>
-      <div>
-        <label for="message-input">Message</label>
-        <textarea
-          id="message-input"
-          name="message"></textarea>
-      </div>
-      <div>
-        <button>Send</button>
-      </div>
-    </form>
+      <ul>
+        <li>
+          <span>Walk the dog</span>
+          <button>Delete</button>
+        </li>
+        <li>
+          <span>Water the plants</span>
+          <button>Delete</button>
+        </li>
+        <li>
+          <span>Wash the dishes</span>
+          <button>Delete</button>
+        </li>
+      </ul>
+    </div>
+    <script src="src/index.js"></script>
   </body>
 </html>
+
 
 
 `,
@@ -260,22 +227,6 @@ async function submitForm(event) {
       content: `body {
   font-family: sans-serif;
 }
-
-form {
-  display: flex;
-  flex-direction: column;
-  row-gap: 12px;
-}
-
-label {
-  font-size: 12px;
-}
-
-input,
-textarea {
-  display: block;
-}
-
 `,
     },
     {
@@ -283,44 +234,56 @@ textarea {
       language: "javascript",
       content: `
 (() => {
-  const SUBMIT_URL =
-    'https://www.greatfrontend.com/api/questions/contact-form';
+  // Retain a reference to the elements which persist
+  // throughout usage of the app.
+  const $inputEl = document.querySelector('input');
+  const $submitButtonEl = document.querySelector('#submit');
+  const $todoListEl = document.querySelector('ul');
 
-  const $form = document.querySelector('form');
-  $form.addEventListener('submit', async (event) => {
-    event.preventDefault();
+  function addTask(label) {
+    // Create the DOM elements for the new task.
+    const $newTaskElement = document.createElement('li');
 
-    if ($form.action !== SUBMIT_URL) {
-      alert('Incorrect form action value');
-      return;
-    }
+    const $span = document.createElement('span');
+    $newTaskElement.appendChild($span);
+    // Using Node.textContent here instead of Element.innerHTML
+    // to prevent XSS (Cross Site Scripting).
+    $span.textContent = label;
 
-    if ($form.method.toLowerCase() !== 'post') {
-      alert('Incorrect form method value');
-      return;
-    }
+    const $btn = document.createElement('button');
+    $btn.textContent = 'Delete';
+    $newTaskElement.appendChild($btn);
 
-    try {
-      const formData = new FormData($form);
-      const response = await fetch(SUBMIT_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          email: formData.get('email'),
-          message: formData.get('message'),
-        }),
-      });
+    // Add the new task to the list.
+    $todoListEl.append($newTaskElement);
+  }
 
-      const text = await response.text();
-      alert(text);
-    } catch (_) {
-      alert('Error submitting form!');
+  function deleteTask($itemEl) {
+    // Remove the task from the list.
+    $itemEl.parentNode.removeChild($itemEl);
+  }
+
+  $submitButtonEl.addEventListener('click', () => {
+    addTask($inputEl.value);
+    // Reset the input so that new tasks can be added.
+    $inputEl.value = '';
+  });
+
+  // Add a listener to the list instead of individual tasks.
+  // This is called event delegation and the benefit is that
+  // the Delete button of newly-added tasks will also respond
+  // to clicks without you having to manually add event listeners
+  // to them. You also don't have to remove any event listeners
+  // when the task is removed.
+  $todoListEl.addEventListener('click', (event) => {
+    // Check that the button is being clicked and not something
+    // else (e.g. the task label).
+    if (event.target.tagName === 'BUTTON') {
+      deleteTask(event.target.parentNode);
     }
   });
 })();
+
 
 `,
     },
@@ -342,71 +305,63 @@ textarea {
     {
       name: "src/App.js",
       language: "javascript",
-      content: `function App() {
+      content: `let id = 0;
+
+const INITIAL_TASKS = [
+  { id: id++, label: 'Walk the dog' },
+  { id: id++, label: 'Water the plants' },
+  { id: id++, label: 'Wash the dishes' },
+];
+
+function App() {
+  const [tasks, setTasks] = useState(INITIAL_TASKS);
+  const [newTask, setNewTask] = useState('');
+
   return (
-    <form
-      // Ignore the onSubmit prop, it's used by GFE to
-      // intercept the form submit event to check your solution.
-      onSubmit={submitForm}
-      action="https://www.greatfrontend.com/api/questions/contact-form"
-      method="post">
+    <div>
+      <h1>Todo List</h1>
       <div>
-        <label htmlFor="name-input">Name</label>
-        <input id="name-input" name="name" type="text" />
+        <input
+          aria-label="Add new task"
+          type="text"
+          placeholder="Add your task"
+          value={newTask}
+          onChange={(event) => {
+            setNewTask(event.target.value);
+          }}
+        />
+        <div>
+          <button
+            onClick={() => {
+              setTasks(
+                tasks.concat({
+                  id: id++,
+                  label: newTask.trim(),
+                }),
+              );
+              setNewTask('');
+            }}>
+            Submit
+          </button>
+        </div>
       </div>
-      <div>
-        <label htmlFor="email-input">Email</label>
-        <input id="email-input" name="email" type="email" />
-      </div>
-      <div>
-        <label htmlFor="message-input">Message</label>
-        <textarea
-          id="message-input"
-          name="message"></textarea>
-      </div>
-      <div>
-        <button>Send</button>
-      </div>
-    </form>
+      <ul>
+        {tasks.map(({ id, label }) => (
+          <li key={id}>
+            <span>{label}</span>
+            <button
+              onClick={() => {
+                setTasks(
+                  tasks.filter((task) => task.id !== id),
+                );
+              }}>
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-}
-
-const SUBMIT_URL =
-  'https://www.greatfrontend.com/api/questions/contact-form';
-
-async function submitForm(event) {
-  event.preventDefault();
-  const form = event.target;
-
-  try {
-    if (form.action !== SUBMIT_URL) {
-      alert('Incorrect form action value');
-      return;
-    }
-
-    if (form.method.toLowerCase() !== 'post') {
-      alert('Incorrect form method value');
-      return;
-    }
-
-    const formData = new FormData(form);
-    const response = await fetch(SUBMIT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: formData.get('name'),
-        email: formData.get('email'),
-        message: formData.get('message'),
-      }),
-    });
-
-    const text = await response.text();
-    alert(text);
-  } catch (_) {
-    alert('Error submitting form!');
-  }
 }
 
 
@@ -429,51 +384,32 @@ async function submitForm(event) {
   font-family: sans-serif;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  row-gap: 12px;
-}
-
-label {
-  font-size: 12px;
-}
-
-input,
-textarea {
-  display: block;
-}
-
 `,
     },
   ],
   questionDetails: {
-    name: "Contact Form",
+    name: "Todo List",
     questionaerInfo: {
       name: "YanghSun Tay",
       profilePic:
         "https://media.licdn.com/dms/image/v2/D5603AQFB72zuIqxYrQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1684230919345?e=1744848000&v=beta&t=k1XZNF3EGY4g8MbqRfgp6bGPxWYQdH5_9cRp73CWgu0",
       additionalInfo: "Ex-Meta Staff Engineer",
     },
-    techStack: ["html", "js"],
-    difficulty: "Easy",
-    time: 15,
-    questionDescription: `Building forms is a common task in Front End. In this exercise, we will build a basic "Contact Us" form, commonly seen on marketing websites for visitors to ask questions or provide feedback.`,
-    requirements: [
-      `The form should contain the following elements:
-Name field,
-Email field,
-Message field, (Since the message can be long, a <textarea> will be more suitable.),
-Submit button,
-Contains the text "Send",
-Clicking on the submit button submits the form.`,
-      `The form and submission should be implemented entirely in HTML. Do not use any JavaScript or framework-specific features for this question.`,
-      `There is no need to do any client-side validation on the fields. Validation will be done on the server side.`,
-    ],
+    techStack: ["html", "js", "react"],
+    difficulty: "Medium",
+    time: 20,
+    questionDescription: `You're given some existing HTML for a Todo List app. Add the following functionality to the app:
+
+Add new tasks on clicking the "Submit" button, 
+The <input> field should be cleared upon successful addition, 
+Remove tasks from the Todo List upon clicking the "Delete" button.`,
+    requirements: [],
     notes: [
-      `You do not need JavaScript for this question, the focus is on HTML form validation and submission.`,
+      `The focus of this question is on functionality, not the styling. There's no need to write any custom CSS.`,
+      `You may modify the markup (e.g. adding ids, data attributes, replacing some tags, etc), but the result should remain the same visually.`,
+      `You may want to think about ways to improve the user experience of the application and implement them (you get bonus credit for doing that during interviews).`,
     ],
-    companies: ["Apple", "Microsoft"],
+    companies: ["Apple", "Microsoft", "Twitter"],
     questionType: "ui",
   },
 };

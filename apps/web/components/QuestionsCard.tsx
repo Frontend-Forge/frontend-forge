@@ -33,15 +33,19 @@ export function QuestionCard({
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-lg font-bold">{questionName}</CardTitle>
-          <Badge
-            variant="secondary"
-            className="bg-orange-500/10 text-orange-500 hover:bg-orange-500/20"
-          >
-            Warm up question
-          </Badge>
+          {questionName === "Counter" && (
+            <Badge
+              variant="secondary"
+              className="bg-orange-500/10 text-orange-500 hover:bg-orange-500/20"
+            >
+              Warm up question
+            </Badge>
+          )}
         </CardHeader>
         <CardContent className="relative">
-          <p className="text-muted-foreground mb-4">{desc}</p>
+          <p className="text-muted-foreground mb-4">
+            {desc.length < 200 ? desc : `${desc.slice(0, 200)}...`}
+          </p>
           <div className="flex flex-wrap gap-2">
             <Badge variant="outline">UI coding</Badge>
             <Badge

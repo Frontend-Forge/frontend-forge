@@ -356,7 +356,7 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
   };
 
   return (
-    <div className="flex flex-col fixed top-14 bottom-14 bg-[#1e1e1e] text-gray-300">
+    <div className="flex flex-col fixed top-14 bottom-14 bg-white text-black">
       <div className="flex flex-1 min-h-0">
         <Split
           className="flex w-full"
@@ -370,17 +370,17 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
             <div className="flex flex-row gap-3">
               <button className="flex gap-1 mt-4 ml-8 flex-row items-center justify-center">
                 <FileText className="h-4 w-4" />
-                <p className="text-[15px]">Description</p>
+                <p className="text-[15px] text-black">Description</p>
               </button>
               <button
                 onClick={handleSolution}
-                className="flex gap-2 mt-4 py-2 px-3 flex-row items-center justify-center rounded-lg transition-all duration-200 hover:bg-[#2d2d30] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                className="flex gap-2 mt-4 py-2 px-3 flex-row items-center justify-center rounded-lg transition-all duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
                 <Lightbulb
-                  className={`h-4 w-4 ${showSolution ? "text-yellow-400" : "text-gray-400"}`}
+                  className={`h-4 w-4 ${showSolution ? "text-yellow-500" : "text-black-400"}`}
                 />
                 <p
-                  className={`text-[15px] font-medium ${showSolution ? "text-yellow-400" : "text-gray-300"}`}
+                  className={`text-[15px] font-medium ${showSolution ? "text-yellow-500" : "text-black-300"}`}
                 >
                   {showSolution ? "Hide Solution" : "Show Solution"}
                 </p>
@@ -389,12 +389,12 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
 
             <div className="ml-8 flex flex-row items-center gap-6">
               <p className="text-2xl font-bold">{questionDetails.name}</p>
-              <div className="text-green-500 px-3 border-green-800 border-[2px] h-[22px] rounded-full -py-[10px] text-[12px]   flex justify-center items-center bg-green-900/30">
+              <div className="text-green-500 px-3 border-green-500 border-[2px] h-[22px] rounded-full -py-[10px] text-[12px]   flex justify-center items-center bg-[#EBFFED]">
                 Completed
               </div>
             </div>
 
-            <div className="flex items-center ml-8 gap-4 text-white rounded-2xl w-full max-w-md">
+            <div className="flex items-center ml-8 gap-4 text-black rounded-2xl w-full max-w-md">
               <div className="flex flex-row flex-1 items-center">
                 <img
                   src={questionDetails.questionaerInfo.profilePic}
@@ -405,7 +405,7 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
                   <h2 className="text-[18px] font-semibold">
                     {questionDetails.questionaerInfo.name}
                   </h2>
-                  <p className="text-[12px] text-gray-400">
+                  <p className="text-[12px] text-gray-600">
                     {questionDetails.questionaerInfo.additionalInfo}
                   </p>
                 </div>
@@ -417,40 +417,44 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
             <div className="flex flex-row items-center ml-8 gap-1">
               <div className="flex flex-row items-center gap-1">
                 🔥
-                <p className="text-sm text-gray-300">
+                <p className="text-sm text-gray-700">
                   {questionDetails.difficulty}
                 </p>
               </div>
               <p className="ml-1">|</p>
               <div className="flex flex-row items-center gap-1">
                 ⏱️
-                <p className="text-sm text-gray-300">
+                <p className="text-sm text-gray-700">
                   {questionDetails.time}:00 mins
                 </p>
               </div>
             </div>
 
-            <p className="text-sm w-[90%] text-gray-300 ml-8">
+            <p className="text-sm w-[90%] text-gray-700 ml-8">
               {questionDetails.questionDescription}
             </p>
 
-            <div className="w-[90%] flex flex-col  ml-8 gap-y-2">
-              <p className="font-bold text-2xl">Requirements</p>
+            {questionDetails.requirements.length !== 0 && (
+              <div className="w-[90%] flex flex-col  ml-8 gap-y-2">
+                <p className="font-bold text-2xl">Requirements</p>
 
-              {questionDetails.requirements.map((req, i) => (
-                <p key={i} className="text-sm text-gray-300">
-                  &bull; {req}
-                </p>
-              ))}
-            </div>
-            <div className="w-[90%] flex flex-col  ml-8 gap-y-2">
-              <p className="font-bold text-2xl">Notes</p>
-              {questionDetails.notes.map((req, i) => (
-                <p key={i} className="text-sm text-gray-300">
-                  &bull; {req}
-                </p>
-              ))}
-            </div>
+                {questionDetails.requirements.map((req, i) => (
+                  <p key={i} className="text-sm text-gray-700">
+                    &bull; {req}
+                  </p>
+                ))}
+              </div>
+            )}
+            {questionDetails.notes.length !== 0 && (
+              <div className="w-[90%] flex flex-col  ml-8 gap-y-2">
+                <p className="font-bold text-2xl">Notes</p>
+                {questionDetails.notes.map((req, i) => (
+                  <p key={i} className="text-sm text-gray-700">
+                    &bull; {req}
+                  </p>
+                ))}
+              </div>
+            )}
             <div className="w-[90%] mb-2 flex flex-col  ml-8 gap-y-2">
               <p className="font-bold text-2xl">Companies</p>
               <CompanyLogo companiesArray={questionDetails.companies} />
@@ -460,17 +464,17 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
           {/* Middle Panel (Editor) */}
           <div className="flex flex-col border-r border-gray-800">
             {/* File Explorer */}
-            <div className="flex items-center h-10 bg-[#1e1e1e] border-b border-gray-800">
+            <div className="flex items-center h-10 bg-white border-b border-gray-800">
               <div className="flex items-center px-4 space-x-2">
-                <FolderOpen className="w-4 h-4 text-gray-400" />
-                <span className="text-sm text-gray-400">File explorer</span>
+                <FolderOpen className="w-4 h-4 text-gray-800" />
+                <span className="text-sm text-gray-800">File explorer</span>
               </div>
 
               <Select
                 value={environment}
                 onValueChange={handleEnvironmentChange}
               >
-                <SelectTrigger className="w-[180px] h-[30px] bg-[#1e1e1e] border-b border-gray-800">
+                <SelectTrigger className="w-[180px] h-[30px] bg-white border-b border-gray-300">
                   <SelectValue placeholder="Select environment" />
                 </SelectTrigger>
                 <SelectContent>
@@ -481,7 +485,7 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
             </div>
 
             {/* Tab Bar */}
-            <div className="flex flex-wrap bg-[#252526] border-b border-gray-800">
+            <div className="flex flex-wrap bg-white border-b border-gray-300">
               {getCurrentFiles().map((file) => (
                 <button
                   key={file.name}
@@ -489,7 +493,7 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
                     "px-4 py-2 text-sm flex items-center gap-2",
                     activeFile && activeFile.name === file.name
                       ? "bg-[#1e1e1e] text-white"
-                      : "text-gray-400 hover:bg-[#2d2d2d]"
+                      : "text-gray-800 hover:bg-gray-400"
                   )}
                   onClick={() => setActiveFile(file)}
                 >
@@ -506,7 +510,6 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
                     language={activeFile.language}
                     value={fileContents[activeFile.name]}
                     onChange={(value) => handleEditorChange(value)}
-                    theme="vs-dark"
                     options={{
                       minimap: { enabled: false },
                       fontSize: 14,
@@ -524,26 +527,26 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
           {/* Right Panel */}
           <div className="flex flex-col">
             {/* Browser Top Bar */}
-            <div className="flex items-center h-10 px-4 bg-[#1e1e1e] border-b border-gray-800 justify-between">
+            <div className="flex items-center h-10 px-4 bg-white border-b border-gray-300 justify-between">
               <div className="flex items-center space-x-2">
-                <Globe className="w-4 h-4 text-gray-400" />
-                <span className="text-sm text-gray-400">Browser</span>
+                <Globe className="w-4 h-4 text-gray-800" />
+                <span className="text-sm text-gray-800">Browser</span>
               </div>
               <input
                 value={"/"}
-                className="w-[40%] pl-6 bg-[#252525] rounded-full"
+                className="w-[40%] pl-2 text-gray-600 bg-gray-200 rounded-full"
                 disabled={true}
               />
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => setShowTerminal(!showTerminal)}
-                  className="p-1.5 hover:bg-[#2d2d2d] rounded text-gray-400"
+                  className="p-1.5 hover:bg-gray-200 rounded text-gray-800"
                 >
                   <Terminal className="w-4 h-4" />
                 </button>
                 <button
                   onClick={handleRefresh}
-                  className="p-1.5 hover:bg-[#2d2d2d] rounded text-gray-400"
+                  className="p-1.5 hover:bg-gray-200 rounded text-gray-800"
                 >
                   <RefreshCw className="w-4 h-4" />
                 </button>
@@ -562,19 +565,19 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
 
             {/* Console */}
             {showTerminal && (
-              <div className="h-[30%] bg-[#1e1e1e] border-t border-gray-800">
-                <div className="flex justify-between items-center px-4 border-b border-gray-800">
-                  <span className="text-sm text-gray-300">Console</span>
+              <div className="h-[30%] bg-white border-t border-gray-300">
+                <div className="flex justify-between items-center px-4 border-b border-gray-300">
+                  <span className="text-sm text-gray-800">Console</span>
                   <div className="flex gap-2">
                     <button
                       onClick={handleClearConsole}
-                      className="p-1 hover:bg-[#2d2d2d] rounded text-gray-400"
+                      className="p-1 hover:bg-gray-200 rounded text-gray-800"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setShowTerminal(false)}
-                      className="p-1 hover:bg-[#2d2d2d] rounded text-gray-400"
+                      className="p-1 hover:bg-gray-200 rounded text-gray-800"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -586,7 +589,7 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
                 >
                   {logs.map((log, index) => (
                     <div key={index} className={getLogStyle(log.type)}>
-                      <span className="text-gray-500 mr-2">
+                      <span className="text-gray-800 mr-2">
                         {log.timestamp}
                       </span>
                       {log.message}
