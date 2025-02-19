@@ -96,8 +96,11 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
       {} as Record<string, string>
     );
     setFileContents(initialContents);
-    currentFiles[0] && setActiveFile(currentFiles[0]);
-  }, [environment, environmentFiles]);
+    // Only set activeFile if it's not already set
+    if (!activeFile) {
+      currentFiles[0] && setActiveFile(currentFiles[0]);
+    }
+  }, [environment, environmentFiles, activeFile]); // Added activeFile as a dependency to prevent unnecessary resets
 
   const handleEnvironmentChange = (value: Environment) => {
     // Save current file contents before switching
@@ -114,6 +117,15 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
     // Switch environment
     setEnvironment(value);
     setLogs([]);
+
+    // Preserve activeFile if it exists in the new environment
+    const newFiles = environmentFiles[value];
+    if (activeFile && newFiles.some((file) => file.name === activeFile.name)) {
+      // Keep the current activeFile if it exists in the new environment
+    } else {
+      // Otherwise, default to the first file in the new environment
+      newFiles[0] && setActiveFile(newFiles[0]);
+    }
   };
 
   const handleEditorChange = (value: string | undefined) => {
@@ -592,7 +604,7 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
                       <span className="text-gray-800 mr-2">
                         {log.timestamp}
                       </span>
-                      {log.message}
+                      <span className="text-gray-800">button</span>
                     </div>
                   ))}
                 </div>
