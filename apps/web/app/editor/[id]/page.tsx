@@ -8,6 +8,7 @@ import Editor from "@workspace/editor/components/Editor";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@workspace/ui/globals.css";
+import { useCode } from "@/contexts/CodeContext";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -26,6 +27,10 @@ export default function QuestionPage() {
   const [question, setQuestion] = useState<ExtendedQuestion | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { code, setCode, testCases } = useCode();
+
+  console.log(code);
 
   useEffect(() => {
     if (!id) return;
@@ -58,7 +63,7 @@ export default function QuestionPage() {
     <div
       className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
     >
-      <Editor question={question} />
+      <Editor question={question} setCode={setCode} testCases={testCases} />
     </div>
   );
 }

@@ -9,6 +9,8 @@ import { Check, InfoIcon, PlayIcon } from "lucide-react";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@workspace/ui/globals.css";
+import { usePathname } from "next/navigation";
+import { useCode } from "@/contexts/CodeContext";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -25,6 +27,28 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathName = usePathname();
+  const questionId = pathName.slice(8, pathName.length);
+
+  const { code, setTestCases } = useCode();
+
+  async function handleSubmit() {
+    const req = await fetch("http://localhost:3000/api/test", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        questionId,
+        userCode: code,
+      }),
+    });
+
+    const res = await req.json();
+
+    setTestCases(res.results);
+  }
+
   return (
     <html lang="en">
       <body
@@ -98,6 +122,7 @@ export default function RootLayout({
                 <Button
                   variant="default"
                   className="bg-[#E2FB75] rounded-full flex flex-row gap-[4px] items-center h-[30px] px-2 text-black hover:bg-[#E2FB75]/90"
+                  onClick={handleSubmit}
                 >
                   <PlayIcon className="w-3 h-3" />
                   <p className="text-[12px]">Run</p>

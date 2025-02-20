@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, SetStateAction } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 import { cn } from "@workspace/ui/lib/utils";
 import {
@@ -12,6 +12,12 @@ import {
   Globe,
   Lightbulb,
   FileText,
+  Check,
+  Cross,
+  TestTube,
+  TestTubeDiagonalIcon,
+  TestTube2,
+  TestTubes,
 } from "lucide-react";
 import {
   Select,
@@ -24,6 +30,7 @@ import SplitComponent from "react-split";
 import TechLogoComponent from "./TechLogo.js";
 import CompanyLogo from "./Companies.js";
 import { Question } from "@workspace/editor/data/questions.js";
+import { Button } from "@workspace/ui/components/button";
 
 const Split = SplitComponent as unknown as React.ComponentType<{
   className?: string;
@@ -40,8 +47,24 @@ interface File {
   content: string;
 }
 
+type CommonInput = number[] | string | number | object;
+type CommonOutput = number | boolean | string | number[] | object;
+type TestCases = {
+  input: CommonInput; // More specific but still flexible input types
+  output: CommonOutput; // More specific but still flexible output types
+  description: string; // Description of the test case
+};
+
+type ResultTest = TestCases & {
+  passed: boolean;
+  actual: number | boolean | string | number[] | object;
+  expected: number | boolean | string | number[] | object;
+};
+
 interface EditorProps {
   question: Question;
+  setCode: (code: string | undefined) => void;
+  testCases: ResultTest[] | undefined;
 }
 
 interface ConsoleLog {
@@ -57,7 +80,7 @@ interface EnvironmentFiles {
   react: File[];
 }
 
-const Editor: React.FC<EditorProps> = ({ question }) => {
+const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
   const {
     initialVanillaFiles,
     initialReactFiles,
@@ -66,11 +89,17 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
     questionDetails,
   } = question;
 
+  // Keep track of user's edited files separately from initial files
+  const [editedVanillaFiles, setEditedVanillaFiles] =
+    useState<File[]>(initialVanillaFiles);
+  const [editedReactFiles, setEditedReactFiles] =
+    useState<File[]>(initialReactFiles);
+
   const [showSolution, setShowSolution] = useState<boolean>(false);
   const [environment, setEnvironment] = useState<Environment>("vanilla");
   const [environmentFiles, setEnvironmentFiles] = useState<EnvironmentFiles>({
-    vanilla: showSolution ? solutionVanillaFiles : initialVanillaFiles,
-    react: showSolution ? solutionReactFiles : initialReactFiles,
+    vanilla: showSolution ? solutionVanillaFiles : editedVanillaFiles,
+    react: showSolution ? solutionReactFiles : editedReactFiles,
   });
   const [fileContents, setFileContents] = useState<Record<string, string>>({});
   const [activeFile, setActiveFile] = useState<File | null>(null);
@@ -79,15 +108,23 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
 
-  // Get current files based on environment
-  const getCurrentFiles = () => environmentFiles[environment];
+  // Get current files based on environment and solution state
+  const getCurrentFiles = () => {
+    if (showSolution) {
+      return environment === "vanilla"
+        ? solutionVanillaFiles
+        : solutionReactFiles;
+    }
+    return environment === "vanilla" ? editedVanillaFiles : editedReactFiles;
+  };
 
+  // Update environment files when solution toggle changes
   useEffect(() => {
     setEnvironmentFiles({
-      vanilla: showSolution ? solutionVanillaFiles : initialVanillaFiles,
-      react: showSolution ? solutionReactFiles : initialReactFiles,
+      vanilla: showSolution ? solutionVanillaFiles : editedVanillaFiles,
+      react: showSolution ? solutionReactFiles : editedReactFiles,
     });
-  }, [showSolution]);
+  }, [showSolution, editedVanillaFiles, editedReactFiles]);
 
   useEffect(() => {
     const currentFiles = getCurrentFiles();
@@ -96,54 +133,58 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
       {} as Record<string, string>
     );
     setFileContents(initialContents);
-    // Only set activeFile if it's not already set
+
     if (!activeFile) {
       currentFiles[0] && setActiveFile(currentFiles[0]);
     }
-  }, [environment, environmentFiles, activeFile]); // Added activeFile as a dependency to prevent unnecessary resets
+
+    setCode(environmentFiles.vanilla[0]?.content);
+  }, [environment, environmentFiles, activeFile]);
 
   const handleEnvironmentChange = (value: Environment) => {
     // Save current file contents before switching
-    const currentFiles = getCurrentFiles().map((file) => ({
-      ...file,
-      content: fileContents[file.name] || file.content,
-    }));
+    if (!showSolution) {
+      // Only save if not showing solution
+      const currentFiles = getCurrentFiles().map((file) => ({
+        ...file,
+        content: fileContents[file.name] || file.content,
+      }));
 
-    setEnvironmentFiles((prev) => ({
-      ...prev,
-      [environment]: currentFiles,
-    }));
+      if (environment === "vanilla") {
+        setEditedVanillaFiles(currentFiles);
+      } else {
+        setEditedReactFiles(currentFiles);
+      }
+    }
 
-    // Switch environment
     setEnvironment(value);
     setLogs([]);
 
-    // Preserve activeFile if it exists in the new environment
     const newFiles = environmentFiles[value];
     if (activeFile && newFiles.some((file) => file.name === activeFile.name)) {
-      // Keep the current activeFile if it exists in the new environment
+      // Keep current activeFile if it exists in new environment
     } else {
-      // Otherwise, default to the first file in the new environment
       newFiles[0] && setActiveFile(newFiles[0]);
     }
   };
 
   const handleEditorChange = (value: string | undefined) => {
-    if (value !== undefined && activeFile) {
+    if (value !== undefined && activeFile && !showSolution) {
+      // Only update if not showing solution
       setFileContents((prev) => ({
         ...prev,
         [activeFile.name]: value,
       }));
 
-      // Update the environment files state
       const currentFiles = getCurrentFiles().map((file) =>
         file.name === activeFile.name ? { ...file, content: value } : file
       );
 
-      setEnvironmentFiles((prev) => ({
-        ...prev,
-        [environment]: currentFiles,
-      }));
+      if (environment === "vanilla") {
+        setEditedVanillaFiles(currentFiles);
+      } else {
+        setEditedReactFiles(currentFiles);
+      }
     }
   };
 
@@ -359,11 +400,11 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
   const getLogStyle = (type: string) => {
     switch (type) {
       case "error":
-        return "text-red-400";
+        return "text-red-800";
       case "warn":
-        return "text-yellow-400";
+        return "text-yellow-800";
       default:
-        return "text-white";
+        return "text-black";
     }
   };
 
@@ -482,18 +523,20 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
                 <span className="text-sm text-gray-800">File explorer</span>
               </div>
 
-              <Select
-                value={environment}
-                onValueChange={handleEnvironmentChange}
-              >
-                <SelectTrigger className="w-[180px] h-[30px] bg-white border-b border-gray-300">
-                  <SelectValue placeholder="Select environment" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="vanilla">Vanilla JavaScript</SelectItem>
-                  <SelectItem value="react">React</SelectItem>
-                </SelectContent>
-              </Select>
+              {initialReactFiles.length !== 0 && (
+                <Select
+                  value={environment}
+                  onValueChange={handleEnvironmentChange}
+                >
+                  <SelectTrigger className="w-[180px] h-[30px] bg-white border-b border-gray-300">
+                    <SelectValue placeholder="Select environment" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="vanilla">Vanilla JavaScript</SelectItem>
+                    <SelectItem value="react">React</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
             </div>
 
             {/* Tab Bar */}
@@ -536,81 +579,185 @@ const Editor: React.FC<EditorProps> = ({ question }) => {
             </div>
           </div>
 
-          {/* Right Panel */}
-          <div className="flex flex-col">
-            {/* Browser Top Bar */}
-            <div className="flex items-center h-10 px-4 bg-white border-b border-gray-300 justify-between">
-              <div className="flex items-center space-x-2">
-                <Globe className="w-4 h-4 text-gray-800" />
-                <span className="text-sm text-gray-800">Browser</span>
+          {questionDetails.questionType === "logical" && (
+            <div
+              className={
+                "w-full max-w-3xl mx-auto bg-white rounded-lg shadow-sm border min-h-[600px] flex flex-col"
+              }
+            >
+              <div className="flex items-center gap-4 p-2 border-b">
+                <Button variant="ghost" size="sm" className="text-gray-600">
+                  ▶ Tests
+                </Button>
               </div>
-              <input
-                value={"/"}
-                className="w-[40%] pl-2 text-gray-600 bg-gray-200 rounded-full"
-                disabled={true}
-              />
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => setShowTerminal(!showTerminal)}
-                  className="p-1.5 hover:bg-gray-200 rounded text-gray-800"
-                >
-                  <Terminal className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={handleRefresh}
-                  className="p-1.5 hover:bg-gray-200 rounded text-gray-800"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
 
-            {/* Preview Area */}
-            <div className="flex-1 bg-white">
-              <iframe
-                ref={iframeRef}
-                className="w-full h-full border-none"
-                sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups allow-modals"
-                allow="cross-origin-isolated"
-              />
-            </div>
-
-            {/* Console */}
-            {showTerminal && (
-              <div className="h-[30%] bg-white border-t border-gray-300">
-                <div className="flex justify-between items-center px-4 border-b border-gray-300">
-                  <span className="text-sm text-gray-800">Console</span>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleClearConsole}
-                      className="p-1 hover:bg-gray-200 rounded text-gray-800"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setShowTerminal(false)}
-                      className="p-1 hover:bg-gray-200 rounded text-gray-800"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
+              <div className="divide-y flex-1">
+                {(!testCases || testCases.length === 0) && (
+                  <div className="w-full h-full flex flex-col items-center justify-center">
+                    <TestTube className="w-8 h-8 text-gray-400" />
+                    <p className="text-gray-400 font-bold">
+                      Test Cases will appear here
+                    </p>
                   </div>
-                </div>
-                <div
-                  ref={consoleRef}
-                  className="p-4 text-sm h-[calc(100%-40px)] overflow-auto font-mono"
-                >
-                  {logs.map((log, index) => (
-                    <div key={index} className={getLogStyle(log.type)}>
-                      <span className="text-gray-800 mr-2">
-                        {log.timestamp}
-                      </span>
-                      <span className="text-gray-800">button</span>
+                )}
+                {testCases &&
+                  testCases.map((test, i) => (
+                    <div
+                      key={i}
+                      className="flex flex-col gap-3 p-2 hover:bg-gray-50"
+                    >
+                      <div className="font-mono text-sm">
+                        {test.passed ? "✅" : "❌"}
+                        <span className="text-gray-600 ml-2">
+                          findDuplicates
+                        </span>
+                        <span className="text-gray-400 ml-2"> › </span>
+                        <span>numbers = {JSON.stringify(test.input)}</span>
+                      </div>
+
+                      <div
+                        className={`flex-row gap-2 ${test.passed ? "hidden" : "flex"}`}
+                      >
+                        <span>expected: {JSON.stringify(test.expected)}</span>
+                        <span>actual: {JSON.stringify(test.actual)}</span>
+                      </div>
                     </div>
                   ))}
+              </div>
+
+              <div className="flex items-center justify-between p-2 border-t mt-auto">
+                <div className="flex items-center gap-2">
+                  {testCases && (
+                    <span className="text-gray-600 text-[14px]">
+                      <span>{testCases && testCases.length} Total</span>,{" "}
+                      <span className="text-green-600">
+                        {testCases &&
+                          testCases.filter((test) => test.passed === true)
+                            .length}{" "}
+                        Passed
+                      </span>{" "}
+                      <span className="text-red-500">
+                        {testCases &&
+                          testCases.filter((test) => test.passed === false)
+                            .length}{" "}
+                        Failed
+                      </span>
+                    </span>
+                  )}
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8 2V5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M16 2V5"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <path d="M3 8H21" stroke="currentColor" strokeWidth="2" />
+                    <path
+                      d="M4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3Z"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                  View test cases
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Right Panel */}
+          {questionDetails.questionType === "ui" && (
+            <div className={`flex flex-col`}>
+              {/* Browser Top Bar */}
+              <div className="flex items-center h-10 px-4 bg-white border-b border-gray-300 justify-between">
+                <div className="flex items-center space-x-2">
+                  <Globe className="w-4 h-4 text-gray-800" />
+                  <span className="text-sm text-gray-800">Browser</span>
+                </div>
+                <input
+                  value={"/"}
+                  className="w-[40%] pl-2 text-gray-600 bg-gray-200 rounded-full"
+                  disabled={true}
+                />
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setShowTerminal(!showTerminal)}
+                    className="p-1.5 hover:bg-gray-200 rounded text-gray-800"
+                  >
+                    <Terminal className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={handleRefresh}
+                    className="p-1.5 hover:bg-gray-200 rounded text-gray-800"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
-            )}
-          </div>
+
+              {/* Preview Area */}
+              <div className="flex-1 bg-white">
+                <iframe
+                  ref={iframeRef}
+                  className="w-full h-full border-none"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups allow-modals"
+                  allow="cross-origin-isolated"
+                />
+              </div>
+
+              {/* Console */}
+              {showTerminal && (
+                <div className="h-[30%] bg-white border-t border-gray-300">
+                  <div className="flex justify-between items-center px-4 border-b border-gray-300">
+                    <span className="text-sm text-gray-800">Console</span>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleClearConsole}
+                        className="p-1 hover:bg-gray-200 rounded text-gray-800"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => setShowTerminal(false)}
+                        className="p-1 hover:bg-gray-200 rounded text-gray-800"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    ref={consoleRef}
+                    className="p-4 text-sm h-[calc(100%-40px)] overflow-auto font-mono"
+                  >
+                    {logs.map((log, index) => (
+                      <div key={index} className={getLogStyle(log.type)}>
+                        <span className="text-gray-500 mr-2">
+                          {log.timestamp}
+                        </span>
+                        {log.message}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </Split>
       </div>
     </div>

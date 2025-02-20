@@ -1,5 +1,5 @@
 // models/Question.ts
-import mongoose, { Document, Model, Schema } from "mongoose";
+import mongoose, { Document, Model, Schema, SchemaTypes } from "mongoose";
 
 // Define the nested interfaces
 export interface IFile {
@@ -14,6 +14,15 @@ export interface IQuestionerInfo {
   additionalInfo?: string;
 }
 
+export type CommonInput = number[] | string | number | object;
+export type CommonOutput = number | boolean | string | number[] | object;
+
+export type TestCases = {
+  input: CommonInput; // More specific but still flexible input types
+  output: CommonOutput; // More specific but still flexible output types
+  description: string; // Description of the test case
+};
+
 export interface IQuestionDetails {
   name: string;
   questionaerInfo: IQuestionerInfo;
@@ -25,6 +34,7 @@ export interface IQuestionDetails {
   notes: string[];
   companies: string[];
   questionType: "ui" | "logical";
+  testCases?: TestCases[];
 }
 
 // Main document interface
@@ -51,6 +61,12 @@ const QuestionerInfoSchema = new Schema<IQuestionerInfo>({
   name: { type: String, required: true },
   profilePic: { type: String, required: true },
   additionalInfo: { type: String },
+});
+
+const TestCasesSchema = new Schema<TestCases>({
+  input: { type: SchemaTypes.Mixed, required: true },
+  output: { type: SchemaTypes.Mixed, required: true },
+  description: { type: String, required: true },
 });
 
 const QuestionSchema = new Schema<IQuestion>({
@@ -84,6 +100,7 @@ const QuestionSchema = new Schema<IQuestion>({
       enum: ["ui", "logical"],
       required: true,
     },
+    testCases: [TestCasesSchema],
   },
 });
 

@@ -26,6 +26,15 @@ type Note = string[]; // An array of strings representing the notes.
 
 type QuestionType = "ui" | "logical";
 
+type CommonInput = number[] | string | number | object;
+type CommonOutput = number | boolean | string | number[] | object;
+
+type TestCases = {
+  input: CommonInput; // More specific but still flexible input types
+  output: CommonOutput; // More specific but still flexible output types
+  description: string; // Description of the test case
+};
+
 type QuestionDetails = {
   name: string;
   questionaerInfo: QuestionerInfo;
@@ -37,6 +46,7 @@ type QuestionDetails = {
   notes: Note;
   companies: Companies;
   questionType: QuestionType;
+  testCases?: TestCases[];
 };
 export type Question = {
   initialVanillaFiles: File[];
