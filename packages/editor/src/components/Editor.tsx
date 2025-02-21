@@ -22,8 +22,8 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select";
 import SplitComponent from "react-split";
-import TechLogoComponent from "./TechLogo.js";
-import CompanyLogo from "./Companies.js";
+import TechLogoComponent from "@workspace/editor/components/TechLogo.js";
+import CompanyLogo from "@workspace/editor/components/Companies.js";
 import { Question } from "@workspace/editor/data/questions.js";
 import { Button } from "@workspace/ui/components/button";
 
