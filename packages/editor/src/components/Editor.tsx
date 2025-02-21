@@ -22,9 +22,9 @@ import {
   SelectValue,
 } from "@workspace/ui/components/select";
 import SplitComponent from "react-split";
-import TechLogoComponent from "@workspace/editor/components/TechLogo.js";
-import CompanyLogo from "@workspace/editor/components/Companies.js";
-import { Question } from "@workspace/editor/data/questions.js";
+import TechLogoComponent from "@workspace/editor/components/TechLogo";
+import CompanyLogo from "@workspace/editor/components/Companies";
+import { Question } from "@workspace/editor/data/questions";
 import { Button } from "@workspace/ui/components/button";
 
 const Split = SplitComponent as unknown as React.ComponentType<{
