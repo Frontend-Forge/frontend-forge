@@ -1,20 +1,14 @@
 import { NextResponse } from "next/server";
-import { MongoClient } from "mongodb";
-
-const uri = "mongodb://localhost:27017"; // 🔥 Embedded MongoDB URL
-const dbName = "frontend-forge"; // 🔥 Your database name
+import connectDB from "@/lib/mongodb"; // Ensure this path is correct
+import Question from "@/models/Question"; // Import your Mongoose model
 
 export async function GET() {
   try {
-    const client = new MongoClient(uri);
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection("questions"); // Change this to your actual collection
+    await connectDB(); // Connect to MongoDB using Mongoose
 
-    const data = await collection.find({}).toArray();
-    await client.close(); // Close connection after fetching data
+    const questions = await Question.find({}); // Fetch all questions
 
-    return NextResponse.json({ success: true, data }, { status: 200 });
+    return NextResponse.json({ success: true, data: questions }, { status: 200 });
   } catch (error) {
     console.error("Database Error:", error);
     return NextResponse.json(
