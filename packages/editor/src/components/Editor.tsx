@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, SetStateAction } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 import { cn } from "@workspace/ui/lib/utils";
 import {
@@ -12,12 +12,7 @@ import {
   Globe,
   Lightbulb,
   FileText,
-  Check,
-  Cross,
   TestTube,
-  TestTubeDiagonalIcon,
-  TestTube2,
-  TestTubes,
 } from "lucide-react";
 import {
   Select,

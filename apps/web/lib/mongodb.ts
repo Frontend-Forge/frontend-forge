@@ -1,7 +1,8 @@
+/* eslint-disable turbo/no-undeclared-env-vars */
 import mongoose from "mongoose";
 
 // Use environment variable for flexibility
-const MONGODB_URI = "mongodb://localhost:27017/frontend-forge";
+const DATABASE_URL = process.env.DATABASE_URL as string;
 
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) {
@@ -9,7 +10,7 @@ const connectDB = async () => {
   }
 
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(DATABASE_URL);
     console.log("MongoDB Connected");
   } catch (error) {
     console.error("MongoDB Connection Error:", error);

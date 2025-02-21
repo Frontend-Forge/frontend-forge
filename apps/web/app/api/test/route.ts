@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// app/api/test/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import QuestionModel, { IQuestion, TestCases } from "@/models/Question";
@@ -79,7 +77,7 @@ export async function POST(req: NextRequest) {
               },
             });
 
-            worker.on("message", (result: any) => {
+            worker.on("message", (result: unknown) => {
               console.log("Worker result:", result);
               resolve(result);
               worker.terminate();

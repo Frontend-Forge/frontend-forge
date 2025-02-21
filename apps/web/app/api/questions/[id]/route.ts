@@ -2,12 +2,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import QuestionModel from "@/models/Question";
+import connectDB from "@/lib/mongodb";
 
 // Connect to MongoDB
-const connectDB = async () => {
-  if (mongoose.connection.readyState === 1) return;
-  await mongoose.connect("mongodb://localhost:27017/frontend-forge");
-};
 
 export async function GET(request: NextRequest) {
   // Extract ID from URL pattern

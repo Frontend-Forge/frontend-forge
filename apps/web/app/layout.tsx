@@ -1,19 +1,14 @@
 "use client";
 
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 
 import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
 import { CodeProvider } from "@/contexts/CodeContext";
 
-const fontSans = Geist({
+const fontInter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
-});
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-inter",
 });
 
 export default function RootLayout({
@@ -23,9 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
-      >
+      <body className={`${fontInter.className} `}>
         <CodeProvider>
           <Providers>{children}</Providers>
         </CodeProvider>
