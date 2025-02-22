@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const DATABASE_URL = process.env.DATABASE_URL as string;
 
 if (!DATABASE_URL) {
-  throw new Error("No database url");
+  throw new Error("No database url"); // If no database throws url
 }
 
 const connectDB = async () => {
