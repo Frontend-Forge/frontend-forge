@@ -2,7 +2,7 @@ import { TopicCard } from "./topics";
 
 type LogoName = "html" | "css" | "js" | "react";
 
-const logoSvgs: Record<LogoName, JSX.Element> = {
+export const logoSvgs: Record<LogoName, JSX.Element> = {
   html: (
     <>
       <svg

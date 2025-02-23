@@ -11,7 +11,10 @@ export default function TopicCards({ topics }: PropTypes) {
   return (
     <div className="grid w-[90%] ml-4 gap-4 md:grid-cols-2">
       {topics.map((topic: TopicCard) => (
-        <Link key={topic.title} href={topic.href}>
+        <Link
+          key={topic.title}
+          href={`${topic.title === "JavaScript" ? `/questions/js` : `/questions/${topic.title.toLowerCase()}`}`}
+        >
           <Card className="flex items-center justify-between p-6 transition-colors hover:bg-accent">
             <div className="flex items-center gap-4">
               {

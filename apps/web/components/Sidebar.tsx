@@ -75,7 +75,7 @@ const SidebarContent = () => {
               All practice questions
             </Link>
             <Link
-              href="/practice/frameworks"
+              href="/questions/js"
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-white/10"
             >
               <Code2 className="h-4 w-4" />

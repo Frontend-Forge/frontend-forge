@@ -39,7 +39,7 @@ export default function Page() {
         </p>
         <TopicCards topics={languages} />
       </div>
-      <div className="flex flex-col w-full gap-2">
+      <div className="flex flex-col mb-4 w-full gap-2">
         <p className="text-2xl font-semibold text-gray-700 mt-8">
           Company Guides
         </p>
