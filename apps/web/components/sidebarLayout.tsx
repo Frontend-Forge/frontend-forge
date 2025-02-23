@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export function SidebarLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`flex relative ${inter.className} `}>
+    <div className={`flex relative ${inter.className} bg-white `}>
       <Sidebar />
       <main className="flex-1">{children}</main>
       <div className="flex flex-row gap-4 absolute top-4 right-4 items-center">
