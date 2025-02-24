@@ -49,8 +49,9 @@ export default function DisplayQuestions({
 }: DisplayQuestionsProps) {
   return (
     <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row bg-background">
-      <div className="container md:ml-16 md:px-4 md:py-8 md:w-[60%]  w-[90%]">
+      <div className="container relative md:ml-16 md:px-4 md:py-8 md:w-[60%]  w-[90%]">
         {techIcons && language && <TechIcons dark={language} />}
+
         {/* Header Section */}
         <div className="space-y-6 mt-4 mb-8">
           <div className="space-y-2">

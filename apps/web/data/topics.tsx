@@ -6,7 +6,7 @@ import {
   LayoutGrid,
   MonitorSmartphone,
   Network,
-  RotateCcw,
+  RefreshCcw,
 } from "lucide-react";
 
 export interface TopicCard {
@@ -24,7 +24,7 @@ export const topics: TopicCard[] = [
     href: "/accessibility",
   },
   {
-    icon: <RotateCcw className="h-6 w-6" />,
+    icon: <RefreshCcw className="h-6 w-6" />,
     title: "Async Operations",
     questions: 33,
     href: "/async",
@@ -52,12 +52,6 @@ export const topics: TopicCard[] = [
     title: "Forms",
     questions: 10,
     href: "/forms",
-  },
-  {
-    icon: <FileCode className="h-6 w-6" />,
-    title: "JavaScript Polyfills",
-    questions: 26,
-    href: "/polyfills",
   },
   {
     icon: <GitBranch className="h-6 w-6" />,
