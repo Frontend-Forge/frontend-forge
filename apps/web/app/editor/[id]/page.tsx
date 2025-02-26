@@ -9,6 +9,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "@workspace/ui/globals.css";
 import { useCode } from "@/contexts/CodeContext";
+import { useDarkMode } from "@/hooks/useDarkMode";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function QuestionPage() {
   const [error, setError] = useState<string | null>(null);
 
   const { code, setCode, testCases } = useCode();
+  const { theme } = useDarkMode();
 
   console.log(code);
 
@@ -63,7 +65,12 @@ export default function QuestionPage() {
     <div
       className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
     >
-      <Editor question={question} setCode={setCode} testCases={testCases} />
+      <Editor
+        theme={theme}
+        question={question}
+        setCode={setCode}
+        testCases={testCases}
+      />
     </div>
   );
 }

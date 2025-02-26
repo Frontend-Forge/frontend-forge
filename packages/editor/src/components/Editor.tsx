@@ -26,7 +26,6 @@ import TechLogoComponent from "@workspace/editor/components/TechLogo";
 import CompanyLogo from "@workspace/editor/components/Companies";
 import { Question } from "@workspace/editor/data/questions";
 import { Button } from "@workspace/ui/components/button";
-import { useDarkMode } from "../../../../apps/web/hooks/useDarkMode.js";
 
 const Split = SplitComponent as unknown as React.ComponentType<{
   className?: string;
@@ -61,6 +60,7 @@ interface EditorProps {
   question: Question;
   setCode: (code: string | undefined) => void;
   testCases: ResultTest[] | undefined;
+  theme: string | undefined;
 }
 
 interface ConsoleLog {
@@ -76,7 +76,12 @@ interface EnvironmentFiles {
   react: File[];
 }
 
-const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
+const Editor: React.FC<EditorProps> = ({
+  question,
+  setCode,
+  testCases,
+  theme,
+}) => {
   const {
     initialVanillaFiles,
     initialReactFiles,
@@ -103,7 +108,6 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
   const [showTerminal, setShowTerminal] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
-  const { theme } = useDarkMode();
 
   // Get current files based on environment and solution state
   const getCurrentFiles = () => {
@@ -545,7 +549,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
             </div>
 
             {/* Tab Bar */}
-            <div className="flex flex-wrap bg-white dark:bg-[#18181B] dark:text-white border-b border-gray-300">
+            <div className="flex flex-wrap bg-white dark:bg-[#18181B] dark:text-white border-b dark:border-gray-800 border-gray-300">
               {getCurrentFiles().map((file) => (
                 <button
                   key={file.name}
@@ -588,7 +592,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
           {questionDetails.questionType === "logical" && (
             <div
               className={
-                "w-full max-w-3xl mx-auto bg-white rounded-lg shadow-sm border min-h-[600px] flex flex-col"
+                "w-full max-w-3xl mx-auto bg-white dark:bg-[#18181B] rounded-lg shadow-sm border min-h-[600px] flex flex-col"
               }
             >
               <div className="flex items-center gap-4 p-2 border-b">
@@ -610,12 +614,12 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
                   testCases.map((test, i) => (
                     <div
                       key={i}
-                      className="flex flex-col gap-3 p-2 hover:bg-gray-50"
+                      className="flex flex-col gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-800/100"
                     >
                       <div className="font-mono text-sm">
                         {test.passed ? "✅" : "❌"}
-                        <span className="text-gray-600 ml-2">
-                          findDuplicates
+                        <span className="text-gray-600 dark:text-gray-400 ml-2">
+                          {questionDetails.name}
                         </span>
                         <span className="text-gray-400 ml-2"> › </span>
                         <span>numbers = {JSON.stringify(test.input)}</span>
@@ -691,28 +695,30 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
           {questionDetails.questionType === "ui" && (
             <div className={`flex flex-col`}>
               {/* Browser Top Bar */}
-              <div className="flex items-center h-10 px-4 bg-white border-b border-gray-300 justify-between">
+              <div className="flex items-center h-10 px-4 dark:bg-[#18181B]  bg-white border-b border-gray-300 justify-between">
                 <div className="flex items-center space-x-2">
-                  <Globe className="w-4 h-4 text-gray-800" />
-                  <span className="text-sm text-gray-800">Browser</span>
+                  <Globe className="w-4 dark:text-gray-300 h-4 text-gray-800" />
+                  <span className="text-sm  dark:text-gray-300 text-gray-800">
+                    Browser
+                  </span>
                 </div>
                 <input
                   value={"/"}
-                  className="w-[40%] pl-2 text-gray-600 bg-gray-200 rounded-full"
+                  className="w-[40%] pl-2 text-gray-600 dark:bg-[#252525] bg-gray-200 rounded-full"
                   disabled={true}
                 />
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setShowTerminal(!showTerminal)}
-                    className="p-1.5 hover:bg-gray-200 rounded text-gray-800"
+                    className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-800 rounded text-gray-800"
                   >
-                    <Terminal className="w-4 h-4" />
+                    <Terminal className="w-4 dark:text-gray-300 h-4" />
                   </button>
                   <button
                     onClick={handleRefresh}
-                    className="p-1.5 hover:bg-gray-200 rounded text-gray-800"
+                    className="p-1.5  hover:bg-gray-200 dark:hover:bg-gray-800 rounded text-gray-800"
                   >
-                    <RefreshCw className="w-4 h-4" />
+                    <RefreshCw className="w-4 dark:text-gray-300 h-4" />
                   </button>
                 </div>
               </div>
@@ -729,21 +735,23 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
 
               {/* Console */}
               {showTerminal && (
-                <div className="h-[30%] bg-white border-t border-gray-300">
-                  <div className="flex justify-between items-center px-4 border-b border-gray-300">
-                    <span className="text-sm text-gray-800">Console</span>
+                <div className="h-[30%] bg-white dark:bg-[#18181B] border-t dark:border-gray-600 border-gray-300">
+                  <div className="flex justify-between items-center px-4 border-b dark:border-gray-600 border-gray-300">
+                    <span className="text-sm dark:text-gray-300 text-gray-800">
+                      Console
+                    </span>
                     <div className="flex gap-2">
                       <button
                         onClick={handleClearConsole}
-                        className="p-1 hover:bg-gray-200 rounded text-gray-800"
+                        className="p-1 hover:bg-gray-200 dark:hover:bg-gray-800 rounded text-gray-800"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-4 h-4 dark:text-gray-300" />
                       </button>
                       <button
                         onClick={() => setShowTerminal(false)}
-                        className="p-1 hover:bg-gray-200 rounded text-gray-800"
+                        className="p-1 hover:bg-gray-200 dark:hover:bg-gray-800 rounded text-gray-800"
                       >
-                        <X className="w-4 h-4" />
+                        <X className="w-4 h-4 dark:text-gray-300" />
                       </button>
                     </div>
                   </div>
