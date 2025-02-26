@@ -38,14 +38,26 @@ const SidebarContent = () => {
       {/* Header */}
       <div className="flex items-center gap-2 p-4">
         <div className="flex items-center gap-2">
-          <Image
-            src={"/images/logo.png"}
-            height={30}
-            width={30}
-            className="rounded-md"
-            alt="logo"
-          />
-          <span className="font-semibold">frontend forge</span>
+          <div className="flex items-center space-x-1">
+            {theme === "dark" ? (
+              <Image
+                alt="logo"
+                src={"/images/logo-light.svg"}
+                width={40}
+                height={40}
+                className="rounded-md"
+              />
+            ) : (
+              <Image
+                alt="logo"
+                src={"/images/logo.svg"}
+                width={40}
+                height={40}
+                className="rounded-md"
+              />
+            )}
+          </div>
+          <span className="font-semibold">Frontend Forge</span>
         </div>
         <Button variant="ghost" size="icon" className="ml-auto">
           <ChevronDown className="h-4 w-4" />

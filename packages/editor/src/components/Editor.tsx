@@ -405,7 +405,7 @@ const Editor: React.FC<EditorProps> = ({
       case "warn":
         return "text-yellow-800";
       default:
-        return "text-black";
+        return "text-black dark:text-white";
     }
   };
 
@@ -757,7 +757,7 @@ const Editor: React.FC<EditorProps> = ({
                   </div>
                   <div
                     ref={consoleRef}
-                    className="p-4 text-sm h-[calc(100%-40px)] overflow-auto font-mono"
+                    className="p-4 text-sm h-[calc(100%-40px)]  overflow-auto font-mono"
                   >
                     {logs.map((log, index) => (
                       <div key={index} className={getLogStyle(log.type)}>

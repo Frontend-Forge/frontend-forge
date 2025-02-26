@@ -60,14 +60,24 @@ export default function RootLayout({
       <div className="flex min-h-screen flex-col ">
         <header className="sticky top-0 text-black z-50 w-full border-b dark:border-neutral-800 border-neutral-300 dark:bg-[#18181B] dark:text-white bg-white">
           <div className="flex h-14 items-center px-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <Image
-                alt="logo"
-                src={"/images/logo.png"}
-                width={30}
-                height={30}
-                className="rounded-md"
-              />
+            <Link href="/" className="flex items-center space-x-1">
+              {theme === "dark" ? (
+                <Image
+                  alt="logo"
+                  src={"/images/logo-light.svg"}
+                  width={40}
+                  height={40}
+                  className="rounded-md"
+                />
+              ) : (
+                <Image
+                  alt="logo"
+                  src={"/images/logo.svg"}
+                  width={40}
+                  height={40}
+                  className="rounded-md"
+                />
+              )}
               <div className="font-bold ">Frontend Forge</div>
             </Link>
 
