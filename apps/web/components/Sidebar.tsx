@@ -25,12 +25,16 @@ import Image from "next/image";
 import {
   DiscordIcon,
   GitHubDarkIcon,
+  GitHubLightIcon,
   LinkedInIcon,
 } from "@trigger.dev/companyicons";
+import { useDarkMode } from "@/hooks/useDarkMode";
 
 const SidebarContent = () => {
+  const { theme } = useDarkMode();
+
   return (
-    <div className="flex h-full flex-col bg-white text-black">
+    <div className="flex h-full flex-col bg-white dark:bg-[#18181B] dark:text-white text-black">
       {/* Header */}
       <div className="flex items-center gap-2 p-4">
         <div className="flex items-center gap-2">
@@ -41,7 +45,7 @@ const SidebarContent = () => {
             className="rounded-md"
             alt="logo"
           />
-          <span className="font-semibold text-black">frontend forge</span>
+          <span className="font-semibold">frontend forge</span>
         </div>
         <Button variant="ghost" size="icon" className="ml-auto">
           <ChevronDown className="h-4 w-4" />
@@ -81,13 +85,6 @@ const SidebarContent = () => {
               <Code2 className="h-4 w-4" />
               Frameworks / languages
             </Link>
-            <Link
-              href="/practice/formats"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-white/10"
-            >
-              <FileQuestion className="h-4 w-4" />
-              Question formats
-            </Link>
           </CollapsibleContent>
         </Collapsible>
 
@@ -120,7 +117,7 @@ const SidebarContent = () => {
       </nav>
 
       {/* Footer */}
-      <div className="flex items-center gap-3 border-t border-gray-300 p-4">
+      <div className="flex items-center gap-3 border-t border-gray-300 dark:border-[#27272A] p-4">
         <Button
           variant="ghost"
           size="icon"
@@ -133,7 +130,11 @@ const SidebarContent = () => {
           size="icon"
           className="hover:bg-gray-200 p-2 border-gray-200 rounded-full bg-transparent"
         >
-          <GitHubDarkIcon className="w-6 h-6" />
+          {theme === "dark" ? (
+            <GitHubLightIcon className="w-6 h-6" />
+          ) : (
+            <GitHubDarkIcon className="w-6 h-6" />
+          )}
         </Button>
         <Button
           variant="ghost"
@@ -151,8 +152,8 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden fixed md:block">
-        <div className="h-screen border-r-[1px]  border-r-gray-300 w-64">
+      <div className="hidden fixed md:block dark:bg-[#18181B]">
+        <div className="h-screen border-r-[1px]  border-r-gray-300 dark:border-r-[#27272A] w-64">
           <SidebarContent />
         </div>
       </div>

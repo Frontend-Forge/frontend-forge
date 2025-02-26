@@ -18,32 +18,34 @@ const activityData: ActivityData[] = [
 
 export default function Page() {
   return (
-    <div className="min-h-screen overflow-y-auto md:ml-[280px] ml-8 mt-12 flex flex-col bg-background">
+    <div className="min-h-screen overflow-y-auto md:ml-[280px] ml-8 mt-12 flex flex-col bg-background dark:bg-[#18181B]">
       <p className="text-3xl font-semibold mt-8">Dashbaord</p>
       <p className="text-2xl mt-8">Your Progress at a glance</p>
       <ProgressCards />
       <ActivityHeatmap startDate={new Date("2024-02-01")} data={activityData} />
       <div className="flex flex-col w-full gap-2">
-        <p className="text-2xl font-semibold text-gray-700 mt-8">Focus Areas</p>
-        <p className="text-gray-500">
+        <p className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mt-8">
+          Focus Areas
+        </p>
+        <p className="text-gray-500 dark:text-gray-400">
           Deep-dive into topical focus areas critical for front end interviews
         </p>
         <TopicCards topics={topics} />
       </div>
       <div className="flex flex-col w-full gap-2">
-        <p className="text-2xl font-semibold text-gray-700 mt-8">
+        <p className="text-2xl font-semibold dark:text-gray-200 text-gray-700 mt-8">
           Frameworks and languages
         </p>
-        <p className="text-gray-500">
+        <p className="text-gray-500 dark:text-gray-400">
           Targeted practice in specific front end frameworks and languages.
         </p>
         <TopicCards topics={languages} />
       </div>
       <div className="flex flex-col mb-4 w-full gap-2">
-        <p className="text-2xl font-semibold text-gray-700 mt-8">
+        <p className="text-2xl font-semibold  dark:text-gray-200 text-gray-700 mt-8">
           Company Guides
         </p>
-        <p className="text-gray-500">
+        <p className="text-gray-500 dark:text-gray-400">
           Prepare for specific companies by learning insider tips and practicing
           known questions.
         </p>

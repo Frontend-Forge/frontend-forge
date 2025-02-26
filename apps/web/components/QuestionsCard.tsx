@@ -30,8 +30,8 @@ export function QuestionCard({
 }: QuestionCardProps) {
   return (
     <Link href={`/editor/${_id}`}>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <Card className="dark:bg-[#1E1E21]">
+        <CardHeader className="flex flex-row  items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-lg font-bold">{questionName}</CardTitle>
           {questionName === "Counter" && (
             <Badge

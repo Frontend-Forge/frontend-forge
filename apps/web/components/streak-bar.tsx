@@ -101,7 +101,7 @@ const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
 
   return (
     <TooltipProvider>
-      <div className="w-[90%] max-w-6xl ml-3 p-4 border border-gray-300 shadow-sm rounded-xl">
+      <div className="w-[90%] max-w-6xl ml-3 p-4 border dark:bg-[#1E1E21] dark:border-[#27272A] border-gray-300 shadow-sm rounded-xl">
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Activity Heatmap</h2>
@@ -129,7 +129,7 @@ const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
                         <Tooltip key={dateKey} delayDuration={200}>
                           <TooltipTrigger asChild>
                             <div
-                              className={`w-3 h-3 ${getColor(count)} rounded-sm cursor-pointer transition-colors duration-200 hover:ring-2 hover:ring-offset-1 hover:ring-blue-400`}
+                              className={`w-3 h-3 ${getColor(count)} rounded-sm cursor-pointer transition-colors duration-200 hover:ring-2 hover:ring-offset-1 dark:bg-[#3F3F46] hover:ring-blue-400`}
                             />
                           </TooltipTrigger>
                           <TooltipContent className="bg-black text-white p-3 rounded-lg shadow-lg">

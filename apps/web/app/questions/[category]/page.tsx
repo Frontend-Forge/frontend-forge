@@ -174,7 +174,7 @@ const QuestionCategoryPage = () => {
           loading={loading}
           error={error}
           techIcons={true}
-          headingIcon={<Accessibility />}
+          headingIcon={<Accessibility className="text-black" />}
           description="Practice developing inclusive and accessible web experiences. Explore the principles and techniques of web accessibility, including semantic HTML, ARIA roles, keyboard navigation, and screen reader compatibility, a skill which differentiates senior from junior front end engineers."
           heading="Accessibility"
         />
@@ -187,7 +187,7 @@ const QuestionCategoryPage = () => {
           loading={loading}
           error={error}
           techIcons={true}
-          headingIcon={<RefreshCcw />}
+          headingIcon={<RefreshCcw className="text-black" />}
           description="Sharpen your skills in asynchronous programming by practicing the use of async/await, Promises, and callback functions. Dive into scenarios that require asynchronous operations, such as making API requests and delayed code execution."
           heading="Async Operations"
         />
@@ -200,7 +200,7 @@ const QuestionCategoryPage = () => {
           loading={loading}
           error={error}
           techIcons={true}
-          headingIcon={<Network />}
+          headingIcon={<Network className="text-black" />}
           description="Hone your computer science fundamentals by implementing important data structures and algorithms from scratch and practice the questions where algorithmic efficiency is key."
           heading="Data Structures & Algorithms"
         />
@@ -213,7 +213,7 @@ const QuestionCategoryPage = () => {
           loading={loading}
           error={error}
           techIcons={true}
-          headingIcon={<LayoutGrid />}
+          headingIcon={<LayoutGrid className="text-black" />}
           description="Targeted practice on Design System Components interview questions"
           heading="Design System Components"
         />
@@ -226,7 +226,7 @@ const QuestionCategoryPage = () => {
           loading={loading}
           error={error}
           techIcons={true}
-          headingIcon={<MonitorSmartphone />}
+          headingIcon={<MonitorSmartphone className="text-black" />}
           description="Dive into the world of element selection and modification in the DOM. Practice selecting elements using CSS selectors, traverse the DOM hierarchy, and manipulate their properties, content, and styles."
           heading="DOM Manipulation"
         />
@@ -239,7 +239,7 @@ const QuestionCategoryPage = () => {
           loading={loading}
           error={error}
           techIcons={true}
-          headingIcon={<FormInput />}
+          headingIcon={<FormInput className="text-black" />}
           description="Master the art of building interactive and user-friendly forms by exploring various form components, validation techniques, and handling form submissions."
           heading="Forms"
         />
@@ -252,7 +252,7 @@ const QuestionCategoryPage = () => {
           loading={loading}
           error={error}
           techIcons={true}
-          headingIcon={<FormInput />}
+          headingIcon={<FormInput className="text-black" />}
           description="Train your skills in designing complex state and implementing operations to manipulate state."
           heading="State Management"
         />

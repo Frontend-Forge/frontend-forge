@@ -12,7 +12,7 @@ export default function ProgressCards() {
   return (
     <div className="flex md:flex-row flex-col gap-6 p-4 w-[92%]">
       {/* Solved Problems Card */}
-      <Card className="flex-1">
+      <Card className="flex-1 dark:bg-[#1E1E21]">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-medium">Solved problems</CardTitle>
         </CardHeader>
@@ -76,7 +76,7 @@ export default function ProgressCards() {
       </Card>
 
       {/* Solved by Question Type Card */}
-      <Card className="flex-1">
+      <Card className="flex-1 dark:bg-[#1E1E21]">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-medium">
             Solved by question type

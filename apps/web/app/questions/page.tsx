@@ -53,7 +53,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row bg-background">
+    <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row dark:bg-[#18181B]">
       <div className="container md:ml-16 md:px-4 md:py-8 md:w-[60%]  w-[90%]">
         {/* Header Section */}
         <div className="space-y-6 mb-8">
@@ -80,13 +80,13 @@ export default function Page() {
         {/* Search and Sort */}
         <div className="flex items-center gap-4 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute  left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search within this list of questions"
-              className="pl-10"
+              className="pl-10 dark:bg-[#1E1E21]"
             />
           </div>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2 dark:bg-[#1E1E21]">
             <SortAsc className="h-4 w-4" />
             Sort by
           </Button>

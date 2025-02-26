@@ -26,6 +26,7 @@ import TechLogoComponent from "@workspace/editor/components/TechLogo";
 import CompanyLogo from "@workspace/editor/components/Companies";
 import { Question } from "@workspace/editor/data/questions";
 import { Button } from "@workspace/ui/components/button";
+import { useDarkMode } from "../../../../apps/web/hooks/useDarkMode.js";
 
 const Split = SplitComponent as unknown as React.ComponentType<{
   className?: string;
@@ -102,6 +103,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
   const [showTerminal, setShowTerminal] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
+  const { theme } = useDarkMode();
 
   // Get current files based on environment and solution state
   const getCurrentFiles = () => {
@@ -404,7 +406,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
   };
 
   return (
-    <div className="flex flex-col fixed top-14 bottom-14 bg-white text-black">
+    <div className="flex flex-col fixed top-14 bottom-14 dark:bg-[#18181B] bg-white dark:text-white text-black">
       <div className="flex flex-1 min-h-0">
         <Split
           className="flex w-full"
@@ -414,15 +416,15 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
           snapOffset={30}
         >
           {/* Left Panel */}
-          <div className="flex flex-col border-r gap-4 overflow-x-hidden overflow-y-auto scrollbar-hide border-gray-800">
+          <div className="flex flex-col border-r gap-4 overflow-x-hidden overflow-y-auto scrollbar-hide  border-gray-800">
             <div className="flex flex-row gap-3">
               <button className="flex gap-1 mt-4 ml-8 flex-row items-center justify-center">
                 <FileText className="h-4 w-4" />
-                <p className="text-[15px] text-black">Description</p>
+                <p className="text-[15px] ">Description</p>
               </button>
               <button
                 onClick={handleSolution}
-                className="flex gap-2 mt-4 py-2 px-3 flex-row items-center justify-center rounded-lg transition-all duration-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                className="flex gap-2 mt-4 py-2 px-3 flex-row items-center justify-center rounded-lg transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
                 <Lightbulb
                   className={`h-4 w-4 ${showSolution ? "text-yellow-500" : "text-black-400"}`}
@@ -437,7 +439,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
 
             <div className="ml-8 flex flex-row items-center gap-6">
               <p className="text-2xl font-bold">{questionDetails.name}</p>
-              <div className="text-green-500 px-3 border-green-500 border-[2px] h-[22px] rounded-full -py-[10px] text-[12px]   flex justify-center items-center bg-[#EBFFED]">
+              <div className="text-green-500  px-3 dark:border-green-800 border-green-500 border-[2px] h-[22px] rounded-full -py-[10px] text-[12px]   flex justify-center items-center dark:bg-[#29482c] bg-[#EBFFED]">
                 Completed
               </div>
             </div>
@@ -450,10 +452,10 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
                   className="w-12 h-12 rounded-full"
                 />
                 <div className="flex flex-col ml-4 ">
-                  <h2 className="text-[18px] font-semibold">
+                  <h2 className="text-[18px] dark:text-white font-semibold">
                     {questionDetails.questionaerInfo.name}
                   </h2>
-                  <p className="text-[12px] text-gray-600">
+                  <p className="text-[12px] dark:text-gray-300 text-gray-600">
                     {questionDetails.questionaerInfo.additionalInfo}
                   </p>
                 </div>
@@ -465,20 +467,20 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
             <div className="flex flex-row items-center ml-8 gap-1">
               <div className="flex flex-row items-center gap-1">
                 🔥
-                <p className="text-sm text-gray-700">
+                <p className="text-sm dark:text-gray-300 text-gray-700">
                   {questionDetails.difficulty}
                 </p>
               </div>
               <p className="ml-1">|</p>
               <div className="flex flex-row items-center gap-1">
                 ⏱️
-                <p className="text-sm text-gray-700">
+                <p className="text-sm dark:text-gray-300 text-gray-700">
                   {questionDetails.time}:00 mins
                 </p>
               </div>
             </div>
 
-            <p className="text-sm w-[90%] text-gray-700 ml-8">
+            <p className="text-sm w-[90%] dark:text-gray-300 text-gray-700 ml-8">
               {questionDetails.questionDescription}
             </p>
 
@@ -487,7 +489,10 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
                 <p className="font-bold text-2xl">Requirements</p>
 
                 {questionDetails.requirements.map((req, i) => (
-                  <p key={i} className="text-sm text-gray-700">
+                  <p
+                    key={i}
+                    className="text-sm dark:text-gray-300 text-gray-700"
+                  >
                     &bull; {req}
                   </p>
                 ))}
@@ -497,7 +502,10 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
               <div className="w-[90%] flex flex-col  ml-8 gap-y-2">
                 <p className="font-bold text-2xl">Notes</p>
                 {questionDetails.notes.map((req, i) => (
-                  <p key={i} className="text-sm text-gray-700">
+                  <p
+                    key={i}
+                    className="text-sm dark:text-gray-300 text-gray-700"
+                  >
                     &bull; {req}
                   </p>
                 ))}
@@ -512,10 +520,12 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
           {/* Middle Panel (Editor) */}
           <div className="flex flex-col border-r border-gray-800">
             {/* File Explorer */}
-            <div className="flex items-center h-10 bg-white border-b border-gray-800">
+            <div className="flex items-center h-10 bg-white dark:bg-[#18181B] border-b border-gray-800">
               <div className="flex items-center px-4 space-x-2">
-                <FolderOpen className="w-4 h-4 text-gray-800" />
-                <span className="text-sm text-gray-800">File explorer</span>
+                <FolderOpen className="w-4 h-4 dark:text-gray-300 text-gray-800" />
+                <span className="text-sm text-gray-800 dark:text-gray-300">
+                  File explorer
+                </span>
               </div>
 
               {initialReactFiles.length !== 0 && (
@@ -523,7 +533,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
                   value={environment}
                   onValueChange={handleEnvironmentChange}
                 >
-                  <SelectTrigger className="w-[180px] h-[30px] bg-white border-b border-gray-300">
+                  <SelectTrigger className="w-[180px] h-[30px] bg-white border-b dark:bg-[#18181B] dark:border-gray-800 border-gray-300">
                     <SelectValue placeholder="Select environment" />
                   </SelectTrigger>
                   <SelectContent>
@@ -535,7 +545,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
             </div>
 
             {/* Tab Bar */}
-            <div className="flex flex-wrap bg-white border-b border-gray-300">
+            <div className="flex flex-wrap bg-white dark:bg-[#18181B] dark:text-white border-b border-gray-300">
               {getCurrentFiles().map((file) => (
                 <button
                   key={file.name}
@@ -543,7 +553,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
                     "px-4 py-2 text-sm flex items-center gap-2",
                     activeFile && activeFile.name === file.name
                       ? "bg-[#1e1e1e] text-white"
-                      : "text-gray-800 hover:bg-gray-400"
+                      : "text-gray-800 dark:text-gray-300 dark:hover:bg-gray-800  hover:bg-gray-400"
                   )}
                   onClick={() => setActiveFile(file)}
                 >
@@ -566,6 +576,7 @@ const Editor: React.FC<EditorProps> = ({ question, setCode, testCases }) => {
                       lineHeight: 21,
                       padding: { top: 16 },
                       wordWrap: "on",
+                      theme: theme === "dark" ? "vs-dark" : "",
                     }}
                     height="100%"
                   />

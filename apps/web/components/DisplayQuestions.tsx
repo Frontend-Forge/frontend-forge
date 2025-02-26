@@ -48,7 +48,7 @@ export default function DisplayQuestions({
   language,
 }: DisplayQuestionsProps) {
   return (
-    <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row bg-background">
+    <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row bg-background dark:bg-[#18181B]">
       <div className="container relative md:ml-16 md:px-4 md:py-8 md:w-[60%]  w-[90%]">
         {techIcons && language && <TechIcons dark={language} />}
 
