@@ -58,9 +58,10 @@ type ResultTest = TestCases & {
 
 interface EditorProps {
   question: Question;
-  setCode: (code: string | undefined) => void;
-  testCases: ResultTest[] | undefined;
+  setCode?: (code: string | undefined) => void;
+  testCases?: ResultTest[] | undefined;
   theme: string | undefined;
+  className: string;
 }
 
 interface ConsoleLog {
@@ -81,6 +82,7 @@ const Editor: React.FC<EditorProps> = ({
   setCode,
   testCases,
   theme,
+  className,
 }) => {
   const {
     initialVanillaFiles,
@@ -139,7 +141,7 @@ const Editor: React.FC<EditorProps> = ({
       currentFiles[0] && setActiveFile(currentFiles[0]);
     }
 
-    setCode(environmentFiles.vanilla[0]?.content);
+    setCode && setCode(environmentFiles.vanilla[0]?.content);
   }, [environment, environmentFiles, activeFile]);
 
   const handleEnvironmentChange = (value: Environment) => {
@@ -409,8 +411,10 @@ const Editor: React.FC<EditorProps> = ({
     }
   };
 
+  //
+
   return (
-    <div className="flex flex-col fixed top-14 bottom-14 dark:bg-[#18181B] bg-white dark:text-white text-black">
+    <div className={className}>
       <div className="flex flex-1 min-h-0">
         <Split
           className="flex w-full"

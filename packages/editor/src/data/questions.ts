@@ -423,3 +423,77 @@ Remove tasks from the Todo List upon clicking the "Delete" button.`,
     questionType: "ui",
   },
 };
+
+export const question2: Question = {
+  initialVanillaFiles: [
+    {
+      name: "solution.js",
+      language: "javascript",
+      content:
+        "// Please write your logic inside this function\nfunction findMaxConsecutiveOnes(nums) {\n\n}",
+    },
+  ],
+  initialReactFiles: [],
+  solutionVanillaFiles: [
+    {
+      name: "solution.js",
+      language: "javascript",
+      content:
+        "function findMaxConsecutiveOnes(nums) {\n  let maxCount = 0;\n  let currentCount = 0;\n\n  for (let num of nums) {\n    if (num === 1) {\n      currentCount++;\n      maxCount = Math.max(maxCount, currentCount);\n    } else {\n      currentCount = 0;\n    }\n  }\n\n  return maxCount;\n}",
+    },
+  ],
+  solutionReactFiles: [],
+  questionDetails: {
+    name: "Max Consecutive Ones",
+    questionaerInfo: {
+      name: "YanghSun Tay",
+      profilePic:
+        "https://media.licdn.com/dms/image/v2/D5603AQFB72zuIqxYrQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1684230919345?e=1744848000&v=beta&t=k1XZNF3EGY4g8MbqRfgp6bGPxWYQdH5_9cRp73CWgu0",
+      additionalInfo: "Ex-Meta Staff Engineer",
+    },
+    techStack: ["js"],
+    difficulty: "Easy",
+    time: 20,
+    questionDescription:
+      "Given a binary array `nums`, return the maximum number of consecutive 1's in the array. For example, if `nums = [1,1,0,1,1,1]`, the output should be 3 because the longest sequence of 1s is of length 3.",
+    requirements: [
+      "Write a function `findMaxConsecutiveOnes` that takes an array of numbers (containing only 0s and 1s) as input.",
+      "The function should return the length of the longest sequence of consecutive 1s.",
+    ],
+    notes: [
+      "The input array will only contain 0s and 1s.",
+      "The array length can be from 0 to 10^4.",
+      "You can assume the input is valid (no need to handle edge cases like non-binary values).",
+    ],
+    companies: ["Google", "Microsoft", "Facebook"],
+    questionType: "logical",
+    testCases: [
+      {
+        input: "[1,1,0,1,1,1]",
+        output: 3,
+        description: "Test case with multiple sequences of 1s, longest is 3.",
+      },
+      {
+        input: "[1,0,1,1,0,1]",
+        output: 2,
+        description:
+          "Test case with alternating 0s and 1s, longest sequence is 2.",
+      },
+      {
+        input: "[0,0,0]",
+        output: 0,
+        description: "Test case with no 1s.",
+      },
+      {
+        input: "[1,1,1,1,1]",
+        output: 5,
+        description: "Test case with all 1s.",
+      },
+      {
+        input: "[]",
+        output: 0,
+        description: "Test case with empty array.",
+      },
+    ],
+  },
+};

@@ -1,6 +1,6 @@
 "use client";
 
-import { Inter } from "next/font/google";
+import { Inter, Roboto } from "next/font/google";
 
 import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
@@ -11,6 +11,12 @@ const fontInter = Inter({
   variable: "--font-inter",
 });
 
+const fontRoboto = Roboto({
+  subsets: ["latin"],
+  variable: "--font-roboto",
+  weight: "400",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -18,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontInter.className} `}>
+      <body
+        className={`${fontRoboto.className} dark:bg-[#18181B] ${fontInter.className} `}
+      >
         <CodeProvider>
           <Providers>{children}</Providers>
         </CodeProvider>

@@ -70,6 +70,7 @@ export default function QuestionPage() {
         question={question}
         setCode={setCode}
         testCases={testCases}
+        className="flex flex-col fixed top-14 bottom-14  dark:bg-[#18181B] bg-white dark:text-white text-black"
       />
     </div>
   );
