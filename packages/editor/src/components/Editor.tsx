@@ -584,7 +584,7 @@ const Editor: React.FC<EditorProps> = ({
                       lineHeight: 21,
                       padding: { top: 16 },
                       wordWrap: "on",
-                      theme: theme === "dark" ? "vs-dark" : "",
+                      theme: theme === "dark" ? "vs-dark" : "vs",
                     }}
                     height="100%"
                   />

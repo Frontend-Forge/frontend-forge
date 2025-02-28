@@ -27,7 +27,7 @@ export function HeroScrollDemo() {
   return (
     <div className="flex flex-col overflow-hidden">
       <ContainerScroll>
-        <div className="w-full dark:border-[#353538] border-gray-400 border-[2px] flex flex-col bg-[#E4E4E7] dark:bg-[#353538] rounded-md shadow-xl overflow-hidden">
+        <div className="w-full dark:border-[#353538] border-gray-400 border-[2px] flex flex-col bg-[#E4E4E7] dark:bg-[#353538] rounded-xl shadow-xl overflow-hidden">
           {/* Mac window header */}
           <div className="h-8 w-full bg-gray-200 dark:bg-[#1E1E21] flex items-center px-4 border-b border-gray-300 dark:border-gray-700">
             <div className="flex space-x-2">
@@ -87,14 +87,14 @@ export function HeroScrollDemo() {
         <div className="flex flex-row gap-4 w-full justify-center items-center mt-6">
           <Button
             onClick={() => handleQuestionTypeChange("ui")}
-            className="rounded-full text-sm "
+            className={`rounded-full text-sm ${questionType === "ui" ? "" : "bg-transparent"} `}
             variant={questionType === "ui" ? "default" : "outline"}
           >
             UI Components
           </Button>
           <Button
             onClick={() => handleQuestionTypeChange("logical")}
-            className="rounded-full text-sm"
+            className={`rounded-full text-sm ${questionType === "logical" ? "" : "bg-transparent"}`}
             variant={questionType === "logical" ? "default" : "outline"}
           >
             JavaScript Function
