@@ -6,6 +6,7 @@ import { Button } from "@workspace/ui/components/button";
 import { ArrowRight } from "lucide-react";
 import TextGenerateEffect from "@workspace/ui/components/text-generate-effect";
 import { motion } from "framer-motion";
+import FeatureCards from "@/components/features-cards";
 
 export default function Page() {
   // Animation variants
@@ -39,7 +40,7 @@ export default function Page() {
       <LandingHeader />
 
       <motion.div
-        className="w-[70%] mt-[50px] flex flex-col items-start"
+        className="w-[80%] mt-[50px] flex flex-col items-start"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -91,6 +92,26 @@ export default function Page() {
       >
         <HeroScrollDemo />
       </motion.div>
+
+      <div className="-mt-[280px] w-[80%] flex flex-col items-start">
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          Practice in an environment
+        </p>
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          that simulates real interviews
+        </p>
+
+        <p className=" text-[#52525B] dark:text-gray-200 text-xl mt-10 w-[50%]">
+          Our in-browser coding workspace allows you to simulate a real
+          interview environment with no set up required.
+        </p>
+
+        <div className="mt-14 w-full">
+          <FeatureCards />
+        </div>
+      </div>
+
+      {/* <FeatureCards /> */}
     </div>
   );
 }
