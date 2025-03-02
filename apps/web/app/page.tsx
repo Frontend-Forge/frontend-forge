@@ -7,6 +7,8 @@ import { ArrowRight } from "lucide-react";
 import TextGenerateEffect from "@workspace/ui/components/text-generate-effect";
 import { motion } from "framer-motion";
 import FeatureCards from "@/components/features-cards";
+import CompaniesCards from "@/components/companies-cards";
+import { MarqueeDemo } from "@/components/reviews";
 
 export default function Page() {
   // Animation variants
@@ -110,8 +112,36 @@ export default function Page() {
           <FeatureCards />
         </div>
       </div>
+      <div className="mt-8 w-[80%] flex flex-col items-start">
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          Let experienced developers
+        </p>
+        <p className="bg-gradient-to-r mt-3 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          craft your learning resources.
+        </p>
+
+        <p className=" text-[#52525B] dark:text-gray-200 text-xl mt-10 w-[60%]">
+          Gain valuable best practices and advanced techniques, carefully
+          refined through extensive hands-on experience and deep industry
+          knowledge.
+        </p>
+
+        <div className="mt-14 w-full">
+          <CompaniesCards />
+        </div>
+      </div>
 
       {/* <FeatureCards /> */}
+
+      <div className="mt-8 w-[80%] flex flex-col items-start">
+        <p className="bg-gradient-to-r pb-1 from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          What People are Saying!
+        </p>
+
+        <div className="mt-14 w-full">
+          <MarqueeDemo />
+        </div>
+      </div>
     </div>
   );
 }

@@ -34,7 +34,7 @@ export default function FeatureCards() {
         <>
           {/* Base layer - largest and most blurred */}
           <motion.div
-            className="pointer-events-none absolute bg-yellow-100/30 dark:bg-white/5 rounded-full blur-3xl z-50"
+            className="pointer-events-none absolute bg-yellow-100/30 dark:bg-gray-500/30 rounded-full blur-3xl z-50"
             animate={{
               x: mousePosition.x - 100,
               y: mousePosition.y - 100,
@@ -53,7 +53,7 @@ export default function FeatureCards() {
           />
           {/* Middle layer - medium blur */}
           <motion.div
-            className="pointer-events-none absolute bg-yellow-100/20 z-50 dark:bg-white/4 rounded-full blur-2xl"
+            className="pointer-events-none absolute bg-yellow-100/20 z-50 dark:bg-gray-500/30 rounded-full blur-2xl"
             animate={{
               x: mousePosition.x - 75,
               y: mousePosition.y - 75,
@@ -72,7 +72,7 @@ export default function FeatureCards() {
           />
           {/* Top layer - smallest and sharpest */}
           <motion.div
-            className="pointer-events-none absolute z-50 bg-yellow-50/10 dark:bg-white/3 rounded-full blur-xl"
+            className="pointer-events-none absolute z-50 bg-yellow-50/10 dark:bg-gray-500/30 rounded-full blur-xl"
             animate={{
               x: mousePosition.x - 50,
               y: mousePosition.y - 50,
