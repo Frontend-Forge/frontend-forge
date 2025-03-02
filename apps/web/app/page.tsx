@@ -9,6 +9,9 @@ import { motion } from "framer-motion";
 import FeatureCards from "@/components/features-cards";
 import CompaniesCards from "@/components/companies-cards";
 import { MarqueeDemo } from "@/components/reviews";
+import MessageBox from "@/components/message";
+import Footer from "@/components/Footer";
+import { AccordionDemo } from "@/components/accordian";
 
 export default function Page() {
   // Animation variants
@@ -133,14 +136,48 @@ export default function Page() {
 
       {/* <FeatureCards /> */}
 
-      <div className="mt-8 w-[80%] flex flex-col items-start">
+      <div className="mt-12 w-[80%] flex flex-col items-start">
         <p className="bg-gradient-to-r pb-1 from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
           What People are Saying!
         </p>
 
         <div className="mt-14 w-full">
           <MarqueeDemo />
+          <MarqueeDemo />
         </div>
+      </div>
+
+      <div className="mt-8 w-[80%] flex flex-col items-start">
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          Your commonly asked
+        </p>
+        <p className="bg-gradient-to-r mt-3 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          questions, answered
+        </p>
+      </div>
+
+      <AccordionDemo />
+
+      <div className="mt-8 w-[80%] flex flex-col items-start">
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          Don&lsquo;t hesitate to reach out.
+        </p>
+        <p className="bg-gradient-to-r mt-3 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+          We&lsquo;re always here to help.
+        </p>
+
+        <p className=" text-[#52525B] dark:text-gray-200 text-xl mt-10 w-[60%]">
+          Have questions, feedback, or anything to say? Tell us. We usually get
+          back within 1-2 days.
+        </p>
+
+        <div className="mt-14 w-full">
+          <MessageBox />
+        </div>
+      </div>
+
+      <div className="mt-14 w-full">
+        <Footer />
       </div>
     </div>
   );
