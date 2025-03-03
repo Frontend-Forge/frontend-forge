@@ -40,10 +40,12 @@ export default function LandingHeader(): React.ReactElement {
           </div>
           <span className="font-semibold">Frontend Forge</span>
         </div>
-        <p className="text-gray-300">|</p>
-        <p className="text-sm hover:underline cursor-pointer">Get Started</p>
+        <p className="text-gray-300 bp4:block hidden">|</p>
+        <p className="text-sm hover:underline cursor-pointer bp1:block hidden">
+          Get Started
+        </p>
 
-        <NavigationMenu>
+        <NavigationMenu className=" bp1:block hidden  ">
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger className="text-sm bg-transparent hover:bg-transparet hover:underline px-2">
@@ -86,7 +88,9 @@ export default function LandingHeader(): React.ReactElement {
         </NavigationMenu>
       </div>
       <div className="flex flex-row gap-4 mr-6 items-center">
-        <p className="text-[14px] hover:underline cursor-pointer">Pricing</p>
+        <p className="text-[14px] hover:underline bp4:block hidden cursor-pointer">
+          Pricing
+        </p>
         <p className="text-[14px] hover:underline cursor-pointer">Sign in/up</p>
         <div
           onClick={toggleTheme}
@@ -101,7 +105,7 @@ export default function LandingHeader(): React.ReactElement {
 
         <Button
           variant="default"
-          className="bg-[#E2FB75] rounded-full h-[30px] text-black hover:bg-[#E2FB75]/90"
+          className="bg-[#E2FB75] bp3:block hidden rounded-full h-[30px] text-black hover:bg-[#E2FB75]/90"
         >
           <p className="text-[14px]">Get full access</p>
         </Button>

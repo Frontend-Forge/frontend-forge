@@ -25,7 +25,7 @@ export function HeroScrollDemo() {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className=" flex-col overflow-hidden bp2:flex hidden">
       <ContainerScroll>
         <div className="w-full dark:border-[#353538] border-gray-400 border-[2px] flex flex-col bg-[#E4E4E7] dark:bg-[#353538] rounded-xl shadow-xl overflow-hidden">
           {/* Mac window header */}

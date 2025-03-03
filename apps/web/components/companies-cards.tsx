@@ -29,7 +29,7 @@ export default function CompaniesCards() {
   return (
     <div
       ref={containerRef}
-      className="flex flex-col h-[380px] md:flex-row gap-8 p-4 mx-auto max-w-6xl relative"
+      className="flex flex-col bp7:h-[380px] h-[1040px] md:flex-row gap-8 p-4 mx-auto max-w-6xl relative"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -98,16 +98,16 @@ export default function CompaniesCards() {
       )}
 
       {/* Card 1 - Run your code */}
-      <Card className="flex-1 bg-gray-50 dark:bg-transparent border-0 rounded-lg overflow-hidden dark:before:content-[''] dark:before:absolute dark:before:inset-0 dark:before:bg-gradient-to-br dark:before:from-[#232327] dark:before:to-[#28282D] dark:before:rounded-lg dark:before:z-0 relative">
+      <Card className="flex-1 h-[350px] bg-gray-50 dark:bg-transparent border-0 rounded-lg overflow-hidden dark:before:content-[''] dark:before:absolute dark:before:inset-0 dark:before:bg-gradient-to-br dark:before:from-[#232327] dark:before:to-[#28282D] dark:before:rounded-lg dark:before:z-0 relative">
         <CardContent className="p-6 flex flex-col justify-center h-full relative z-10 border-[2px] dark:border-[#2C2B31] border-[#E4E4E7]">
-          <div className="flex flex-row items-center justify-center gap-6 mb-6 ">
-            <div className="p-4 dark:bg-[#222225] bg-white rounded-full border-[2px] dark:border-[#2C2B31] border-[#E4E4E7] ">
+          <div className="flex flex-row items-center justify-center bp2:agp-6 gap-3  mb-6 ">
+            <div className="p-4 bp7:block hidden dark:bg-[#222225] bg-white rounded-full border-[2px] dark:border-[#2C2B31] border-[#E4E4E7] ">
               <svg
                 stroke="currentColor"
                 fill="currentColor"
                 strokeWidth="0"
                 viewBox="0 0 24 24"
-                className="size-10 sm:size-7 md:size-8 lg:size-10"
+                className="size-10  sm:size-7 md:size-8 lg:size-10"
                 height="1em"
                 width="1em"
                 xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +153,7 @@ export default function CompaniesCards() {
       </Card>
 
       {/* Card 2 - Resize workspace */}
-      <Card className="flex-1 bg-gray-50 dark:bg-transparent border-0 rounded-lg overflow-hidden dark:before:content-[''] dark:before:absolute dark:before:inset-0 dark:before:bg-gradient-to-br dark:before:from-[#232327] dark:before:to-[#28282D] dark:before:rounded-lg dark:before:z-0 relative">
+      <Card className="flex-1 h-[350px] bg-gray-50 dark:bg-transparent border-0 rounded-lg overflow-hidden dark:before:content-[''] dark:before:absolute dark:before:inset-0 dark:before:bg-gradient-to-br dark:before:from-[#232327] dark:before:to-[#28282D] dark:before:rounded-lg dark:before:z-0 relative">
         <CardContent className="p-6 flex flex-col justify-center h-full relative z-10 border-[2px] dark:border-[#2C2B31] border-[#E4E4E7]">
           <div className="flex flex-row items-center justify-center gap-6 mb-6 ">
             <div className="p-4 dark:bg-[#222225] bg-white rounded-full border-[2px] dark:border-[#2C2B31] border-[#E4E4E7] ">
@@ -308,7 +308,7 @@ export default function CompaniesCards() {
         </CardContent>
       </Card>
 
-      <Card className="flex-1 bg-gray-50 dark:bg-transparent border-0 rounded-lg overflow-hidden dark:before:content-[''] dark:before:absolute dark:before:inset-0 dark:before:bg-gradient-to-br dark:before:from-[#232327] dark:before:to-[#28282D] dark:before:rounded-lg dark:before:z-0 relative">
+      <Card className="flex-1 h-[350px] bg-gray-50 dark:bg-transparent border-0 rounded-lg overflow-hidden dark:before:content-[''] dark:before:absolute dark:before:inset-0 dark:before:bg-gradient-to-br dark:before:from-[#232327] dark:before:to-[#28282D] dark:before:rounded-lg dark:before:z-0 relative">
         <CardContent className="p-6 flex flex-col justify-center h-full relative z-10 border-[2px] dark:border-[#2C2B31] border-[#E4E4E7]">
           <div className="flex flex-row items-center justify-center gap-3 mb-6 ">
             <div className="p-4 dark:bg-[#222225] bg-white rounded-full border-[2px] dark:border-[#2C2B31] border-[#E4E4E7] ">
@@ -328,8 +328,6 @@ export default function CompaniesCards() {
           </p>
         </CardContent>
       </Card>
-
-      {/* Card 3 - Syntax highlighting - Improved */}
     </div>
   );
 }

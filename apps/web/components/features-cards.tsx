@@ -154,7 +154,7 @@ export default function FeatureCards() {
 
       {/* Card 2 - Resize workspace */}
       <Card className="flex-1 bg-gray-50 dark:bg-transparent border-0 rounded-lg overflow-hidden dark:before:content-[''] dark:before:absolute dark:before:inset-0 dark:before:bg-gradient-to-br dark:before:from-[#232327] dark:before:to-[#28282D] dark:before:rounded-lg dark:before:z-0 relative">
-        <CardContent className="p-6 flex flex-col h-full relative z-10">
+        <CardContent className=" p-6 flex flex-col h-full relative z-10">
           <div className="flex-1 mb-6">
             <div className="bg-white dark:bg-[#27272C]/90 rounded-lg p-4 relative">
               {/* Header dots */}
@@ -187,7 +187,7 @@ export default function FeatureCards() {
               </div>
             </div>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+          <h3 className="text-lg font-medium text-gray-900 bp6:mt-0 mt-10 dark:text-white">
             Resize and customize the workspace as you like
           </h3>
         </CardContent>

@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function MessageBox() {
   return (
-    <div className="flex flex-col items-center  dark:border-[#515056] relative justify-center h-[380px] mx-auto w-[70%] rounded-md border-gray-300 border-[1px] mb-8">
+    <div className="flex flex-col items-center  dark:border-[#515056] relative justify-center h-[380px] mx-auto bp3:w-[70%] w-[90%] rounded-md border-gray-300 border-[1px] mb-8">
       <div className="flex flex-col w-[90%]">
         <p className="self-start text-sm ml-[5.5%] mb-1">Message</p>
         <textarea
@@ -24,7 +24,7 @@ export default function MessageBox() {
 
       <Button
         variant="default"
-        className="bg-[#E2FB75] ml-[9%] self-start left-10 bottom-2 rounded-full h-[40px] px-8 mt-8 text-black hover:bg-[#E2FB75]/90"
+        className="bg-[#E2FB75] ml-[9%] self-start left-10 bottom-2 rounded-full h-[40px] bp3:px-8 px-6 mt-8 text-black hover:bg-[#E2FB75]/90"
       >
         <p className="text-[14px]">Send Message</p>
         <ArrowRight className="w-3 h-4" />

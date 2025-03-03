@@ -12,7 +12,7 @@ export function AccordionDemo() {
         <AccordionTrigger className="text-xl">
           What frameworks/libraries does the platform support?
         </AccordionTrigger>
-        <AccordionContent className="text-[16px] tracking-wider font-light dark:text-gray-300 text-gray-700">
+        <AccordionContent className="text-[16px] tracking-wider leading-relaxed font-light dark:text-gray-300 text-gray-700">
           <p>
             Our platform supports all major frontend frameworks and libraries,
             including React and vanilla JavaScript. Whether you prefer the
@@ -45,7 +45,7 @@ export function AccordionDemo() {
         <AccordionTrigger className="text-xl">
           How do the test cases work?
         </AccordionTrigger>
-        <AccordionContent className="text-[16px] tracking-wider font-light dark:text-gray-300 text-gray-700">
+        <AccordionContent className="text-[16px] leading-relaxed tracking-wider font-light dark:text-gray-300 text-gray-700">
           Each challenge comes with predefined test cases designed to validate
           various aspects of your solution, including functionality,
           accessibility, and responsiveness. These test cases simulate
@@ -63,7 +63,7 @@ export function AccordionDemo() {
         <AccordionTrigger className="text-xl">
           Does the platform have difficulty levels?
         </AccordionTrigger>
-        <AccordionContent className="text-[16px] tracking-wider font-light dark:text-gray-300 text-gray-700">
+        <AccordionContent className="text-[16px] leading-relaxed tracking-wider font-light dark:text-gray-300 text-gray-700">
           Yes, our challenges are structured into three difficulty levels: Easy,
           Medium, and Hard. This categorization allows developers to choose
           tasks that match their current skill level and progress gradually.
@@ -82,7 +82,7 @@ export function AccordionDemo() {
         <AccordionTrigger className="text-xl">
           Is it open source?
         </AccordionTrigger>
-        <AccordionContent className="text-[16px] tracking-wider font-light dark:text-gray-300 text-gray-700">
+        <AccordionContent className="text-[16px] leading-relaxed tracking-wider font-light dark:text-gray-300 text-gray-700">
           Yes! Our platform is open source, allowing developers to contribute,
           modify, and extend its features. Being open source means that the
           entire codebase is accessible to the community, enabling transparency,
@@ -101,7 +101,7 @@ export function AccordionDemo() {
         <AccordionTrigger className="text-xl">
           Is it completely free?
         </AccordionTrigger>
-        <AccordionContent className="text-[16px] tracking-wider font-light dark:text-gray-300 text-gray-700">
+        <AccordionContent className="text-[16px] leading-relaxed tracking-wider font-light dark:text-gray-300 text-gray-700">
           Yes, it is completely free! Our platform is designed to provide
           unrestricted access to all users, regardless of their experience level
           or location. There are no hidden charges, premium subscriptions, or

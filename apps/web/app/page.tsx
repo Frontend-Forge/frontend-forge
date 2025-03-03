@@ -52,20 +52,20 @@ export default function Page() {
       >
         <motion.div variants={itemVariants}>
           <TextGenerateEffect
-            className="mt-32 text-5xl font-semibold"
+            className="bp3:mt-32 mt-10 bp3:text-5xl text-3xl font-semibold"
             words="Navigate frontend"
           />
         </motion.div>
 
         <motion.div variants={itemVariants}>
           <TextGenerateEffect
-            className="text-5xl font-semibold"
+            className="bp3:text-5xl text-3xl font-semibold"
             words="interviews with ease"
           />
         </motion.div>
 
         <motion.p
-          className="text-xl mt-6 dark:text-gray-300 text-gray-600 w-[58%]"
+          className="bp3:text-xl text-[16px] mt-6 dark:text-gray-300 text-gray-600 bp2:w-[58%]"
           variants={itemVariants}
         >
           Meet the{" "}
@@ -98,15 +98,17 @@ export default function Page() {
         <HeroScrollDemo />
       </motion.div>
 
-      <div className="-mt-[280px] w-[80%] flex flex-col items-start">
-        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
-          Practice in an environment
+      <div className=" bp2:-mt-[280px] mt-4  w-[80%] flex flex-col items-start">
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] bp4:text-5xl text-3xl">
+          Practice in an environment{" "}
+          <span className="bp3:hidden inline-block">that</span>
         </p>
-        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
-          that simulates real interviews
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] bp4:text-5xl text-3xl">
+          <span className="bp3:inline-block hidden">that</span> simulates real
+          interviews
         </p>
 
-        <p className=" text-[#52525B] dark:text-gray-200 text-xl mt-10 w-[50%]">
+        <p className=" text-[#52525B] bp3:text-xl text-[16px]  dark:text-gray-200 mt-10  bp5:w-[50%] bp4:w-[90%]">
           Our in-browser coding workspace allows you to simulate a real
           interview environment with no set up required.
         </p>
@@ -116,14 +118,14 @@ export default function Page() {
         </div>
       </div>
       <div className="mt-8 w-[80%] flex flex-col items-start">
-        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] bp4:text-5xl text-3xl">
           Let experienced developers
         </p>
-        <p className="bg-gradient-to-r mt-3 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+        <p className="bg-gradient-to-r bp4:mt-3 mt-0 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] bp4:text-5xl text-3xl">
           craft your learning resources.
         </p>
 
-        <p className=" text-[#52525B] dark:text-gray-200 text-xl mt-10 w-[60%]">
+        <p className=" text-[#52525B] bp5:w-[50%] bp4:w-[90%] bp3:text-xl text-[16px]  dark:text-gray-200  mt-10">
           Gain valuable best practices and advanced techniques, carefully
           refined through extensive hands-on experience and deep industry
           knowledge.
@@ -137,7 +139,7 @@ export default function Page() {
       {/* <FeatureCards /> */}
 
       <div className="mt-12 w-[80%] flex flex-col items-start">
-        <p className="bg-gradient-to-r pb-1 from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+        <p className="bg-gradient-to-r pb-1 from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] bp4:text-5xl text-3xl">
           What People are Saying!
         </p>
 
@@ -148,10 +150,10 @@ export default function Page() {
       </div>
 
       <div className="mt-8 w-[80%] flex flex-col items-start">
-        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1]  bp4:text-5xl text-3xl">
           Your commonly asked
         </p>
-        <p className="bg-gradient-to-r mt-3 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+        <p className="bg-gradient-to-r mt-3 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1]  bp4:text-5xl text-3xl">
           questions, answered
         </p>
       </div>
@@ -159,14 +161,15 @@ export default function Page() {
       <AccordionDemo />
 
       <div className="mt-8 w-[80%] flex flex-col items-start">
-        <p className="bg-gradient-to-r from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
-          Don&lsquo;t hesitate to reach out.
+        <p className="bg-gradient-to-r  from-[#19191C] to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1]  bp4:text-5xl text-3xl">
+          Don&lsquo;t hesitate to reach out.{" "}
+          <span className="bp4:hidden"> We&lsquo;re always here to help.</span>
         </p>
-        <p className="bg-gradient-to-r mt-3 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1] text-5xl">
+        <p className="bg-gradient-to-r bp4:block hidden mt-3 from-[#19191C] pb-1 to-[#717171] bg-clip-text text-transparent dark:from-[#F3F3F4] dark:to-[#C1C1C1]  bp4:text-5xl text-3xl">
           We&lsquo;re always here to help.
         </p>
 
-        <p className=" text-[#52525B] dark:text-gray-200 text-xl mt-10 w-[60%]">
+        <p className="  text-[#52525B] bp5:w-[50%] bp4:w-[90%] bp3:text-xl text-[16px]  dark:text-gray-200  mt-10">
           Have questions, feedback, or anything to say? Tell us. We usually get
           back within 1-2 days.
         </p>
