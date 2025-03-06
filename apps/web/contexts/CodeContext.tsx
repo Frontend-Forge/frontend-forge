@@ -1,3 +1,5 @@
+"use client";
+
 import { TestCases } from "@/models/Question";
 import { createContext, ReactNode, useContext, useState } from "react";
 
