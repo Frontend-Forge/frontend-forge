@@ -25,7 +25,7 @@
     "@types/three": "^0.174.0",
     "@workspace/editor": "workspace:*",
     "@workspace/ui": "workspace:*",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "cobe": "^0.6.3",
     "framer-motion": "^12.4.7",
     "isolated-vm": "^5.0.3",
