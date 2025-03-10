@@ -13,6 +13,7 @@ import {
   Lightbulb,
   FileText,
   TestTube,
+  CodeXml,
 } from "lucide-react";
 import {
   Select,
@@ -110,6 +111,7 @@ const Editor: React.FC<EditorProps> = ({
   const [showTerminal, setShowTerminal] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
+  const [logCounter, setLogCounter] = useState<number>(0);
 
   // Get current files based on environment and solution state
   const getCurrentFiles = () => {
@@ -375,16 +377,43 @@ const Editor: React.FC<EditorProps> = ({
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === "console") {
         const timestamp = new Date().toLocaleTimeString();
-        setLogs((prev) => [
-          ...prev,
-          {
-            type: event.data.logType || "log",
-            message: event.data.message,
-            timestamp,
-          },
-        ]);
+
+        setLogs((prevLogs) => {
+          // Check if the incoming message is a duplicate of the last message
+
+          if (
+            event.data.message ===
+            `You are using the in-browser Babel transformer. Be sure to precompile your scripts for production - https://babeljs.io/docs/setup/`
+          ) {
+            return prevLogs;
+          }
+
+          if (
+            prevLogs.length > 0 &&
+            prevLogs[prevLogs.length - 1]?.message === event.data.message
+          ) {
+            // Increment the counter for the duplicate message
+            setLogCounter((prevCount) => prevCount + 1);
+
+            // Return logs unchanged since we're just counting the duplicate
+            return prevLogs;
+          }
+
+          // If it's not a duplicate, reset the counter and add the new log
+          setLogCounter(1); // Reset counter to 1 for new message
+
+          return [
+            ...prevLogs,
+            {
+              type: event.data.logType || "log",
+              message: event.data.message,
+              timestamp,
+            },
+          ];
+        });
       }
     };
+
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   };
@@ -519,10 +548,12 @@ const Editor: React.FC<EditorProps> = ({
                 ))}
               </div>
             )}
-            <div className="w-[90%] mb-2 flex flex-col  ml-8 gap-y-2">
-              <p className="font-bold text-2xl">Companies</p>
-              <CompanyLogo companiesArray={questionDetails.companies} />
-            </div>
+            {questionDetails.companies.length !== 0 && (
+              <div className="w-[90%] mb-2 flex flex-col  ml-8 gap-y-2">
+                <p className="font-bold text-2xl">Companies</p>
+                <CompanyLogo companiesArray={questionDetails.companies} />
+              </div>
+            )}
           </div>
 
           {/* Middle Panel (Editor) */}
@@ -759,19 +790,34 @@ const Editor: React.FC<EditorProps> = ({
                       </button>
                     </div>
                   </div>
-                  <div
-                    ref={consoleRef}
-                    className="p-4 text-sm h-[calc(100%-40px)]  overflow-auto font-mono"
-                  >
-                    {logs.map((log, index) => (
-                      <div key={index} className={getLogStyle(log.type)}>
-                        <span className="text-gray-500 mr-2">
-                          {log.timestamp}
-                        </span>
-                        {log.message}
-                      </div>
-                    ))}
-                  </div>
+                  {logs.length === 0 && (
+                    <div className="w-full h-full flex flex-col items-center justify-center">
+                      <CodeXml className="w-6 h-6" />
+                      <p>Logs Will appear here</p>
+                    </div>
+                  )}
+                  {logs.length !== 0 && (
+                    <div
+                      ref={consoleRef}
+                      className="p-4 text-sm h-[calc(100%-40px)]  overflow-auto font-mono"
+                    >
+                      {logs.map((log, index) => (
+                        <div key={index} className={getLogStyle(log.type)}>
+                          <span className="text-gray-500 mr-2">
+                            {log.timestamp}
+                          </span>
+                          {log.message}
+                          {/* Add counter display for the last log entry if counter > 1 */}
+                          {index === logs.length - 1 && logCounter > 1 && (
+                            <span className="log-counter ml-2 px-1.5 py-0.5 text-xs rounded-full bg-blue-500 text-white">
+                              {Math.ceil(logCounter / 2)}{" "}
+                              {/* Show half the counter value (rounded up) */}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
