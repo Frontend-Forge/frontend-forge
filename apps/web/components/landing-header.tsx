@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
+import Link from "next/link";
 
 export default function LandingHeader(): React.ReactElement {
   const { theme, toggleTheme } = useDarkMode();
@@ -18,7 +19,7 @@ export default function LandingHeader(): React.ReactElement {
   return (
     <div className="w-full h-[50px] fixed top-0 right-0 z-50 left-0 backdrop-blur-lg flex flex-row justify-between items-center bg-transparent ">
       <div className="flex flex-row items-center gap-8 ml-6">
-        <div className="flex items-center gap-1">
+        <Link href={"/"} className="flex items-center gap-1">
           <div className="flex items-center space-x-1">
             {theme === "dark" ? (
               <Image
@@ -39,7 +40,7 @@ export default function LandingHeader(): React.ReactElement {
             )}
           </div>
           <span className="font-semibold">Frontend Forge</span>
-        </div>
+        </Link>
         <p className="text-gray-300 bp4:block hidden">|</p>
         <p className="text-sm hover:underline cursor-pointer bp1:block hidden">
           Get Started
@@ -91,7 +92,12 @@ export default function LandingHeader(): React.ReactElement {
         <p className="text-[14px] hover:underline bp4:block hidden cursor-pointer">
           Pricing
         </p>
-        <p className="text-[14px] hover:underline cursor-pointer">Sign in/up</p>
+        <Link
+          href={"/signup"}
+          className="text-[14px] hover:underline cursor-pointer"
+        >
+          Sign in/up
+        </Link>
         <div
           onClick={toggleTheme}
           className="rounded-full border-[1px] p-[7px] hover:bg-[#E4E4E7] dark:hover:bg-[#1f1f20] hover:border-gray-500 hover:scale-110 transition-all ease-in-out cursor-pointer duration-200 dark:border-[#27272A] border-[#E4E4E7]"
