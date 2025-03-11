@@ -4,7 +4,15 @@ import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
 import type React from "react"; // Import React
 import Image from "next/image";
-import { Check, InfoIcon, Moon, PlayIcon, Sun } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  InfoIcon,
+  Moon,
+  PlayIcon,
+  Sun,
+} from "lucide-react";
 
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -139,6 +147,23 @@ export default function RootLayout({
             <div className="flex flex-row ml-8 gap-[6px] dark:hover:text-gray-300 cursor-pointer duration-300 transition-all hover:text-gray-900 items-center">
               <InfoIcon className="h-3 w-3" />
               <p className=" text-[12px] mt-[1px]">Report an Issue</p>
+            </div>
+
+            <div className="text-sm  flex flex-row items-center justify-center gap-3">
+              <div className="hover:bg-gray-200 dark:hover:dark:bg-gray-950 delay-150 ease-in-out  hover:scale-110 duration-200 cursor-pointer p-2 rounded-full ">
+                {" "}
+                <ArrowLeft className="w-4 h-4 " />
+              </div>
+
+              <div className=" px-3 py-1 flex flex-row items-center gap-2 dark:bg-black bg-white  border-[1px] border-gray-400 dark:border-[#3D3D44] rounded-full">
+                Questions{" "}
+                <span className="px-3 py-[1px] text-[10px] dark:bg-black bg-gray-200 border-[1px] border-gray-400 dark:border-[#3D3D44] rounded-full">
+                  1/80
+                </span>
+              </div>
+              <div className="hover:bg-gray-200 dark:hover:dark:bg-gray-950 delay-150 ease-in-out  hover:scale-110 duration-200 cursor-pointer p-2 rounded-full ">
+                <ArrowRight className="w-4 h-4" />
+              </div>
             </div>
 
             <div className="flex flex-row items-center gap-4 mr-8">
