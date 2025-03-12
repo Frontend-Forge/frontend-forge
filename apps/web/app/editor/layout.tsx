@@ -17,9 +17,12 @@ import {
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@workspace/ui/globals.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCode } from "@/contexts/CodeContext";
 import { useDarkMode } from "@/hooks/useDarkMode";
+import { QuestionSidebar } from "@/components/SidebarQuestions";
+import { useEffect, useState } from "react";
+import { ExtendedQuestion } from "@/components/DisplayQuestions";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -36,6 +39,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [showQuestionBar, setShowQuestionBar] = useState<boolean>(false);
+  const [questionIndex, setQuestionIndex] = useState<number | null>(null);
+  const [questions, setQuestions] = useState<ExtendedQuestion[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState<boolean>(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState<string | null>(null);
+
   const { theme, toggleTheme } = useDarkMode();
   const pathName = usePathname();
   const questionId = pathName.slice(8, pathName.length);
@@ -61,11 +72,63 @@ export default function RootLayout({
     setTestCases(res.results);
   }
 
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await fetch("/api/getData");
+        const data = await response.json();
+
+        if (response.ok) {
+          setQuestions(data.data);
+        } else {
+          setError(data.message || "Failed to load data");
+        }
+      } catch (err) {
+        setError(`An error occurred while fetching data: ${err}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    questions.map((q, i) => {
+      if (q._id === questionId) {
+        setQuestionIndex(i + 1);
+      }
+    });
+  }, [questionId, questions]);
+
+  function handleNextQuestion() {
+    questions.map((q, i) => {
+      if (q._id === questionId && i !== questions.length - 1) {
+        router.push(`/editor/${questions[i + 1]?._id}`);
+      }
+    });
+  }
+
+  function handlePrevQuestion() {
+    questions.map((q, i) => {
+      if (q._id === questionId && i >= 1) {
+        router.push(`/editor/${questions[i - 1]?._id}`);
+      }
+    });
+  }
+
   return (
     <div
       className={` ${fontSans.variable} ${fontMono.variable} font-sans antialiased  bg-white text-balck`}
     >
       <div className="flex min-h-screen flex-col ">
+        <QuestionSidebar
+          showQuestionBar={showQuestionBar}
+          setShowQuestionBar={setShowQuestionBar}
+          setQuestionIndex={setQuestionIndex}
+        />
         <header className="sticky top-0 text-black z-50 w-full border-b dark:border-neutral-800 border-neutral-300 dark:bg-[#18181B] dark:text-white bg-white">
           <div className="flex h-14 items-center px-4">
             <Link href="/" className="flex items-center space-x-1">
@@ -150,18 +213,27 @@ export default function RootLayout({
             </div>
 
             <div className="text-sm  flex flex-row items-center justify-center gap-3">
-              <div className="hover:bg-gray-200 dark:hover:dark:bg-gray-950 delay-150 ease-in-out  hover:scale-110 duration-200 cursor-pointer p-2 rounded-full ">
+              <div
+                onClick={handlePrevQuestion}
+                className="hover:bg-gray-200 dark:hover:dark:bg-gray-950 delay-150 ease-in-out  hover:scale-110 duration-200 cursor-pointer p-2 rounded-full "
+              >
                 {" "}
                 <ArrowLeft className="w-4 h-4 " />
               </div>
 
-              <div className=" px-3 py-1 flex flex-row items-center gap-2 dark:bg-black bg-white  border-[1px] border-gray-400 dark:border-[#3D3D44] rounded-full">
+              <div
+                onClick={() => setShowQuestionBar(true)}
+                className=" px-3 cursor-pointer py-1 flex flex-row items-center gap-2 dark:bg-black bg-white  border-[1px] border-gray-400 dark:border-[#3D3D44] rounded-full"
+              >
                 Questions{" "}
                 <span className="px-3 py-[1px] text-[10px] dark:bg-black bg-gray-200 border-[1px] border-gray-400 dark:border-[#3D3D44] rounded-full">
-                  1/80
+                  {questionIndex}/5
                 </span>
               </div>
-              <div className="hover:bg-gray-200 dark:hover:dark:bg-gray-950 delay-150 ease-in-out  hover:scale-110 duration-200 cursor-pointer p-2 rounded-full ">
+              <div
+                onClick={handleNextQuestion}
+                className="hover:bg-gray-200 dark:hover:dark:bg-gray-950 delay-150 ease-in-out  hover:scale-110 duration-200 cursor-pointer p-2 rounded-full "
+              >
                 <ArrowRight className="w-4 h-4" />
               </div>
             </div>
