@@ -2,6 +2,7 @@ import { Input } from "@workspace/ui/components/input";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TableDemo } from "./TableDemo";
+import { useState } from "react";
 
 export function QuestionSidebar({
   showQuestionBar,
@@ -12,6 +13,8 @@ export function QuestionSidebar({
   setShowQuestionBar: React.Dispatch<React.SetStateAction<boolean>>;
   setQuestionIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
+  const [query, setQuery] = useState<string>("");
+
   return (
     <AnimatePresence>
       {showQuestionBar && (
@@ -36,6 +39,8 @@ export function QuestionSidebar({
               <Input
                 placeholder="Search Within this list of questions.."
                 className="w-[90%]"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
               />
             </div>
 
@@ -43,6 +48,7 @@ export function QuestionSidebar({
               <TableDemo
                 setQuestionIndex={setQuestionIndex}
                 setShowQuestionBar={setShowQuestionBar}
+                query={query}
               />
             </div>
           </motion.div>

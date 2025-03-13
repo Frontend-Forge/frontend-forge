@@ -30,12 +30,17 @@ function styleDifficultyText(diff: string) {
 export function TableDemo({
   setShowQuestionBar,
   setQuestionIndex,
+  query,
 }: {
   setShowQuestionBar: React.Dispatch<React.SetStateAction<boolean>>;
   setQuestionIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  query: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [questions, setQuestions] = useState<ExtendedQuestion[]>([]);
+  const [filteredQuestions, setFilteredQuestions] = useState<
+    ExtendedQuestion[]
+  >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,6 +57,7 @@ export function TableDemo({
 
         if (response.ok) {
           setQuestions(data.data);
+          setFilteredQuestions(data.data); // Initialize filtered questions with all questions
         } else {
           setError(data.message || "Failed to load data");
         }
@@ -64,6 +70,18 @@ export function TableDemo({
 
     fetchQuestions();
   }, []);
+
+  // Update filtered questions whenever the query or questions change
+  useEffect(() => {
+    if (query) {
+      const filtered = questions.filter((q) =>
+        q.questionDetails.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredQuestions(filtered);
+    } else {
+      setFilteredQuestions(questions);
+    }
+  }, [query, questions]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -119,7 +137,7 @@ export function TableDemo({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {questions.map((question, i) => (
+            {filteredQuestions.map((question, i) => (
               <TableRow
                 onClick={() => {
                   router.push(`/editor/${question._id}`);
