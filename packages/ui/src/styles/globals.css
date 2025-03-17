@@ -77,15 +77,13 @@
 }
 
 .gutter {
-  background-color: #2d2d2d;
-  background-repeat: no-repeat;
-  background-position: 50%;
+  @apply bg-gray-300 dark:bg-[#2d2d2d] bg-no-repeat bg-center transition-colors;
 }
 
 .gutter:hover {
-  background-color: #404040;
+  @apply bg-gray-400 dark:bg-[#404040];
 }
 
 .gutter.gutter-horizontal {
-  cursor: col-resize;
+  @apply cursor-col-resize;
 }
