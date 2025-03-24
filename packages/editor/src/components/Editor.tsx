@@ -334,7 +334,7 @@ const Editor: React.FC<EditorProps> = ({
           <div id="root"></div>
           <script type="text/babel" data-presets="react">
             // Make React and ReactDOM available globally
-            const { useState, useEffect } = React;
+            const { useState, useEffect, useReducer } = React;
             
             ${appContent}
             ${indexContent}
