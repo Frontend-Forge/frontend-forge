@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import {
   Book,
   Clock,
@@ -10,55 +10,55 @@ import {
   RefreshCw,
   Search,
   SortAsc,
-} from "lucide-react"
-import { Badge } from "@workspace/ui/components/badge"
-import { Button } from "@workspace/ui/components/button"
-import { Input } from "@workspace/ui/components/input"
+} from "lucide-react";
+import { Badge } from "@workspace/ui/components/badge";
+import { Button } from "@workspace/ui/components/button";
+import { Input } from "@workspace/ui/components/input";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@workspace/ui/components/tabs"
-import { QuestionCard } from "@/components/QuestionsCard"
-import { question, Question } from "@workspace/editor/data/questions"
-import useDebounce from "@/hooks/useDebounce"
+} from "@workspace/ui/components/tabs";
+import { QuestionCard } from "@/components/QuestionsCard";
+import { question, Question } from "@workspace/editor/data/questions";
+import useDebounce from "@/hooks/useDebounce";
 
 export type ExtendedQuestion = Question & {
-  _id: string
-}
+  _id: string;
+};
 
 export default function Page() {
-  const [questions, setQuestions] = useState<ExtendedQuestion[]>([])
+  const [questions, setQuestions] = useState<ExtendedQuestion[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<
     ExtendedQuestion[]
-  >([])
-  const [searchTerm, setSearchTerm] = useState<string>("")
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
-  const debouncedSearchTerm = useDebounce(searchTerm, 500)
+  >([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch("/api/getData")
-        const data = await response.json()
+        const response = await fetch("/api/getData");
+        const data = await response.json();
 
         if (response.ok) {
-          setQuestions(data.data)
-          setFilteredQuestions(data.data)
+          setQuestions(data.data);
+          setFilteredQuestions(data.data);
         } else {
-          setError(data.message || "Failed to load data")
+          setError(data.message || "Failed to load data");
         }
       } catch (err) {
-        setError(`An error occurred while fetching data: ${err}`)
+        setError(`An error occurred while fetching data: ${err}`);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchQuestions()
-  }, [])
+    fetchQuestions();
+  }, []);
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -69,14 +69,14 @@ export default function Page() {
             .includes(debouncedSearchTerm.toLowerCase()) ||
           question.questionDetails.questionDescription
             .toLowerCase()
-            .includes(debouncedSearchTerm.toLowerCase())
-      )
+            .includes(debouncedSearchTerm.toLowerCase()),
+      );
 
-      setFilteredQuestions(filtered)
+      setFilteredQuestions(filtered);
     } else {
-      setFilteredQuestions(questions)
+      setFilteredQuestions(questions);
     }
-  }, [debouncedSearchTerm, questions])
+  }, [debouncedSearchTerm, questions]);
 
   return (
     <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row dark:bg-[#18181B]">
@@ -201,5 +201,5 @@ export default function Page() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }
