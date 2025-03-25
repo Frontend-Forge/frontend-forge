@@ -7,6 +7,7 @@ import {
   FunctionSquare,
   GitGraph,
   Paperclip,
+  RefreshCw,
   Search,
   SortAsc,
 } from "lucide-react";
@@ -20,7 +21,8 @@ import {
   TabsTrigger,
 } from "@workspace/ui/components/tabs";
 import { QuestionCard } from "@/components/QuestionsCard";
-import { Question } from "@workspace/editor/data/questions";
+import { question, Question } from "@workspace/editor/data/questions";
+import useDebounce from "@/hooks/useDebounce";
 
 export type ExtendedQuestion = Question & {
   _id: string;
@@ -28,8 +30,13 @@ export type ExtendedQuestion = Question & {
 
 export default function Page() {
   const [questions, setQuestions] = useState<ExtendedQuestion[]>([]);
+  const [filteredQuestions, setFilteredQuestions] = useState<
+    ExtendedQuestion[]
+  >([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -39,6 +46,7 @@ export default function Page() {
 
         if (response.ok) {
           setQuestions(data.data);
+          setFilteredQuestions(data.data);
         } else {
           setError(data.message || "Failed to load data");
         }
@@ -51,6 +59,24 @@ export default function Page() {
 
     fetchQuestions();
   }, []);
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      const filtered = questions.filter(
+        (question) =>
+          question.questionDetails.name
+            .toLowerCase()
+            .includes(debouncedSearchTerm.toLowerCase()) ||
+          question.questionDetails.questionDescription
+            .toLowerCase()
+            .includes(debouncedSearchTerm.toLowerCase()),
+      );
+
+      setFilteredQuestions(filtered);
+    } else {
+      setFilteredQuestions(questions);
+    }
+  }, [debouncedSearchTerm, questions]);
 
   return (
     <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row dark:bg-[#18181B]">
@@ -84,6 +110,8 @@ export default function Page() {
             <Input
               placeholder="Search within this list of questions"
               className="pl-10 dark:bg-[#1E1E21]"
+              value={searchTerm || ""}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <Button variant="outline" className="gap-2 dark:bg-[#1E1E21]">
@@ -133,9 +161,32 @@ export default function Page() {
             {loading && <p>Loading...</p>}
             {error && <p className="text-red-500">{error}</p>}
 
+            {/* No Results Message */}
+            {filteredQuestions.length === 0 && (
+              <div className="flex flex-col items-center gap-2 my-10">
+                <Search className="h-6 w-6 text-muted-foreground" />
+                <p className="text-center text-xl font-bold">
+                  No questions found
+                </p>
+                <p className="text-center text-muted-foreground">
+                  we couldn't find any results for{" "}
+                  <span className="font-medium">"{debouncedSearchTerm}"</span>
+                </p>
+
+                <Button
+                  variant="outline"
+                  className="mx-auto mt-4"
+                  onClick={() => setSearchTerm("")}
+                >
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Reset search
+                </Button>
+              </div>
+            )}
+
             {/* Question Cards */}
             <div className="grid gap-4">
-              {questions.map((question) => (
+              {filteredQuestions.map((question) => (
                 <QuestionCard
                   key={question._id}
                   tech={question.questionDetails.techStack}
