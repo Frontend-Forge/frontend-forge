@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AlertCircle,
   Book,
   Clock,
   FunctionSquare,
@@ -21,6 +22,7 @@ import {
 import { QuestionCard } from "@/components/QuestionsCard";
 import { Question } from "@workspace/editor/data/questions";
 import TechIcons from "@/components/TechIcons";
+import { QuestionCardSkeleton } from "./questionCardSkeleton";
 
 export type ExtendedQuestion = Question & {
   _id: string;
@@ -120,8 +122,23 @@ export default function DisplayQuestions({
             </div>
 
             {/* Loading/Error Messages */}
-            {loading && <p>Loading...</p>}
-            {error && <p className="text-red-500">{error}</p>}
+            {loading && [...Array(4)].map((_, i) => <QuestionCardSkeleton key={i} />)}
+
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 my-6">
+                <div className="flex items-start">
+                  <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 mr-3" />
+                  <div>
+                    <h3 className="font-medium text-red-800 dark:text-red-300">
+                      Error loading questions
+                    </h3>
+                    <p className="text-red-700 dark:text-red-400 text-sm mt-1">
+                      {error}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Question Cards */}
             <div className="grid gap-4">

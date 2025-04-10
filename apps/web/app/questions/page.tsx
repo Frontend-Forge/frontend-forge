@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import {
+  AlertCircle,
   Book,
   Clock,
   FunctionSquare,
@@ -23,45 +24,23 @@ import {
 import { QuestionCard } from "@/components/QuestionsCard";
 import { question, Question } from "@workspace/editor/data/questions";
 import useDebounce from "@/hooks/useDebounce";
+import { useGetQuestions } from "@/hooks/queries";
+import { QuestionCardSkeleton } from "@/components/questionCardSkeleton";
 
 export type ExtendedQuestion = Question & {
   _id: string;
 };
 
 export default function Page() {
-  const [questions, setQuestions] = useState<ExtendedQuestion[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<
     ExtendedQuestion[]
   >([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const { data: questions, isLoading, isError, error } = useGetQuestions();
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await fetch("/api/getData");
-        const data = await response.json();
-
-        if (response.ok) {
-          setQuestions(data.data);
-          setFilteredQuestions(data.data);
-        } else {
-          setError(data.message || "Failed to load data");
-        }
-      } catch (err) {
-        setError(`An error occurred while fetching data: ${err}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchQuestions();
-  }, []);
-
-  useEffect(() => {
-    if (debouncedSearchTerm) {
+    if (questions && debouncedSearchTerm) {
       const filtered = questions.filter(
         (question) =>
           question.questionDetails.name
@@ -74,7 +53,7 @@ export default function Page() {
 
       setFilteredQuestions(filtered);
     } else {
-      setFilteredQuestions(questions);
+      setFilteredQuestions(questions ?? []);
     }
   }, [debouncedSearchTerm, questions]);
 
@@ -149,7 +128,7 @@ export default function Page() {
             <div className="flex gap-4 text-sm text-muted-foreground border-b border-border pb-6">
               <div className="flex items-center gap-2">
                 <Book className="w-4 h-4" />
-                {questions.length} questions
+                {questions?.length || 0} questions
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
@@ -157,12 +136,28 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Loading/Error Messages */}
-            {loading && <p>Loading...</p>}
-            {error && <p className="text-red-500">{error}</p>}
+            {isLoading &&
+              [...Array(4)].map((_, index) => <QuestionCardSkeleton key={index} />)}
+
+            {isError && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 my-6">
+                <div className="flex items-start">
+                  <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5 mr-3" />
+                  <div>
+                    <h3 className="font-medium text-red-800 dark:text-red-300">
+                      Error loading questions
+                    </h3>
+                    <p className="text-red-700 dark:text-red-400 text-sm mt-1">
+                      {error?.message ||
+                        "An unknown error occurred. Please try again."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* No Results Message */}
-            {filteredQuestions.length === 0 && (
+            {!isLoading && !isError && filteredQuestions.length === 0 && (
               <div className="flex flex-col items-center gap-2 my-10">
                 <Search className="h-6 w-6 text-muted-foreground" />
                 <p className="text-center text-xl font-bold">
@@ -185,18 +180,20 @@ export default function Page() {
             )}
 
             {/* Question Cards */}
-            <div className="grid gap-4">
-              {filteredQuestions.map((question) => (
-                <QuestionCard
-                  key={question._id}
-                  tech={question.questionDetails.techStack}
-                  questionName={question.questionDetails.name}
-                  desc={question.questionDetails.questionDescription}
-                  difficulty={question.questionDetails.difficulty}
-                  _id={question._id}
-                />
-              ))}
-            </div>
+            {!isLoading && !isError && filteredQuestions.length > 0 && (
+              <div className="grid gap-4">
+                {filteredQuestions.map((question) => (
+                  <QuestionCard
+                    key={question._id}
+                    tech={question.questionDetails.techStack}
+                    questionName={question.questionDetails.name}
+                    desc={question.questionDetails.questionDescription}
+                    difficulty={question.questionDetails.difficulty}
+                    _id={question._id}
+                  />
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
