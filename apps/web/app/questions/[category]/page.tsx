@@ -1,8 +1,7 @@
 "use client";
+
 import DisplayQuestions from "@/components/DisplayQuestions";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ExtendedQuestion } from "../page";
 import {
   Accessibility,
   FormInput,
@@ -11,44 +10,22 @@ import {
   Network,
   RefreshCcw,
 } from "lucide-react";
+import { useGetQuestions } from "@/hooks/queries";
 
 const QuestionCategoryPage = () => {
   const params = useParams();
   const category = params.category as string; // Get category from URL
 
-  const [questions, setQuestions] = useState<ExtendedQuestion[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await fetch("/api/getData");
-        const data = await response.json();
-
-        if (response.ok) {
-          setQuestions(data.data);
-        } else {
-          setError(data.message || "Failed to load data");
-        }
-      } catch (err) {
-        setError(`An error occurred while fetching data: ${err}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchQuestions();
-  }, []);
+  const { data: questions, isLoading, error } = useGetQuestions();
 
   // Define different content for each category
   const categoryData: Record<string, JSX.Element> = {
     js: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
@@ -72,9 +49,9 @@ const QuestionCategoryPage = () => {
     html: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
@@ -104,9 +81,9 @@ const QuestionCategoryPage = () => {
     css: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
@@ -142,9 +119,9 @@ const QuestionCategoryPage = () => {
     react: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
@@ -170,9 +147,9 @@ const QuestionCategoryPage = () => {
     accessibility: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={<Accessibility className="text-black" />}
           description="Practice developing inclusive and accessible web experiences. Explore the principles and techniques of web accessibility, including semantic HTML, ARIA roles, keyboard navigation, and screen reader compatibility, a skill which differentiates senior from junior front end engineers."
@@ -183,9 +160,9 @@ const QuestionCategoryPage = () => {
     async: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={<RefreshCcw className="text-black" />}
           description="Sharpen your skills in asynchronous programming by practicing the use of async/await, Promises, and callback functions. Dive into scenarios that require asynchronous operations, such as making API requests and delayed code execution."
@@ -196,9 +173,9 @@ const QuestionCategoryPage = () => {
     data: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={<Network className="text-black" />}
           description="Hone your computer science fundamentals by implementing important data structures and algorithms from scratch and practice the questions where algorithmic efficiency is key."
@@ -209,9 +186,9 @@ const QuestionCategoryPage = () => {
     design: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={<LayoutGrid className="text-black" />}
           description="Targeted practice on Design System Components interview questions"
@@ -222,9 +199,9 @@ const QuestionCategoryPage = () => {
     dom: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={<MonitorSmartphone className="text-black" />}
           description="Dive into the world of element selection and modification in the DOM. Practice selecting elements using CSS selectors, traverse the DOM hierarchy, and manipulate their properties, content, and styles."
@@ -235,9 +212,9 @@ const QuestionCategoryPage = () => {
     forms: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={<FormInput className="text-black" />}
           description="Master the art of building interactive and user-friendly forms by exploring various form components, validation techniques, and handling form submissions."
@@ -248,9 +225,9 @@ const QuestionCategoryPage = () => {
     state: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={<FormInput className="text-black" />}
           description="Train your skills in designing complex state and implementing operations to manipulate state."
@@ -261,9 +238,9 @@ const QuestionCategoryPage = () => {
     google: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
@@ -299,9 +276,9 @@ const QuestionCategoryPage = () => {
     apple: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
@@ -323,9 +300,9 @@ const QuestionCategoryPage = () => {
     microsoft: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
@@ -348,9 +325,9 @@ const QuestionCategoryPage = () => {
     twitter: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
@@ -372,9 +349,9 @@ const QuestionCategoryPage = () => {
     facebook: (
       <>
         <DisplayQuestions
-          questions={questions}
-          loading={loading}
-          error={error}
+          questions={questions || []}
+          loading={isLoading}
+          error={error?.message || ""}
           techIcons={true}
           headingIcon={
             <svg
