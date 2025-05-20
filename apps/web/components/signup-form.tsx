@@ -9,7 +9,6 @@ import {
   GoogleIcon,
 } from "@trigger.dev/companyicons";
 import { useDarkMode } from "@/hooks/useDarkMode";
-import { authClient, signIn, signUp } from "@/lib/auth-client";
 
 export function SignUpForm() {
   const { theme } = useDarkMode();
@@ -39,11 +38,7 @@ export function SignUpForm() {
           )}
           Continue with GitHub
         </Button>
-        <Button
-          onClick={() => authClient.signUp.social({ provider: "google" })}
-          variant="outline"
-          className="h-11 dark:bg-[#1E1E21]"
-        >
+        <Button variant="outline" className="h-11 dark:bg-[#1E1E21]">
           <GoogleIcon className="mr-2 h-4 w-4" />
           Continue with Google
         </Button>
