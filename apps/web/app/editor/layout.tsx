@@ -23,6 +23,8 @@ import { useDarkMode } from "@/hooks/useDarkMode";
 import { QuestionSidebar } from "@/components/SidebarQuestions";
 import { useEffect, useState } from "react";
 import { ExtendedQuestion } from "@/components/DisplayQuestions";
+import AskAI from "@/components/AskAI";
+import ChatbotPopup from "@/components/AskAI";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -239,6 +241,7 @@ export default function RootLayout({
             </div>
 
             <div className="flex flex-row items-center gap-4 mr-8">
+              <ChatbotPopup />
               <Button
                 variant="default"
                 className="bg-[#E2FB75] rounded-full flex flex-row gap-[4px] items-center h-[30px] px-2 text-black hover:bg-[#E2FB75]/90"

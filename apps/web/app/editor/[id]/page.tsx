@@ -49,29 +49,29 @@ export default function QuestionPage() {
         </div>
       </div>
     );
-    
-    if (!question)
-      return (
-        <div
-          className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
-        >
-          <div className="flex flex-col fixed top-14 bottom-14 w-full dark:bg-[#18181B] bg-white dark:text-white text-black">
-            <div className="flex flex-col items-center justify-center h-full max-w-md mx-auto text-center px-4">
-              <h2 className="text-2xl font-bold mb-2">Question Not Found</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                We couldn't find the question you're looking for. It may have been
-                removed or doesn't exist.
-              </p>
-              <Button
-                onClick={() => (window.location.href = "/questions")}
-                className="bg-[#E2FB75] hover:bg-[#E2FB75]/80 text-black"
-              >
-                Browse Questions
-              </Button>
-            </div>
+
+  if (!question)
+    return (
+      <div
+        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
+      >
+        <div className="flex flex-col fixed top-14 bottom-14 w-full dark:bg-[#18181B] bg-white dark:text-white text-black">
+          <div className="flex flex-col items-center justify-center h-full max-w-md mx-auto text-center px-4">
+            <h2 className="text-2xl font-bold mb-2">Question Not Found</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              We couldn't find the question you're looking for. It may have been
+              removed or doesn't exist.
+            </p>
+            <Button
+              onClick={() => (window.location.href = "/questions")}
+              className="bg-[#E2FB75] hover:bg-[#E2FB75]/80 text-black"
+            >
+              Browse Questions
+            </Button>
           </div>
         </div>
-      );
+      </div>
+    );
 
   if (isError)
     return (
@@ -100,7 +100,6 @@ export default function QuestionPage() {
         </div>
       </div>
     );
-
 
   return (
     <div
