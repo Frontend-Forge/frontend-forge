@@ -9,9 +9,51 @@ import {
   GoogleIcon,
 } from "@trigger.dev/companyicons";
 import { useDarkMode } from "@/hooks/useDarkMode";
+import React from "react";
+import axios from "axios";
 
 export function SignInForm() {
   const { theme } = useDarkMode();
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      // Store token or redirect user here (later)
+      console.log("Login Success:", response.data);
+      setLoading(false);
+    } catch (err: any) {
+      setError(err?.message || "Sign-in failed");
+      setLoading(false);
+    }
+  };
+
+  // Handle Google OAuth
+  const handleGoogleSignUp = () => {
+    // Redirect to your backend Google OAuth endpoint
+    window.location.href = "http://localhost:4000/api/auth/google";
+  };
+
+  // Handle GitHub OAuth
+  const handleGitHubSignUp = () => {
+    // Redirect to your backend GitHub OAuth endpoint
+    window.location.href = "http://localhost:4000/api/auth/github";
+  };
 
   return (
     <div className="mx-auto h-screen w-full max-w-md space-y-6 flex flex-col items-center justify-center px-4">
@@ -30,7 +72,11 @@ export function SignInForm() {
         </p>
       </div>
       <div className="grid gap-4">
-        <Button variant="outline" className="h-11 dark:bg-[#1E1E21]">
+        <Button
+          onClick={handleGitHubSignUp}
+          variant="outline"
+          className="h-11 dark:bg-[#1E1E21]"
+        >
           {theme === "dark" ? (
             <GitHubLightIcon className="mr-2 h-4 w-4" />
           ) : (
@@ -38,7 +84,11 @@ export function SignInForm() {
           )}
           Continue with GitHub
         </Button>
-        <Button variant="outline" className="h-11 dark:bg-[#1E1E21]">
+        <Button
+          onClick={handleGoogleSignUp}
+          variant="outline"
+          className="h-11 dark:bg-[#1E1E21]"
+        >
           <GoogleIcon className="mr-2 h-4 w-4" />
           Continue with Google
         </Button>
@@ -56,13 +106,23 @@ export function SignInForm() {
           <label htmlFor="email" className="text-sm font-medium">
             Email
           </label>
-          <Input id="email" type="email" />
+          <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            id="email"
+            type="email"
+          />
         </div>
         <div className="grid gap-2">
           <label htmlFor="password" className="text-sm font-medium">
             Password
           </label>
-          <Input id="password" type="password" />
+          <Input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+            type="password"
+          />
         </div>
         <Link
           href="#"
@@ -70,11 +130,15 @@ export function SignInForm() {
         >
           Forgot your password?
         </Link>
-        <Button className="h-11 w-full bg-[#e9fa50] text-black hover:bg-[#dff038]">
-          Sign In
+        {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+        <Button
+          onClick={handleSignIn}
+          className="h-11 w-full bg-[#e9fa50] text-black hover:bg-[#dff038]"
+        >
+          {loading ? "Signing in..." : "Sign In"}
         </Button>
         <p className="text-center text-xs  text-muted-foreground">
-          By proceeding, you agree to GreatFontEnd&apos;s{" "}
+          By proceeding, you agree to FrontendForge&apos;s{" "}
           <Link href="#" className="underline underline-offset-2">
             Terms of Service
           </Link>{" "}

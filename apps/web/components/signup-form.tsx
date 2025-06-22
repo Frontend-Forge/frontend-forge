@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
@@ -12,6 +16,47 @@ import { useDarkMode } from "@/hooks/useDarkMode";
 
 export function SignUpForm() {
   const { theme } = useDarkMode();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/auth/signup",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+
+      // store token or redirect user here (Later)
+      console.log("Signup Success:", response.data);
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Signup failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle Google OAuth
+  const handleGoogleSignUp = () => {
+    // Redirect to your backend Google OAuth endpoint
+    window.location.href = "http://localhost:4000/api/auth/google";
+  };
+
+  // Handle GitHub OAuth
+  const handleGitHubSignUp = () => {
+    // Redirect to your backend GitHub OAuth endpoint
+    window.location.href = "http://localhost:4000/api/auth/github";
+  };
 
   return (
     <div className="mx-auto h-screen w-full max-w-md space-y-6 flex flex-col items-center justify-center px-4">
@@ -29,8 +74,13 @@ export function SignUpForm() {
           </Link>
         </p>
       </div>
-      <div className="grid gap-4">
-        <Button variant="outline" className="h-11 dark:bg-[#1E1E21]">
+      <form onSubmit={handleSignUp} className="grid gap-4 w-full">
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 dark:bg-[#1E1E21]"
+          onClick={handleGitHubSignUp}
+        >
           {theme === "dark" ? (
             <GitHubLightIcon className="mr-2 h-4 w-4" />
           ) : (
@@ -38,10 +88,16 @@ export function SignUpForm() {
           )}
           Continue with GitHub
         </Button>
-        <Button variant="outline" className="h-11 dark:bg-[#1E1E21]">
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 dark:bg-[#1E1E21]"
+          onClick={handleGoogleSignUp}
+        >
           <GoogleIcon className="mr-2 h-4 w-4" />
           Continue with Google
         </Button>
+
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <Separator />
@@ -52,23 +108,57 @@ export function SignUpForm() {
             </span>
           </div>
         </div>
+
+        <div className="grid gap-2">
+          <label htmlFor="name" className="text-sm font-medium">
+            Name
+          </label>
+          <Input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
         <div className="grid gap-2">
           <label htmlFor="email" className="text-sm font-medium">
             Email
           </label>
-          <Input id="email" type="email" />
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
         <div className="grid gap-2">
           <label htmlFor="password" className="text-sm font-medium">
             Password
           </label>
-          <Input id="password" type="password" />
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
-        <Button className="h-11 w-full bg-[#e9fa50] text-black hover:bg-[#dff038]">
-          Sign In
+
+        {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+
+        <Button
+          type="submit"
+          className="h-11 w-full bg-[#e9fa50] text-black hover:bg-[#dff038]"
+          disabled={loading}
+        >
+          {loading ? "Signing Up..." : "Sign Up"}
         </Button>
-        <p className="text-center text-xs  text-muted-foreground">
-          By proceeding, you agree to GreatFontEnd&apos;s{" "}
+
+        <p className="text-center text-xs text-muted-foreground">
+          By proceeding, you agree to FrontendForge&apos;s{" "}
           <Link href="#" className="underline underline-offset-2">
             Terms of Service
           </Link>{" "}
@@ -78,7 +168,7 @@ export function SignUpForm() {
           </Link>
           .
         </p>
-      </div>
+      </form>
     </div>
   );
 }
