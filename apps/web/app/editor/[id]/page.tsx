@@ -9,8 +9,11 @@ import "@workspace/ui/globals.css";
 import { useCode } from "@/contexts/CodeContext";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import { useGetQuestion } from "@/hooks/queries";
-import { AlertCircle, Code, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2, LoaderCircle } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
+import { useUser } from "@/contexts/UserContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -30,6 +33,23 @@ export default function QuestionPage() {
 
   const { code, setCode, testCases } = useCode();
   const { theme } = useDarkMode();
+
+  const { isAuthenticated, loading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.replace("/signin");
+    }
+  }, [loading, isAuthenticated, router]);
+
+  if (loading || (!loading && !isAuthenticated)) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white/30 z-50">
+        <LoaderCircle className="animate-spin w-8 h-8" />
+      </div>
+    );
+  }
 
   if (isLoading)
     return (
@@ -59,8 +79,8 @@ export default function QuestionPage() {
           <div className="flex flex-col items-center justify-center h-full max-w-md mx-auto text-center px-4">
             <h2 className="text-2xl font-bold mb-2">Question Not Found</h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              We couldn't find the question you're looking for. It may have been
-              removed or doesn't exist.
+              We couldn&lsquo;t find the question you&#39;re looking for. It may
+              have been removed or doesn&lsquo;t exist.
             </p>
             <Button
               onClick={() => (window.location.href = "/questions")}

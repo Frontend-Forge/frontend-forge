@@ -1,9 +1,15 @@
+"use client";
+
 import TopicCards from "@/components/miniTopicsCard";
 import ProgressCards from "@/components/progress-cards";
 import ActivityHeatmap from "@/components/streak-bar";
+import { useUser } from "@/contexts/UserContext";
 import { comapniesArray } from "@/data/comapines";
 import { languages } from "@/data/languages";
 import { topics } from "@/data/topics";
+import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface ActivityData {
   date: string;
@@ -17,9 +23,26 @@ const activityData: ActivityData[] = [
 ];
 
 export default function Page() {
+  const { isAuthenticated, loading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.replace("/signin");
+    }
+  }, [loading, isAuthenticated, router]);
+
+  if (loading || (!loading && !isAuthenticated)) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white/30 z-50">
+        <LoaderCircle className="animate-spin w-8 h-8" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen overflow-y-auto md:ml-[280px] ml-8 mt-12 flex flex-col bg-background dark:bg-[#18181B]">
-      <p className="text-3xl font-semibold mt-8">Dashbaord</p>
+      <p className="text-3xl font-semibold mt-8">Dashboard</p>
       <p className="text-2xl mt-8">Your Progress at a glance</p>
       <ProgressCards />
       <ActivityHeatmap startDate={new Date("2024-02-01")} data={activityData} />

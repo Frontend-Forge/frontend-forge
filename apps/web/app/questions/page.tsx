@@ -7,6 +7,7 @@ import {
   Clock,
   FunctionSquare,
   GitGraph,
+  LoaderCircle,
   Paperclip,
   RefreshCw,
   Search,
@@ -22,10 +23,12 @@ import {
   TabsTrigger,
 } from "@workspace/ui/components/tabs";
 import { QuestionCard } from "@/components/QuestionsCard";
-import { question, Question } from "@workspace/editor/data/questions";
+import { Question } from "@workspace/editor/data/questions";
 import useDebounce from "@/hooks/useDebounce";
 import { useGetQuestions } from "@/hooks/queries";
 import { QuestionCardSkeleton } from "@/components/questionCardSkeleton";
+import { useUser } from "@/contexts/UserContext";
+import { useRouter } from "next/navigation";
 
 export type ExtendedQuestion = Question & {
   _id: string;
@@ -48,7 +51,7 @@ export default function Page() {
             .includes(debouncedSearchTerm.toLowerCase()) ||
           question.questionDetails.questionDescription
             .toLowerCase()
-            .includes(debouncedSearchTerm.toLowerCase()),
+            .includes(debouncedSearchTerm.toLowerCase())
       );
 
       setFilteredQuestions(filtered);
@@ -56,6 +59,23 @@ export default function Page() {
       setFilteredQuestions(questions ?? []);
     }
   }, [debouncedSearchTerm, questions]);
+
+  const { isAuthenticated, loading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.replace("/signin");
+    }
+  }, [loading, isAuthenticated, router]);
+
+  if (loading || (!loading && !isAuthenticated)) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white/30 z-50">
+        <LoaderCircle className="animate-spin w-8 h-8" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row dark:bg-[#18181B]">
@@ -137,7 +157,9 @@ export default function Page() {
             </div>
 
             {isLoading &&
-              [...Array(4)].map((_, index) => <QuestionCardSkeleton key={index} />)}
+              [...Array(4)].map((_, index) => (
+                <QuestionCardSkeleton key={index} />
+              ))}
 
             {isError && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 my-6">
@@ -164,8 +186,10 @@ export default function Page() {
                   No questions found
                 </p>
                 <p className="text-center text-muted-foreground">
-                  we couldn't find any results for{" "}
-                  <span className="font-medium">"{debouncedSearchTerm}"</span>
+                  we couldn&lsquo;t find any results for{" "}
+                  <span className="font-medium">
+                    &quot;{debouncedSearchTerm}&quot;
+                  </span>
                 </p>
 
                 <Button

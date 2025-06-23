@@ -1,22 +1,41 @@
 "use client";
 
 import DisplayQuestions from "@/components/DisplayQuestions";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   Accessibility,
   FormInput,
   LayoutGrid,
+  LoaderCircle,
   MonitorSmartphone,
   Network,
   RefreshCcw,
 } from "lucide-react";
 import { useGetQuestions } from "@/hooks/queries";
+import { useUser } from "@/contexts/UserContext";
+import { useEffect } from "react";
 
 const QuestionCategoryPage = () => {
   const params = useParams();
   const category = params.category as string; // Get category from URL
 
   const { data: questions, isLoading, error } = useGetQuestions();
+  const { isAuthenticated, loading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.replace("/signin");
+    }
+  }, [loading, isAuthenticated, router]);
+
+  if (loading || (!loading && !isAuthenticated)) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-white/30 z-50">
+        <LoaderCircle className="animate-spin w-8 h-8" />
+      </div>
+    );
+  }
 
   // Define different content for each category
   const categoryData: Record<string, JSX.Element> = {

@@ -23,6 +23,7 @@ export interface User {
 interface UserContextType {
   user: User | null;
   isAuthenticated: boolean;
+  loading: boolean;
   logOutUser: () => void;
 }
 
@@ -33,44 +34,44 @@ interface UserProviderProps {
 // Create context
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// Configure axios instance
+// Axios instance
 const api = axios.create({
   baseURL: "http://localhost:4000/api",
 });
 
-// User Provider Component
+// Provider Component
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const logOutUser = () => {
-    localStorage.removeItem("authToken"); // Clear token from localStorage
-    setUser(null); // Clear user state
-    window.location.href = "/signin"; // Redirect to sign-in page
+    localStorage.removeItem("authToken");
+    setUser(null);
+    window.location.href = "/signin";
   };
 
-  // Extract token from URL (for OAuth redirects)
   const extractTokenFromURL = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlToken = urlParams.get("token");
 
     if (urlToken) {
       localStorage.setItem("authToken", urlToken);
-
-      // Clean up URL by removing token parameter
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete("token");
       window.history.replaceState({}, document.title, newUrl.pathname);
-
       return urlToken;
     }
+
     return null;
   };
 
-  // Fetch user data using token
   const fetchUserData = async () => {
     const token = localStorage.getItem("authToken");
 
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await api.get("/user/me", {
@@ -84,28 +85,27 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       console.error("Error fetching user data:", err);
       localStorage.removeItem("authToken");
       setUser(null);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Initialize user state
   useEffect(() => {
-    // First, check if there's a token in the URL (OAuth redirect)
     extractTokenFromURL();
-
-    // Then fetch user data if token exists
     fetchUserData();
   }, []);
 
   const value: UserContextType = {
     user,
     isAuthenticated: !!user,
+    loading,
     logOutUser,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
-// Custom hook to use user context
+// Hook
 export const useUser = (): UserContextType => {
   const context = useContext(UserContext);
   if (context === undefined) {
