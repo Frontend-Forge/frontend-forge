@@ -6,11 +6,14 @@ import { Inter } from "next/font/google";
 import { Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import { useDarkMode } from "@/hooks/useDarkMode";
+import { useUser } from "@/contexts/UserContext";
+import { Avatar } from "./Avatar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export function SidebarLayout({ children }: { children: React.ReactNode }) {
   const { toggleTheme, theme } = useDarkMode();
+  const { user, logOutUser } = useUser();
   return (
     <div
       className={`flex relative ${inter.className} dark:bg-[#18181B] bg-white `}
@@ -36,15 +39,7 @@ export function SidebarLayout({ children }: { children: React.ReactNode }) {
         >
           <p className="text-[12px]">Get full access</p>
         </Button>
-        <div className="rounded-full border-[1px] p-[3px] dark:hover:bg-[#1f1f20] hover:bg-[#E4E4E7] hover:border-gray-500 hover:scale-110 transition-all ease-in-out cursor-pointer duration-200 dark:border-[#27272A] border-[#E4E4E7]">
-          <Image
-            src={"/images/pratiyank.jpg"}
-            width={26}
-            height={26}
-            className="rounded-full"
-            alt="pratiyank-image"
-          />
-        </div>
+        <Avatar user={user} logOutUser={logOutUser} />
       </div>
     </div>
   );

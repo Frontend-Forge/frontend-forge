@@ -24,8 +24,8 @@ router.get(
     failureRedirect: "http://localhost:3000/login",
   }),
   (req, res) => {
-    const user = req.user as { goggleId: string };
-    const token = jwt.sign({ id: user.goggleId }, process.env.JWT_SECRET!);
+    const user = req.user as { _id: string };
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!);
 
     res.redirect(`http://localhost:3000?token=${token}`); // or send a token back
   }
@@ -42,8 +42,8 @@ router.get(
     failureRedirect: "/login",
   }),
   (req, res) => {
-    const user = req.user as { githubId: string };
-    const token = jwt.sign({ id: user.githubId }, process.env.JWT_SECRET!);
+    const user = req.user as { _id: string };
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!);
 
     res.redirect(`http://localhost:3000?token=${token}`); // or send a token back
   }

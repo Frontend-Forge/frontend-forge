@@ -1,4 +1,8 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
@@ -9,16 +13,34 @@ import {
   GoogleIcon,
 } from "@trigger.dev/companyicons";
 import { useDarkMode } from "@/hooks/useDarkMode";
-import React from "react";
-import axios from "axios";
 
 export function SignInForm() {
   const { theme } = useDarkMode();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+  // Extract token from URL on component mount (for OAuth redirects)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      // Save token to localStorage
+      localStorage.setItem("authToken", token);
+
+      // Clean up URL by removing token parameter
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete("token");
+      window.history.replaceState({}, document.title, newUrl.pathname);
+
+      console.log("OAuth token saved to localStorage");
+
+      // Redirect to dashboard or home page
+      window.location.href = "/";
+    }
+  }, []);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,23 +56,32 @@ export function SignInForm() {
         }
       );
 
-      // Store token or redirect user here (later)
+      // Save token to localStorage
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem("authToken", token);
+        console.log("Login token saved to localStorage");
+
+        // Redirect to dashboard or home page
+        window.location.href = "/";
+      }
+
       console.log("Login Success:", response.data);
-      setLoading(false);
     } catch (err: any) {
-      setError(err?.message || "Sign-in failed");
+      setError(err?.response?.data?.error || "Sign-in failed");
+    } finally {
       setLoading(false);
     }
   };
 
   // Handle Google OAuth
-  const handleGoogleSignUp = () => {
+  const handleGoogleSignIn = () => {
     // Redirect to your backend Google OAuth endpoint
     window.location.href = "http://localhost:4000/api/auth/google";
   };
 
   // Handle GitHub OAuth
-  const handleGitHubSignUp = () => {
+  const handleGitHubSignIn = () => {
     // Redirect to your backend GitHub OAuth endpoint
     window.location.href = "http://localhost:4000/api/auth/github";
   };
@@ -58,7 +89,7 @@ export function SignInForm() {
   return (
     <div className="mx-auto h-screen w-full max-w-md space-y-6 flex flex-col items-center justify-center px-4">
       <div className="space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight ">
+        <h1 className="text-2xl font-semibold tracking-tight">
           Sign in to your account
         </h1>
         <p className="text-sm text-muted-foreground dark:text-gray-300">
@@ -71,11 +102,12 @@ export function SignInForm() {
           </Link>
         </p>
       </div>
-      <div className="grid gap-4">
+      <form onSubmit={handleSignIn} className="grid gap-4 w-full">
         <Button
-          onClick={handleGitHubSignUp}
+          type="button"
           variant="outline"
           className="h-11 dark:bg-[#1E1E21]"
+          onClick={handleGitHubSignIn}
         >
           {theme === "dark" ? (
             <GitHubLightIcon className="mr-2 h-4 w-4" />
@@ -85,13 +117,15 @@ export function SignInForm() {
           Continue with GitHub
         </Button>
         <Button
-          onClick={handleGoogleSignUp}
+          type="button"
           variant="outline"
           className="h-11 dark:bg-[#1E1E21]"
+          onClick={handleGoogleSignIn}
         >
           <GoogleIcon className="mr-2 h-4 w-4" />
           Continue with Google
         </Button>
+
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <Separator />
@@ -102,15 +136,17 @@ export function SignInForm() {
             </span>
           </div>
         </div>
+
         <div className="grid gap-2">
           <label htmlFor="email" className="text-sm font-medium">
             Email
           </label>
           <Input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             id="email"
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         <div className="grid gap-2">
@@ -118,26 +154,32 @@ export function SignInForm() {
             Password
           </label>
           <Input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             id="password"
             type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
+
         <Link
           href="#"
           className="text-sm font-medium text-black dark:text-white hover:underline"
         >
           Forgot your password?
         </Link>
+
         {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+
         <Button
-          onClick={handleSignIn}
+          type="submit"
           className="h-11 w-full bg-[#e9fa50] text-black hover:bg-[#dff038]"
+          disabled={loading}
         >
           {loading ? "Signing in..." : "Sign In"}
         </Button>
-        <p className="text-center text-xs  text-muted-foreground">
+
+        <p className="text-center text-xs text-muted-foreground">
           By proceeding, you agree to FrontendForge&apos;s{" "}
           <Link href="#" className="underline underline-offset-2">
             Terms of Service
@@ -148,7 +190,7 @@ export function SignInForm() {
           </Link>
           .
         </p>
-      </div>
+      </form>
     </div>
   );
 }

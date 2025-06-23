@@ -2,7 +2,11 @@
 const nextConfig = {
   transpilePackages: ["@workspace/ui", "@workspace/editor"],
   images: {
-    domains: ["ui.aceternity.com"],
+    domains: [
+      "ui.aceternity.com",
+      "lh3.googleusercontent.com",
+      "avatars.githubusercontent.com",
+    ],
   },
 };
 

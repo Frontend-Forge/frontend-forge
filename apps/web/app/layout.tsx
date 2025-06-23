@@ -3,6 +3,7 @@ import { Inter, Roboto } from "next/font/google";
 import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
 import { CodeProvider } from "@/contexts/CodeContext";
+import { UserProvider } from "@/contexts/UserContext";
 
 const fontInter = Inter({
   subsets: ["latin"],
@@ -45,9 +46,11 @@ export default function RootLayout({
       <body
         className={`${fontRoboto.className} dark:bg-[#18181B] ${fontInter.className} `}
       >
-        <CodeProvider>
-          <Providers>{children}</Providers>
-        </CodeProvider>
+        <UserProvider>
+          <CodeProvider>
+            <Providers>{children}</Providers>
+          </CodeProvider>
+        </UserProvider>
       </body>
     </html>
   );

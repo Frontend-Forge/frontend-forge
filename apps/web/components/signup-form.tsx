@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
 
@@ -22,6 +22,27 @@ export function SignUpForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Extract token from URL on component mount (for OAuth redirects)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      // Save token to localStorage
+      localStorage.setItem("authToken", token);
+
+      // Clean up URL by removing token parameter
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete("token");
+      window.history.replaceState({}, document.title, newUrl.pathname);
+
+      console.log("OAuth token saved to localStorage");
+
+      // Optionally redirect to dashboard or show success message
+      // window.location.href = '/dashboard';
+    }
+  }, []);
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -37,10 +58,19 @@ export function SignUpForm() {
         }
       );
 
-      // store token or redirect user here (Later)
+      // Save token to localStorage
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem("authToken", token);
+        console.log("Signup token saved to localStorage");
+
+        // Optionally redirect to dashboard or show success message
+        window.location.href = "/";
+      }
+
       console.log("Signup Success:", response.data);
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Signup failed");
+      setError(err?.response?.data?.error || "Signup failed");
     } finally {
       setLoading(false);
     }

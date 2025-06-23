@@ -12,9 +12,14 @@ import React from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@workspace/ui/components/button";
 import Link from "next/link";
+import { useUser } from "@/contexts/UserContext";
+import { Avatar } from "./Avatar";
 
 export default function LandingHeader(): React.ReactElement {
   const { theme, toggleTheme } = useDarkMode();
+  const { user, isAuthenticated, logOutUser } = useUser();
+
+  console.log("User in header:", user);
 
   return (
     <div className="w-full h-[50px] fixed top-0 right-0 z-50 left-0 backdrop-blur-lg flex flex-row justify-between items-center bg-transparent ">
@@ -92,12 +97,14 @@ export default function LandingHeader(): React.ReactElement {
         <p className="text-[14px] hover:underline bp4:block hidden cursor-pointer">
           Pricing
         </p>
-        <Link
-          href={"/signup"}
-          className="text-[14px] hover:underline cursor-pointer"
-        >
-          Sign in/up
-        </Link>
+        {!isAuthenticated && (
+          <Link
+            href={"/signup"}
+            className="text-[14px] hover:underline cursor-pointer"
+          >
+            Sign in/up
+          </Link>
+        )}
         <div
           onClick={toggleTheme}
           className="rounded-full border-[1px] p-[7px] hover:bg-[#E4E4E7] dark:hover:bg-[#1f1f20] hover:border-gray-500 hover:scale-110 transition-all ease-in-out cursor-pointer duration-200 dark:border-[#27272A] border-[#E4E4E7]"
@@ -115,6 +122,8 @@ export default function LandingHeader(): React.ReactElement {
         >
           <p className="text-[14px]">Get full access</p>
         </Button>
+
+        {isAuthenticated && <Avatar user={user} logOutUser={logOutUser} />}
       </div>
     </div>
   );
