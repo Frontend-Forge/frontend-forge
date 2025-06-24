@@ -61,7 +61,7 @@ export default function DisplayQuestions({
               <div className="p-4 rounded-md bg-[#F8F8F8] border-gray-300 border-[2px] ">
                 {headingIcon}
               </div>
-              <h1 className="text-3xl font-semibold text-foreground">
+              <h1 className="text-3xl dark:text-white text-black font-semibold text-foreground">
                 {heading}
               </h1>
             </div>
@@ -122,7 +122,8 @@ export default function DisplayQuestions({
             </div>
 
             {/* Loading/Error Messages */}
-            {loading && [...Array(4)].map((_, i) => <QuestionCardSkeleton key={i} />)}
+            {loading &&
+              [...Array(4)].map((_, i) => <QuestionCardSkeleton key={i} />)}
 
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 my-6">

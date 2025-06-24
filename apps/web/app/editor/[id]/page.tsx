@@ -51,7 +51,7 @@ export default function QuestionPage() {
     );
   }
 
-  if (isLoading)
+  if (isLoading && isAuthenticated)
     return (
       <div
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
