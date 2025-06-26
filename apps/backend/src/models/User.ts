@@ -47,6 +47,12 @@ const userSchema = new mongoose.Schema({
     },
   },
 
+  // Questions solved
+  questionsSolved: {
+    type: [String], // Array of question IDs
+    default: [],
+  },
+
   // Metadata
   lastLogin: {
     type: Date,

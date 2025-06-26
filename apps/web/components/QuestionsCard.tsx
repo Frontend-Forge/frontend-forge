@@ -8,8 +8,9 @@ import {
   CardContent,
 } from "@workspace/ui/components/card";
 import { Badge } from "@workspace/ui/components/badge";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { useUser } from "@/contexts/UserContext";
 
 type Tech = "html" | "css" | "js" | "react";
 
@@ -28,19 +29,29 @@ export function QuestionCard({
   difficulty,
   _id,
 }: QuestionCardProps) {
+  const { user } = useUser();
+
+  console.log(user);
+
   return (
     <Link href={`/editor/${_id}`}>
       <Card className="dark:bg-[#1E1E21]">
         <CardHeader className="flex flex-row  items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-lg font-bold">{questionName}</CardTitle>
-          {questionName === "Counter" && (
-            <Badge
-              variant="secondary"
-              className="bg-orange-500/10 text-orange-500 hover:bg-orange-500/20"
-            >
-              Warm up question
-            </Badge>
-          )}
+
+          <div className="flex items-center gap-2">
+            {questionName === "Counter" && (
+              <Badge
+                variant="secondary"
+                className="bg-orange-500/10 text-orange-500 hover:bg-orange-500/20"
+              >
+                Warm up question
+              </Badge>
+            )}
+            {user?.questionsSolved?.includes(_id) && (
+              <CheckCircle2 className="text-green-500 w-5 h-5 " />
+            )}
+          </div>
         </CardHeader>
         <CardContent className="relative">
           <p className="text-muted-foreground mb-4">

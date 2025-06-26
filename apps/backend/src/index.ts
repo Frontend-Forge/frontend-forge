@@ -6,7 +6,8 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes";
-import userRoutes from "./routes/user"; // Add this import
+import userRoutes from "./routes/user";
+import questionsRoutes from "./routes/questions";
 import "./config/passport";
 
 dotenv.config();
@@ -41,6 +42,7 @@ app.use(passport.session());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes); // Add user routes
+app.use("/api/questions", questionsRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {

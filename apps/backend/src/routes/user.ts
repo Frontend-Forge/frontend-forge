@@ -29,6 +29,7 @@ router.get("/me", authenticateJWT, async (req, res) => {
         isVerified: user.isVerified,
         lastLogin: user.lastLogin,
         createdAt: user.createdAt,
+        questionsSolved: user.questionsSolved || [],
       },
     });
   } catch (error) {

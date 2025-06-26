@@ -18,6 +18,7 @@ export interface User {
   isVerified: boolean;
   lastLogin: string;
   createdAt: string;
+  questionsSolved?: string[];
 }
 
 interface UserContextType {
