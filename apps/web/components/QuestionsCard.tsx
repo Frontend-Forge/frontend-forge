@@ -1,3 +1,5 @@
+// 2. Update your QuestionsCard.tsx component
+
 "use client";
 
 import TechLogoComponent from "@workspace/editor/components/TechLogo";
@@ -10,7 +12,7 @@ import {
 import { Badge } from "@workspace/ui/components/badge";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-import { useUser } from "@/contexts/UserContext";
+import { useGetQuestionStatus } from "@/hooks/queries";
 
 type Tech = "html" | "css" | "js" | "react";
 
@@ -29,14 +31,13 @@ export function QuestionCard({
   difficulty,
   _id,
 }: QuestionCardProps) {
-  const { user } = useUser();
-
-  console.log(user);
+  // Use React Query to get completion status
+  const { data: isCompleted, isLoading } = useGetQuestionStatus(_id);
 
   return (
     <Link href={`/editor/${_id}`}>
       <Card className="dark:bg-[#1E1E21]">
-        <CardHeader className="flex flex-row  items-center justify-between space-y-0 pb-2">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-lg font-bold">{questionName}</CardTitle>
 
           <div className="flex items-center gap-2">
@@ -48,8 +49,11 @@ export function QuestionCard({
                 Warm up question
               </Badge>
             )}
-            {user?.questionsSolved?.includes(_id) && (
-              <CheckCircle2 className="text-green-500 w-5 h-5 " />
+            {/* Show loading state or completion status */}
+            {isLoading ? (
+              <div className="w-5 h-5 border-2 border-gray-300 border-t-green-500 rounded-full animate-spin" />
+            ) : (
+              isCompleted && <CheckCircle2 className="text-green-500 w-5 h-5" />
             )}
           </div>
         </CardHeader>

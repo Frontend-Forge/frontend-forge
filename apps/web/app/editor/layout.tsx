@@ -1,8 +1,10 @@
+// 3. Update your editor layout.tsx to use React Query
+
 "use client";
 
 import Link from "next/link";
 import { Button } from "@workspace/ui/components/button";
-import type React from "react"; // Import React
+import type React from "react";
 import Image from "next/image";
 import {
   ArrowLeft,
@@ -21,12 +23,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCode } from "@/contexts/CodeContext";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import { QuestionSidebar } from "@/components/SidebarQuestions";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ExtendedQuestion } from "@/components/DisplayQuestions";
 import ChatbotPopup from "@/components/AskAI";
 import { useUser } from "@/contexts/UserContext";
 import { Avatar } from "@/components/Avatar";
 import { ConfettiButton } from "@/components/magicui/confetti";
+import { useToggleQuestionCompletion } from "@/hooks/queries";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -46,9 +49,7 @@ export default function RootLayout({
   const [showQuestionBar, setShowQuestionBar] = useState<boolean>(false);
   const [questionIndex, setQuestionIndex] = useState<number | null>(null);
   const [questions, setQuestions] = useState<ExtendedQuestion[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
   const { theme, toggleTheme } = useDarkMode();
   const pathName = usePathname();
@@ -56,129 +57,25 @@ export default function RootLayout({
 
   const { code, setTestCases } = useCode();
 
-  const backendUrl = "http://localhost:4000";
+  // Use React Query for completion status
+  const {
+    isCompleted,
+    isLoading: isUpdatingCompletion,
+    toggleCompletion,
+    error: completionError,
+  } = useToggleQuestionCompletion(questionId);
 
-  const [completed, setCompleted] = useState<boolean>(false);
-  const [isUpdatingCompletion, setIsUpdatingCompletion] =
-    useState<boolean>(false);
-  const [isCheckingStatus, setIsCheckingStatus] = useState<boolean>(false);
-  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const handleCompleted = useCallback(() => {
+    toggleCompletion();
 
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
-
-  // Function to check if question is solved
-  const checkQuestionStatus = useCallback(
-    async (questionId: string) => {
-      if (!questionId || !token) return;
-
-      setIsCheckingStatus(true);
-
-      try {
-        const response = await fetch(
-          `${backendUrl}/api/questions/check-solved/${questionId}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setCompleted(data.isSolved);
-        } else {
-          console.error("Failed to check question status");
-          // Reset to false if we can't determine the status
-          setCompleted(false);
-        }
-      } catch (error) {
-        console.error("Error checking question status:", error);
-        // Reset to false if there's an error
-        setCompleted(false);
-      } finally {
-        setIsCheckingStatus(false);
-      }
-    },
-    [backendUrl, token]
-  );
-
-  // Check question status whenever questionId changes
-  useEffect(() => {
-    if (questionId && token) {
-      checkQuestionStatus(questionId);
+    // Show error if there's one
+    if (completionError) {
+      console.error("Failed to update completion status:", completionError);
     }
-  }, [questionId, token, checkQuestionStatus]);
-
-  const handleCompleted = useCallback(async () => {
-    // Clear any existing timeout
-    if (debounceTimeoutRef.current) {
-      clearTimeout(debounceTimeoutRef.current);
-    }
-
-    // Set debounce timeout
-    debounceTimeoutRef.current = setTimeout(async () => {
-      if (isUpdatingCompletion) return; // Prevent multiple simultaneous requests
-
-      setIsUpdatingCompletion(true);
-
-      try {
-        const newCompletedState = !completed;
-        const endpoint = newCompletedState
-          ? `${backendUrl}/api/questions/mark-completed`
-          : `${backendUrl}/api/questions/mark-incomplete`;
-
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            questionId: questionId,
-          }),
-        });
-
-        if (response.ok) {
-          // Only update state if the API call was successful
-          setCompleted(newCompletedState);
-
-          // Optional: Show success feedback
-          console.log(
-            `Question ${newCompletedState ? "marked as completed" : "marked as incomplete"}`
-          );
-        } else {
-          const errorData = await response.json();
-          console.error(
-            "Failed to update completion status:",
-            errorData.message || "Unknown error"
-          );
-
-          // Optional: Show error message to user
-          // You might want to add a toast notification here
-        }
-      } catch (error) {
-        console.error("Error updating completion status:", error);
-
-        // Optional: Show error message to user
-        // You might want to add a toast notification here
-      } finally {
-        setIsUpdatingCompletion(false);
-      }
-    }, 300); // 300ms debounce delay
-  }, [completed, questionId, backendUrl, isUpdatingCompletion, token]);
-
-  // Cleanup function - add this useEffect for cleanup
-  useEffect(() => {
-    return () => {
-      if (debounceTimeoutRef.current) {
-        clearTimeout(debounceTimeoutRef.current);
-      }
-    };
-  }, []);
+  }, [toggleCompletion, completionError]);
 
   async function handleSubmit() {
+    const backendUrl = "http://localhost:3000";
     const req = await fetch(`${backendUrl}/api/test`, {
       method: "POST",
       headers: {
@@ -191,7 +88,6 @@ export default function RootLayout({
     });
 
     const res = await req.json();
-
     setTestCases(res.results);
   }
 
@@ -359,25 +255,20 @@ export default function RootLayout({
               <ChatbotPopup />
               <Button
                 variant="default"
-                className={` ${completed ? "bg-[#74f080] hover:bg-[#74f080]/70" : "bg-[#E2FB75] hover:bg-[#E2FB75]/70"} rounded-full flex flex-row gap-[4px] items-center h-[30px] px-2 text-black`}
+                className={` ${isCompleted ? "bg-[#74f080] hover:bg-[#74f080]/70" : "bg-[#E2FB75] hover:bg-[#E2FB75]/70"} rounded-full flex flex-row gap-[4px] items-center h-[30px] px-2 text-black`}
                 onClick={handleCompleted}
-                disabled={isUpdatingCompletion || isCheckingStatus}
+                disabled={isUpdatingCompletion}
               >
                 {isUpdatingCompletion ? (
                   <>
                     <div className="w-3 h-3 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
                     <p className="text-[12px]">Updating...</p>
                   </>
-                ) : isCheckingStatus ? (
-                  <>
-                    <div className="w-3 h-3 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
-                    <p className="text-[12px]">Checking...</p>
-                  </>
                 ) : (
                   <>
                     <Check className="w-3 h-3" />
                     <p className="text-[12px]">
-                      {completed ? (
+                      {isCompleted ? (
                         "Completed"
                       ) : (
                         <ConfettiButton className="">

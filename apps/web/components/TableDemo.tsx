@@ -1,3 +1,5 @@
+// 4. Update your TableDemo.tsx component
+
 /* eslint-disable react/no-unknown-property */
 "use client";
 
@@ -13,6 +15,7 @@ import { CheckCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ExtendedQuestion } from "./DisplayQuestions";
 import { usePathname, useRouter } from "next/navigation";
+import { useGetQuestionStatus } from "@/hooks/queries";
 
 function styleDifficultyText(diff: string) {
   switch (diff) {
@@ -25,6 +28,23 @@ function styleDifficultyText(diff: string) {
     default:
       return "Unknow Case";
   }
+}
+
+// Component to show individual question status
+function QuestionStatusIcon({ questionId }: { questionId: string }) {
+  const { data: isCompleted, isLoading } = useGetQuestionStatus(questionId);
+
+  if (isLoading) {
+    return (
+      <div className="w-6 h-6 border-2 border-gray-300 border-t-green-500 rounded-full animate-spin" />
+    );
+  }
+
+  return (
+    <CheckCircle2
+      className={`w-6 h-6 mb-2 ${isCompleted ? "text-green-400" : "text-gray-300"}`}
+    />
+  );
 }
 
 export function TableDemo({
@@ -149,9 +169,7 @@ export function TableDemo({
               >
                 <TableCell className="font-medium flex flex-row items-center gap-4">
                   <span>
-                    <CheckCircle2
-                      className={`w-6 h-6 mb-2 ${i === 2 ? "text-green-400" : "text-gray-300"}`}
-                    />
+                    <QuestionStatusIcon questionId={question._id} />
                   </span>
                   {question.questionDetails.name}{" "}
                 </TableCell>
