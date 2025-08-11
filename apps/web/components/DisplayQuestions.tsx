@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   AlertCircle,
   Book,
@@ -7,6 +8,7 @@ import {
   FunctionSquare,
   GitGraph,
   Paperclip,
+  RefreshCw,
   Search,
   SortAsc,
 } from "lucide-react";
@@ -23,6 +25,7 @@ import { QuestionCard } from "@/components/QuestionsCard";
 import { Question } from "@workspace/editor/data/questions";
 import TechIcons from "@/components/TechIcons";
 import { QuestionCardSkeleton } from "./questionCardSkeleton";
+import useDebounce from "@/hooks/useDebounce";
 
 export type ExtendedQuestion = Question & {
   _id: string;
@@ -49,6 +52,30 @@ export default function DisplayQuestions({
   error,
   language,
 }: DisplayQuestionsProps) {
+  const [filteredQuestions, setFilteredQuestions] = useState<
+    ExtendedQuestion[]
+  >([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  useEffect(() => {
+    if (questions && debouncedSearchTerm) {
+      const filtered = questions.filter(
+        (question) =>
+          question.questionDetails.name
+            .toLowerCase()
+            .includes(debouncedSearchTerm.toLowerCase()) ||
+          question.questionDetails.questionDescription
+            .toLowerCase()
+            .includes(debouncedSearchTerm.toLowerCase())
+      );
+
+      setFilteredQuestions(filtered);
+    } else {
+      setFilteredQuestions(questions ?? []);
+    }
+  }, [debouncedSearchTerm, questions]);
+
   return (
     <div className="min-h-screen overflow-y-auto md:ml-64 ml-4 mt-12 flex flex-row bg-background dark:bg-[#18181B]">
       <div className="container relative md:ml-16 md:px-4 md:py-8 md:w-[60%]  w-[90%]">
@@ -75,10 +102,12 @@ export default function DisplayQuestions({
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Search within this list of questions"
-              className="pl-10"
+              className="pl-10 dark:bg-[#1E1E21]"
+              value={searchTerm || ""}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2 dark:bg-[#1E1E21]">
             <SortAsc className="h-4 w-4" />
             Sort by
           </Button>
@@ -113,7 +142,7 @@ export default function DisplayQuestions({
             <div className="flex gap-4 text-sm text-muted-foreground border-b border-border pb-6">
               <div className="flex items-center gap-2">
                 <Book className="w-4 h-4" />
-                {questions.length} questions
+                {questions?.length || 0} questions
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
@@ -121,10 +150,13 @@ export default function DisplayQuestions({
               </div>
             </div>
 
-            {/* Loading/Error Messages */}
+            {/* Loading Skeletons */}
             {loading &&
-              [...Array(4)].map((_, i) => <QuestionCardSkeleton key={i} />)}
+              [...Array(4)].map((_, index) => (
+                <QuestionCardSkeleton key={index} />
+              ))}
 
+            {/* Error Message */}
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4 my-6">
                 <div className="flex items-start">
@@ -141,19 +173,46 @@ export default function DisplayQuestions({
               </div>
             )}
 
+            {/* No Results Message */}
+            {!loading && !error && filteredQuestions.length === 0 && (
+              <div className="flex flex-col items-center gap-2 my-10">
+                <Search className="h-6 w-6 text-muted-foreground" />
+                <p className="text-center text-xl font-bold">
+                  No questions found
+                </p>
+                <p className="text-center text-muted-foreground">
+                  we couldn&lsquo;t find any results for{" "}
+                  <span className="font-medium">
+                    &quot;{debouncedSearchTerm}&quot;
+                  </span>
+                </p>
+
+                <Button
+                  variant="outline"
+                  className="mx-auto mt-4"
+                  onClick={() => setSearchTerm("")}
+                >
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Reset search
+                </Button>
+              </div>
+            )}
+
             {/* Question Cards */}
-            <div className="grid gap-4">
-              {questions.map((question) => (
-                <QuestionCard
-                  key={question._id}
-                  tech={question.questionDetails.techStack}
-                  questionName={question.questionDetails.name}
-                  desc={question.questionDetails.questionDescription}
-                  difficulty={question.questionDetails.difficulty}
-                  _id={question._id}
-                />
-              ))}
-            </div>
+            {!loading && !error && filteredQuestions.length > 0 && (
+              <div className="grid gap-4">
+                {filteredQuestions.map((question) => (
+                  <QuestionCard
+                    key={question._id}
+                    tech={question.questionDetails.techStack}
+                    questionName={question.questionDetails.name}
+                    desc={question.questionDetails.questionDescription}
+                    difficulty={question.questionDetails.difficulty}
+                    _id={question._id}
+                  />
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
