@@ -1,7 +1,7 @@
-/* eslint-disable turbo/no-undeclared-env-vars */
 import { NextRequest, NextResponse } from "next/server";
 
-const openaiApiKey = process.env.OPENAI_API_KEY as string;
+// eslint-disable-next-line turbo/no-undeclared-env-vars
+const openrouterApiKey = process.env.OPENROUTER_API_KEY as string;
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,25 +23,30 @@ Always provide well-commented and beginner-friendly code when possible, and brea
 
     const messages = [systemMessage, ...body.messages];
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${openaiApiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4", // or "gpt-3.5-turbo"
-        messages,
-        temperature: 0.7,
-      }),
-    });
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${openrouterApiKey}`,
+          "HTTP-Referer": "https://frontend-forge-web.vercel.app", // replace with your site URL if deploying
+          "X-Title": "Forger Assistant", // optional: helps track requests in OpenRouter dashboard
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-4", // you can choose other models from OpenRouter
+          messages,
+          temperature: 0.7,
+        }),
+      }
+    );
 
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error calling OpenAI API:", error);
+    console.error("Error calling OpenRouter API:", error);
     return NextResponse.json(
-      { error: "Failed to fetch from OpenAI API" },
+      { error: "Failed to fetch from OpenRouter API" },
       { status: 500 }
     );
   }

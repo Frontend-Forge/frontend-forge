@@ -1,0 +1,16 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // Prettier formats code
+  "editor.formatOnSave": true, // Run formatter on save
+  "eslint.validate": [
+    // ESLint should run on these file types
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.codeActionsOnSave": [
+    // Run fixes on save
+    "source.fixAll",
+    "source.fixAll.eslint" // ESLint auto-fix (includes Prettier if integrated)
+  ]
+}

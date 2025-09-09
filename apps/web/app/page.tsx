@@ -12,6 +12,8 @@ import { MarqueeDemo } from "@/components/reviews";
 import MessageBox from "@/components/message";
 import Footer from "@/components/Footer";
 import { AccordionDemo } from "@/components/accordian";
+import { useUser } from "@/contexts/UserContext";
+import Link from "next/link";
 
 export default function Page() {
   // Animation variants
@@ -39,6 +41,8 @@ export default function Page() {
       },
     },
   };
+
+  const { isAuthenticated } = useUser();
 
   return (
     <div className="h-screen items-center flex font-mono flex-col gap-4">
@@ -77,16 +81,17 @@ export default function Page() {
           enhancing your skills, and giving you the edge to succeed with
           confidence.
         </motion.p>
-
-        <motion.div variants={itemVariants}>
-          <Button
-            variant="default"
-            className="bg-[#E2FB75] rounded-full h-[40px] px-8 mt-8 text-black hover:bg-[#E2FB75]/90"
-          >
-            <p className="text-[14px]">Get Started now</p>
-            <ArrowRight className="w-3 h-4" />
-          </Button>
-        </motion.div>
+        <Link href={isAuthenticated ? "/dashboard" : "/signup"}>
+          <motion.div variants={itemVariants}>
+            <Button
+              variant="default"
+              className="bg-[#E2FB75] rounded-full h-[40px] px-8 mt-8 text-black hover:bg-[#E2FB75]/90"
+            >
+              <p className="text-[14px]">Get Started now</p>
+              <ArrowRight className="w-3 h-4" />
+            </Button>
+          </motion.div>
+        </Link>
       </motion.div>
 
       <motion.div
@@ -179,9 +184,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="mt-14 w-full">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 }

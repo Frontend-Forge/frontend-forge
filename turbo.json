@@ -17,7 +17,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["DATABASE_URL", "OPENAI_API_KEY"]
+      "env": ["DATABASE_URL", "OPENROUTER_API_KEY"]
     }
   }
 }

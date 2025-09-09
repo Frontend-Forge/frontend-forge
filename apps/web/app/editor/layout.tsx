@@ -204,13 +204,6 @@ export default function RootLayout({
                   <Sun className="w-4 h-4 text-gray-700 hover:text-black transition-all duration-200" />
                 )}
               </div>
-
-              <Button
-                variant="default"
-                className="bg-[#E2FB75] rounded-full h-[30px] text-black hover:bg-[#E2FB75]/90"
-              >
-                <p className="text-[12px]">Get full access</p>
-              </Button>
               <Avatar user={user} logOutUser={logOutUser} />
             </div>
           </div>

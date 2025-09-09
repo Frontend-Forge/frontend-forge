@@ -116,12 +116,7 @@ export default function LandingHeader(): React.ReactElement {
           )}
         </div>
 
-        <Button
-          variant="default"
-          className="bg-[#E2FB75] bp3:block hidden rounded-full h-[33px] text-black hover:bg-[#E2FB75]/90"
-        >
-          <p className="text-[14px]">Get full access</p>
-        </Button>
+
 
         {isAuthenticated && <Avatar user={user} logOutUser={logOutUser} />}
       </div>

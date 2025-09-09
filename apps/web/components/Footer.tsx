@@ -1,253 +1,61 @@
-import { useDarkMode } from "@/hooks/useDarkMode";
-import Image from "next/image";
 import React from "react";
+import { SparklesCore } from "@workspace/ui/components/ui/sparkles";
 
 export default function Footer() {
-  const { theme } = useDarkMode();
-
   return (
-    <footer className="py-12 px-6 bg-white dark:bg-[#18181B] border-t border-gray-200 dark:border-[#27272A]">
+    <footer className="py-12 mt-14 w-full px-6 bg-white dark:bg-[#18181B] border-t border-gray-200 dark:border-[#27272A]">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-          {/* Logo and Newsletter */}
-          <div className="flex justify-normal gap-1">
-            <div className="flex items-start space-x-1">
-              {theme === "dark" ? (
-                <Image
-                  alt="logo"
-                  src={"/images/logo-light.svg"}
-                  width={40}
-                  height={40}
-                  className="rounded-md"
-                />
-              ) : (
-                <Image
-                  alt="logo"
-                  src={"/images/logo.svg"}
-                  width={40}
-                  height={40}
-                  className="rounded-md"
-                />
-              )}
-            </div>
-            <span className="font-semibold mt-2">Frontend Forge</span>
-          </div>
+        <div className="h-[18rem] w-full bg-white dark:bg-[#18181B] flex flex-col items-center justify-center overflow-hidden rounded-md relative">
+          <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-black dark:text-white relative z-20 animate-pulse">
+            Frontend Forge
+          </h1>
+          <div className="w-[40rem] h-40 relative">
+            {/* Enhanced Gradients with animation */}
+            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm animate-pulse" />
+            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
+            <div
+              className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm animate-pulse"
+              style={{ animationDelay: "0.5s" }}
+            />
+            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
 
-          {/* Practice */}
-          <div className="md:col-span-1">
-            <h3 className="font-medium text-base mb-4 dark:text-gray-200">
-              Practice
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Get started
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  JavaScript functions
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  User interface coding
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  System design
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Quiz
-                </a>
-              </li>
-            </ul>
-          </div>
+            {/* Additional moving gradient lines */}
+            <div
+              className="absolute inset-x-10 top-5 bg-gradient-to-r from-transparent via-purple-400 to-transparent h-[1px] w-2/3 blur-sm opacity-60 animate-pulse"
+              style={{ animationDelay: "1s" }}
+            />
+            <div
+              className="absolute inset-x-32 top-8 bg-gradient-to-r from-transparent via-cyan-400 to-transparent h-[1px] w-1/3 blur-sm opacity-40 animate-pulse"
+              style={{ animationDelay: "1.5s" }}
+            />
 
-          {/* Guides */}
-          <div className="md:col-span-1">
-            <h3 className="font-medium text-base mb-4 dark:text-gray-200">
-              Guides
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Front End Interview Playbook
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Front End System Design Playbook
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Behavioral Interview Playbook
-                </a>
-              </li>
-            </ul>
-          </div>
+            {/* Core component */}
+            <SparklesCore
+              background="transparent"
+              minSize={0.4}
+              maxSize={1}
+              particleDensity={1200}
+              className="w-full h-full"
+              particleColor="#6B7280"
+            />
 
-          {/* Study Plans */}
-          <div className="md:col-span-1">
-            <h3 className="font-medium text-base mb-4 dark:text-gray-200">
-              Study Plans
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  1 Week Plan
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  1 Month Plan
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  3 Months Plan
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div className="md:col-span-1">
-            <h3 className="font-medium text-base mb-4 dark:text-gray-200">
-              Company
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Pricing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Roadmap
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Team
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Contact us
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Become an affiliate
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Medium
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  DEV Community
-                </a>
-              </li>
-            </ul>
+            {/* Radial Gradient to prevent sharp edges */}
+            <div className="absolute inset-0 w-full h-full bg-white dark:bg-[#18181B] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
           </div>
         </div>
 
         {/* Bottom area with social links and copyright */}
-        <div className="flex flex-col md:flex-row justify-between items-center mt-12 pt-8 border-t border-gray-200 dark:border-[#27272A]">
+        <div className="flex flex-col md:flex-row justify-between items-center mt-12 pt-8">
           <div className="flex space-x-6 mb-4 md:mb-0">
             <a
-              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.linkedin.com/in/pratiyank"
               className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
             >
               <svg
-                width="20"
-                height="20"
+                width="25"
+                height="25"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -255,8 +63,10 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/Frontend-Forge/frontend-forge"
+              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 mt-[2px]"
             >
               <svg
                 width="20"
@@ -268,8 +78,10 @@ export default function Footer() {
               </svg>
             </a>
             <a
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://x.com/pratiyank"
+              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 mt-[2px]"
             >
               <svg
                 width="20"

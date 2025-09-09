@@ -72,8 +72,8 @@ export function HeroScrollDemo() {
           <Link
             href={
               questionType === "logical"
-                ? "/editor/67b54f63f8d517c2bd25ebb3"
-                : "/editor/67b012ffac5eb1bde3a25dae"
+                ? "/editor/68bef243acd2a6dd01307f31"
+                : "/editor/68bef243acd2a6dd01307f30"
             }
             target="_blank"
             className="h-6 w-full bg-[#EAFE7C] flex items-center justify-center px-4 text-xs text-gray-600 dark:text-gray-400 border-t border-gray-300 dark:border-gray-700"
